@@ -1,0 +1,15 @@
+jdbc.driverClass = com.mysql.jdbc.Driver
+jdbc.url = jdbc:mysql://192.168.1.120:3306/yayu_v1?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+jdbc.username = root
+jdbc.password = root
+jdbc.minPoolSize=2
+jdbc.maxPoolSize=20
+jdbc.checkoutTimeout=3000
+jdbc.maxStatements=50
+jdbc.testConnectionOnCheckin = false
+jdbc.idleConnectionTestPeriod = 18000
+
+#package for scanning mappers see https://mybatis.github.io/spring/mappers.html#scan default value *
+mybatis.mapper.base.package=yayu.mapper.*
+#package mybatis aliases see https://mybatis.github.io/mybatis-3/configuration.html#typeAliases default value ""
+mybatis.aliases.package=yayu.entity.*

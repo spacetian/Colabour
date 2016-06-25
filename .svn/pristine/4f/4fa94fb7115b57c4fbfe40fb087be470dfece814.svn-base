@@ -1,0 +1,176 @@
+package yayu.service.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import yayu.core.util.DateTimeLongUtil;
+import yayu.dto.LotterOrderCodeDTO;
+import yayu.dto.LotteryDTO;
+import yayu.entity.Goods;
+import yayu.entity.Lottery;
+import yayu.entity.LotteryOrder;
+import yayu.mapper.GoodsMapper;
+import yayu.mapper.LotteryMapper;
+import yayu.mapper.LotteryOrderCodeMapper;
+import yayu.mapper.LotteryOrderMapper;
+import yayu.service.LotteryConsTant;
+import yayu.service.LotteryService;
+@Service
+public class LotteryServiceImpl implements LotteryService,LotteryConsTant {
+	@Autowired 
+	private LotteryMapper lotteryMapper;
+	
+	@Autowired
+	private GoodsMapper goodsMapper;
+	
+	@Autowired
+	private LotteryOrderMapper lotteryOrderMapper;
+	
+	@Autowired
+	private LotteryOrderCodeMapper lotteryOrderCodeMapper;
+	
+	/**
+	 * 查询所有的上架商品
+	 */
+	public List<Lottery> queryAll() {
+		return lotteryMapper.selectAll();
+	}
+	
+	/**
+	 * 上架一个商品，返回上架id
+	 */
+	public int addLottery(int goodId,int unitPrice) {
+		// 查询出商品
+		Goods good = goodsMapper.selectByPrimaryKey((long)goodId);
+		
+		// 根据商品生成lottery
+		int stock = good.getStock();
+		int lotteryId = 0 ;
+		if(stock > 0){
+			Lottery lottery = new Lottery();
+			lottery.setCreateTime(new Date());
+			lottery.setGoodsId(goodId);
+			int totalNum = (new Double(good.getPrice()/unitPrice)).intValue();
+			lottery.setLeftNum(totalNum);
+			lottery.setSalesNum(0); //卖出数，初始化0
+			lottery.setStatus(LOTTERY_STATUS_SHELVES);
+			lottery.setTotalNum(totalNum);
+			lottery.setUnitPrice(unitPrice);
+			lotteryMapper.insert(lottery);
+			lotteryId = lottery.getId();
+			
+			// 商品数目减1
+			good.setStock(stock - 1);
+			goodsMapper.updateByPrimaryKeySelective(good);
+		}
+		return lotteryId;
+	}
+	
+	/**
+	 * 开奖，返回幸运码
+	 */
+	public long runLottery(int lotteryId) {
+			/*取出*/
+			Lottery lottery =lotteryMapper.selectByPrimaryKey(lotteryId);
+			if(lottery.getStatus()!= LOTTERY_STATUS_PANIC_BUYED || lottery.getFinishTimeLong() == null){
+				return 0; //状态不对
+			}
+			
+			// 取出本商品销售终止时刻最后一百条本站购买记录时间
+			List<LotteryOrder> lotteryOrders= lotteryOrderMapper.selectPreHund(lottery.getFinishTimeLong()); 
+			
+			// 计算时间和
+			long source = 0;
+			for (LotteryOrder lotteryOrder : lotteryOrders) {
+				source  = DateTimeLongUtil.milliseconds2HMSMS(lotteryOrder.getFinishTimeLong()) + source;
+			}
+			
+			// 将幸运码写进数据库
+			int luckyCode = Integer.parseInt(String.valueOf(source%lottery.getSalesNum()))+INITIAL_NUMBER;
+			
+			LotteryDTO lotteryDTO = new LotteryDTO();
+			lotteryDTO.setNewLuckCode(luckyCode);
+			lotteryDTO.setNewLuckUserId(123); //TODO
+			lotteryDTO.setId(lotteryId);
+			lotteryMapper.updateByLucky(lotteryDTO);
+			return luckyCode;
+		}
+	
+	/**
+	 * 支付完成后进行抽奖
+	 * 支付时先将金额充值到夺宝币
+	 */
+	public String buyLottery(int lotteryId, int amount, int userId) {
+		// 1. 根据lotteryId查询出lotter的信息
+		Lottery lottery = lotteryMapper.selectByPrimaryKey(lotteryId);
+		
+		// 2. 判断lotter的信息是否存量足够,是否已过期,如果不够返回信息，或者引导用户购买下一期
+		if(lottery == null){
+			return "不存在此商品";//异常
+		}
+		if(lottery.getStatus() > 1){
+			return "状态过期"; // 已过期`
+		}
+		if(lottery.getLeftNum() < amount){
+			return "存量不足"; // 存量不足
+		}
+		
+		// 3. 根据存量和已购买量和lotteryId更新lottery表。修改存量，购买量。是否修改成功一条。否则回到1重新抽奖
+		boolean isSaleOunt =false;
+		long finishTimeLong = new Date().getTime();
+		int saleNum = lottery.getSalesNum();
+		int leftNum = lottery.getLeftNum();
+		LotteryDTO lotteryDTO = new LotteryDTO();
+		lotteryDTO.setNewLeftNum(leftNum - amount);
+		lotteryDTO.setNewSalesNum(saleNum + amount);
+		lotteryDTO.setOldLeftNum(lottery.getLeftNum());
+		lotteryDTO.setOldSalesNum(lottery.getSalesNum());
+		lotteryDTO.setOldStatus(1);
+		lotteryDTO.setId(lottery.getId());
+		if(lotteryDTO.getNewLeftNum() == 0){
+			isSaleOunt = true;
+			lotteryDTO.setNewStatus(2);
+			lotteryDTO.setFinishTimeLong(finishTimeLong);
+		}
+		int updateCount = lotteryMapper.updateByLeftNum(lotteryDTO);
+		if(updateCount == 0){
+			return buyLottery(lotteryId, amount, userId);
+		}
+		if(updateCount > 1){
+			// XXX
+		}
+		
+		// 4. 插入订单,lotteryOrder;
+		LotteryOrder lotteryOrder = new LotteryOrder();
+		lotteryOrder.setAmount(amount*lottery.getUnitPrice());
+		lotteryOrder.setBuyNum(amount);
+		lotteryOrder.setCreateTime(new Date());
+		lotteryOrder.setIp("111");// TODO
+		lotteryOrder.setIpInfo("中奖啦"); // TODO
+		lotteryOrder.setLotteryId(lotteryId);
+		lotteryOrder.setRobot(false);
+		lotteryOrder.setStatus(0);
+		lotteryOrder.setUnitPrice(lottery.getUnitPrice());
+		lotteryOrder.setUserId(222);// TODO
+		lotteryOrder.setFinishTimeLong(finishTimeLong);
+		lotteryOrderMapper.insert(lotteryOrder);
+		
+		// 5. 根据旧购买量，将夺宝码分配给此用户 lotteryCodeOrder;
+		LotterOrderCodeDTO lotterOrderCodeDTO = new LotterOrderCodeDTO();
+		lotterOrderCodeDTO.setBuyNum(amount);
+		lotterOrderCodeDTO.setLotteryId(lotteryId);
+		lotterOrderCodeDTO.setSalesNum(saleNum);
+		lotterOrderCodeDTO.setOrderId(lotteryOrder.getId());
+		lotteryOrderCodeMapper.insertBatch(lotterOrderCodeDTO);
+		
+		// 6. 如果本期已购买完，开始生成下期数据。可用异步扫描到有新生成状态为0的lottery完成。
+		if(isSaleOunt){
+			addLottery(lottery.getGoodsId(), 1);
+		}
+		return "sucess";
+	}
+
+}

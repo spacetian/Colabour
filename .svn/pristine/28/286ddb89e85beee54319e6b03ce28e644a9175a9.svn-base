@@ -1,0 +1,14 @@
+package yayu.entity;
+
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Data
+@Table(name="yy_lottery_order_code")
+public class LotteryOrderCode {
+	private long id;
+	private long lotteryId;
+	private long orderId;
+	private int code;
+}

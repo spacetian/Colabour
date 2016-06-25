@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>播放音频</title>
+	</head>
+	<body
+		<button onclick="clickA()">播放/暂停</button>
+		<audio id="audio" src="Raw/1.mp3" controls="controls">你的浏览器不支持</audio>
+	
+        <script type="text/javascript">
+         var a = document.getElementById("audio");
+        function clickA(){
+        	if(a.paused){
+        		a.play()
+        	}
+        	else
+        	{
+        		a.pause();
+        	}
+        }
+        </script>
+        
+        <ffmpeg>
+            <a>视频</a>
+        </ffmpeg>
+          
+	</body>
+</html>

@@ -1,0 +1,34 @@
+package yayu.dto;
+
+import java.util.Date;
+
+import lombok.Data;
+@Data
+public class LotteryDTO {
+	private int id;
+	private int newGoodsId;
+	private int newTotalNum;
+	private int newLeftNum;
+	private int newSalesNum;
+	private double newUnitPrice;
+	private int newLuckUserId;
+	private int newLuckCode;
+	private Date newAnnounceTime;
+	private Date newCreateTime;
+	private Date newFinishTime;
+	private int newStatus;
+	private int oldGoodsId;
+	private int oldTotalNum;
+	private int oldLeftNum;
+	private int oldSalesNum;
+	private double oldUnitPrice;
+	private int oldLuckUserId;
+	private int oldLuckCode;
+	private Date oldAnnounceTime;
+	private Date oldCreateTime;
+	private Date oldFinishTime;
+	private int oldStatus;
+	private long finishTimeLong;
+	
+}
+

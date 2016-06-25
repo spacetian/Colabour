@@ -1,0 +1,11 @@
+package yayu.dto;
+
+import lombok.Data;
+
+@Data
+public class LotterOrderCodeDTO {
+	private int lotteryId;
+	private int buyNum;
+	private int salesNum;
+	private long orderId;
+}

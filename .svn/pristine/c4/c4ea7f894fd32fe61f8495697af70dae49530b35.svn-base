@@ -1,0 +1,15 @@
+package yayu.service;
+
+import java.util.List;
+
+import yayu.entity.Lottery;
+
+public interface LotteryService {
+	public List<Lottery> queryAll();
+
+	public int addLottery(int goodId, int unitPrice);
+	
+	public long runLottery(int lotteryId);
+	
+	public String buyLottery(int lotteryId,int amount,int userId);
+}

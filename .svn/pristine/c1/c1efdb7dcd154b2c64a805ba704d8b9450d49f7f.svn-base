@@ -1,0 +1,36 @@
+package yayu.plugins.sayHello;
+
+import ro.fortsoft.pf4j.Extension;
+import ro.fortsoft.pf4j.Plugin;
+import ro.fortsoft.pf4j.PluginWrapper;
+import yayu.core.plugin.api.Pay;
+
+public class SayHelloPlugin extends Plugin{
+
+
+    public SayHelloPlugin(PluginWrapper wrapper) {
+        super(wrapper);
+    }
+
+    @Override
+    public void start() {
+        System.out.println("SayHello.start()");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("SayHello.stop()");
+    }
+
+    @Extension(ordinal=1)
+    public static class SayHelloPay implements Pay {
+
+        public String payResult() {
+            return "pay success";
+        }
+
+    }
+
+
+
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Video Play</title>
+	</head>
+	<body>
+		<button onclick="clickV()">播放/暂停</button>
+		<video src="Raw/1.mp3">您的浏览器不支持</video>
+		<source src="raw/3.ogg"></source>
+		<script>
+			var v = document.getElementById("video");
+			function clickV(){
+			   if(v.paused){
+			   	  v.play();
+			   }
+			   else{
+			   	  v.pause();
+			   }
+			   
+			}
+			
+			function clickBig()
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,9 @@
+package yayu.service;
+
+import java.util.List;
+
+import yayu.entity.LotteryOrder;
+
+public interface LotteryOrderService {
+	public List<LotteryOrder> list(LotteryOrder lotteryOrder);
+}

@@ -1,0 +1,27 @@
+package yayu.entity;
+
+import java.util.Date;
+
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Data
+@Table(name="yy_lottery_order")
+public class LotteryOrder {
+	private Long id;
+	private Integer userId;
+	private Integer lotteryId;
+	private Boolean robot;
+	private Double amount;
+	private Double unitPrice;
+	private Integer buyNum;
+	private String receiver;
+	private String address;
+	private String mobile;
+	private String ip;
+	private String ipInfo;
+	private Integer status;
+	private Date createTime;
+	private Long finishTimeLong;
+	}

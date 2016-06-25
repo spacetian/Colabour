@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="yayu.mapper.LotteryCodeMapper">
+
+	<insert id="generateCode" parameterType="yayu.dto.InsertRandCodeDTO">
+	INSERT INTO yy_lottery_code(`lottery_id`,`code`) 
+		SELECT #{lotteryId},id from (SELECT id+10000000 as id 
+		<![CDATA[ from sequence WHERE id <= #{totalNum}) ]]> 
+		as T ORDER BY RAND();
+
+	</insert>
+
+</mapper>

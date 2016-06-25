@@ -1,0 +1,9 @@
+package yayu.dto;
+
+import lombok.Data;
+
+@Data
+public class InsertRandCodeDTO {
+	private int lotteryId ;
+	private int totalNum;
+}

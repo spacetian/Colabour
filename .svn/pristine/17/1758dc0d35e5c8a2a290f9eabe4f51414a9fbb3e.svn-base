@@ -1,0 +1,13 @@
+package yayu.mapper;
+
+import yayu.core.data.IMapper;
+import yayu.dto.LotteryDTO;
+import yayu.entity.Lottery;
+
+public interface LotteryMapper extends IMapper<Lottery> {
+
+	int  updateByLeftNum(LotteryDTO lotteryDTO);
+	
+	int  updateByLucky(LotteryDTO lotteryDTO);
+
+}

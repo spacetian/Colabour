@@ -1,0 +1,55 @@
+package yayu.web.test; 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import junit.framework.TestCase;
+import yayu.core.util.WebUtils;
+
+public class TestMapper extends TestCase{
+	//@Test(expected = PersistenceException.class)
+	public  void testDynamicInsertAll() throws IOException {
+		/*Long milliseconds=DateTimeUtils.date2Milliseconds(new Date());
+		System.out.println(milliseconds);
+		System.out.println(DateTimeUtils.milliseconds2Date(milliseconds));
+		System.out.println(DateTimeUtils.milliseconds2HMSMS(milliseconds));*/
+		String sscUrl="http://trend.hao123.lecai.com/cqssc/baseTrend.action?phaseOrder=down&recentDay=1&onlyBody=false";
+		Map<String,String> params=new HashMap<String,String>();
+		/*String content="<td class=\"chart_table_td border_right\" style=\"color: red;\">"+
+                        "66228"+
+                    "</td>";*/
+		String content=WebUtils.doGet(sscUrl, params);
+		
+		Pattern pattern = Pattern.compile("<td class=\"chart_table_td\">([\\d]+)</td>[\\s]+<td class=\"chart_table_td\" style=\"color: red;\">([\\s\\d]+)</td>");
+		Matcher matcher = pattern.matcher(content);
+		
+		
+		 if (matcher.find()) {
+			 
+			 	String periods=matcher.group(1);
+			 	periods=periods.replaceAll("\\s", "");
+	            String code=matcher.group(2);
+	            code=code.replaceAll("\\s", "");
+	            
+	            System.out.println("periods is: " + periods +" code is: "+code);
+	        }
+		
+
+		/*SqlSession sqlSession = MybatisHelper.getSqlSession();
+		DashbordMapper mapper = sqlSession.getMapper(DashbordMapper.class);
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("total", 500000);
+	    params.put("lottery_id", 13);
+	    params.put("result", -1);
+	    Date start=new Date();
+	    System.out.println(start);
+		mapper.generateCode(params);
+		System.out.println(params.get("result"));
+		Date end=new Date();
+		System.out.println(end);*/
+	}
+	
+	
+}

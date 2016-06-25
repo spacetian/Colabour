@@ -1,0 +1,8 @@
+package yayu.mapper;
+
+import yayu.core.data.IMapper;
+import yayu.entity.Dashbord;
+
+public interface DashbordMapper extends IMapper<Dashbord> {
+	
+}

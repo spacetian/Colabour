@@ -1,0 +1,11 @@
+package yayu.mapper;
+
+import yayu.core.data.IMapper;
+import yayu.dto.LotterOrderCodeDTO;
+import yayu.entity.LotteryOrderCode;
+
+public interface LotteryOrderCodeMapper extends IMapper<LotteryOrderCode> {
+
+	void insertBatch(LotterOrderCodeDTO lotterOrderCodeDTO);
+
+}

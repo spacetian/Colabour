@@ -1,0 +1,33 @@
+package yayu.entity;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Data
+@Table(name="yy_lottery")
+public class Lottery {
+	@Id
+    @Column(name = "Id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	private Integer goodsId;
+	private Integer totalNum;
+	private Integer leftNum;
+	private Integer salesNum;
+	private double unitPrice;
+	private Integer luckUserId;
+	private Integer luckCode;
+	private Date announceTime;
+	private Date createTime;
+	private Date finishTime;
+	private Integer status;
+	private Long finishTimeLong;
+}
+

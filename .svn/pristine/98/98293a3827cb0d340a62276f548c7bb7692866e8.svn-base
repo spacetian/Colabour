@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="yayu.mapper.LotteryMapper">
+
+	<update id="updateByLeftNum" parameterType="yayu.dto.LotteryDTO">
+	UPDATE yy_lottery 
+	SET left_num = #{newLeftNum},
+		sales_num = #{newSalesNum}
+	   <if test="newStatus != 0">
+            ,status = newStatus
+        </if>
+        <if test="newFinishTimeLong != 0">
+            ,finish_time_long = newFinishTimeLong
+        </if>
+	WHERE left_num = #{oldLeftNum}
+	and sales_num = #{oldSalesNum}
+	and id = #{id}
+	</update>
+	
+ <update id="updateByLucky" parameterType="yayu.dto.LotteryDTO">
+	UPDATE yy_lottery 
+	SET luck_code = #{newLuckCode},
+		luck_user_id = #{newLuckUserId}
+	WHERE id = #{id}
+	</update>
+	
+	
+</mapper>

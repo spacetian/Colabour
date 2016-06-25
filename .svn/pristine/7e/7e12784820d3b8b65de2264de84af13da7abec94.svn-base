@@ -1,0 +1,12 @@
+package yayu.service;
+
+import java.util.List;
+
+import yayu.entity.Goods;
+
+public interface GoodService {
+
+	List<Goods> queryAll();
+
+	String delete(long goodsId);
+}

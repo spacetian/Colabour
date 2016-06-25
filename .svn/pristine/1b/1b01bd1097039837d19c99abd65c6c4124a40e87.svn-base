@@ -1,0 +1,64 @@
+package yayu.web.config;
+
+import java.util.Properties;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+
+@Configuration
+public class ViewConfiguration {
+ 
+	@Bean
+	public FreeMarkerConfigurer freemarkerConfig(){
+		
+		FreeMarkerConfigurer configurer=new FreeMarkerConfigurer();
+		configurer.setTemplateLoaderPath("/WEB-INF/view/");
+		
+		Properties prop=new Properties();
+		prop.setProperty("template_update_delay", "0");
+		prop.setProperty("default_encoding", "UTF-8");
+		prop.setProperty("number_format", "0.##########");
+		prop.setProperty("datetime_format", "yyyy-MM-dd HH:mm:ss");
+		prop.setProperty("classic_compatible", "true");
+		prop.setProperty("template_exception_handler", "ignore");
+		
+		configurer.setFreemarkerSettings(prop);
+		return configurer;
+		
+	}
+    @Bean
+    public ViewResolver viewResolver() {
+    	FreeMarkerViewResolver viewResolver;
+        viewResolver = new FreeMarkerViewResolver();
+        //viewResolver.setOrder(2);
+        //viewResolver.setPrefix(/WEB-INF/);
+        viewResolver.setSuffix(".ftl");
+        viewResolver.setContentType("text/html;charset=UTF-8");  
+        viewResolver.setExposeRequestAttributes(true);  
+        viewResolver.setExposeSessionAttributes(true);
+        viewResolver.setExposeSpringMacroHelpers(true);  
+        viewResolver.setViewClass(org.springframework.web.servlet.view.freemarker.FreeMarkerView.class);
+        // for debug envirment
+        viewResolver.setCache(false);
+        return viewResolver;
+    }
+    
+    
+    /*@Bean
+    public ViewResolver tilesViewResolver() {
+        UrlBasedViewResolver urlBasedViewResolver = new UrlBasedViewResolver();
+        urlBasedViewResolver.setOrder(1);
+        urlBasedViewResolver.setViewClass(TilesView.class);
+        //urlBasedViewResolver.
+        return urlBasedViewResolver;
+    }
+    @Bean
+    public TilesConfigurer tilesConfigurer() {
+        TilesConfigurer tilesConfigurer = new TilesConfigurer();
+        tilesConfigurer.setDefinitions(new String[] { "classpath:tiles.xml" });
+        return tilesConfigurer;
+    }*/
+}

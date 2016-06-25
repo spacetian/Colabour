@@ -1,0 +1,11 @@
+package yayu.mapper;
+
+import java.util.List;
+
+import yayu.core.data.IMapper;
+import yayu.entity.LotteryOrder;
+
+public interface LotteryOrderMapper extends IMapper<LotteryOrder> {
+	public List<LotteryOrder> selectPreHund(long finishTime);
+
+}

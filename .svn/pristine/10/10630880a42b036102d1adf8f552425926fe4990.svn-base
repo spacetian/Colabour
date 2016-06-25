@@ -1,0 +1,11 @@
+package yayu.service;
+
+import java.util.List;
+
+import yayu.entity.Dashbord;
+import yayu.entity.UserRole;
+
+public interface DashbordService {
+	 Dashbord findOne(Long id);
+	  void buckInsert();
+}

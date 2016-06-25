@@ -1,0 +1,23 @@
+package yayu.service;
+
+/**
+ * 抢购模块常量接口
+ * @author Administrator
+ *
+ */
+public interface LotteryConsTant {
+	/**商品状态：刚上架**/ 
+	Integer LOTTERY_STATUS_SHELVES = 0; 
+	
+	/**商品状态：分发完成抽奖码**/
+	Integer LOTTERY_STATUS_READY = 1; 
+	
+	/**商品状态：分发完成抽奖码**/
+	Integer LOTTERY_STATUS_PANIC_BUYED = 2; 
+	
+	/**商品状态：开奖完成**/
+	Integer LOTTERY_STATUS_DONE = 3; 
+	
+	/**开奖码起始数**/
+	Integer INITIAL_NUMBER = 10000001;
+}

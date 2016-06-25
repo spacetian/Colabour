@@ -1,0 +1,5 @@
+package yayu.core.security;
+
+public class UserDetailsService {
+
+}

@@ -1,0 +1,26 @@
+package yayu.core;
+
+
+public class BaseController  {
+	
+	
+	
+	/*public ActionResult view(String viewName){
+        return this.view(viewName,null);
+	}
+	public ActionResult view(Object model){
+        return this.view("",model);
+	}
+	public ActionResult view(String viewName,Object model){
+        return new ActionResult(viewName,model);
+	}*/
+	
+	public String redirect(String url){
+		
+		return String.format("redirect:/%s",url);
+	}
+	
+	//public String redirect(String controller,String view, ...){
+		//return String.format("redirect:/%s",url);
+	//}
+}

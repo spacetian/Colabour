@@ -1,0 +1,44 @@
+package yayu.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import yayu.core.annotation.Watching;
+import yayu.core.plugin.api.Pay;
+import yayu.entity.Dashbord;
+import yayu.mapper.DashbordMapper;
+import yayu.service.DashbordService;
+
+@Service
+public class DashbordServiceImpl implements DashbordService {
+
+	
+	@Autowired
+    private DashbordMapper dashbordRepository;	
+	
+	@Watching(value=Pay.class)
+    public Dashbord findOne(Long id) {
+    	
+        return dashbordRepository.selectByPrimaryKey(id);
+    }
+
+	public void buckInsert() {
+		Dashbord dashbord=new Dashbord();
+    	dashbord.setName("你好name");
+    	
+    	List<Dashbord> recordList=new ArrayList<Dashbord>();
+    	for(int i=0;i<50000;i++){
+    		
+    		recordList.add(dashbord);
+    		
+    	}
+    	
+    	dashbordRepository.insertList(recordList);
+    	
+	}
+	
+
+}

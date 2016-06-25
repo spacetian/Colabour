@@ -1,0 +1,44 @@
+package yayu.core.util;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+/**
+ * 处理时间戳和long型的相互转化
+ * @author Administrator
+ *
+ */
+public class DateTimeLongUtil {
+	
+	/** 
+	 * @param date
+	 * @return 返回毫秒数
+	 */
+	public static long date2Milliseconds(Date date) {
+		return date.getTime();
+	}
+	
+	/**
+	 * 毫秒数转化为String类型时间戳
+	 * @param milliseconds
+	 * @return
+	 */
+	public static String milliseconds2Date(Long milliseconds) {
+		String format = "yyyy-MM-dd HH:mm:ss.SSS";
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.format(new Date(milliseconds));
+	}
+	
+	/**
+	 * 毫秒数时间错计算出时，分，秒，毫秒，拼接成String 
+	 * @param milliseconds
+	 * @return
+	 */
+	@SuppressWarnings("deprecation")
+	public static long milliseconds2HMSMS(Long milliseconds) {
+		String strMilliseconds = milliseconds.toString();
+		int len = strMilliseconds.length();
+		String minSeconds = strMilliseconds.substring(len - 3, len);
+		Date date = new Date(milliseconds);
+		return Long.valueOf(String.format("%d%d%d%s", date.getHours(), date.getMinutes(), date.getSeconds(), minSeconds));
+	}
+}

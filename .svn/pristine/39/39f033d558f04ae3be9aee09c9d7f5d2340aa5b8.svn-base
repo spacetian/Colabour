@@ -1,0 +1,48 @@
+package yayu.web.dashbord.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import yayu.entity.LotteryOrder;
+import yayu.service.LotteryOrderService;
+
+@Controller("lotterOrder")
+@RequestMapping("lotterOrder")
+public class LotterOrderController {
+	
+	@Autowired
+	private LotteryOrderService lotteryOrderService;
+	/**
+	 * 查询某件商品的所有参与记录
+	 * @return
+	 */
+	@RequestMapping(value = "list/{lotteryId}", method = RequestMethod.GET )
+	public ResponseEntity<List<LotteryOrder>> list(@PathVariable("lotteryId") int lotteryId){
+		LotteryOrder lotteryOrder = new LotteryOrder();
+		lotteryOrder.setLotteryId(lotteryId);
+		List<LotteryOrder> lotteryOrders = lotteryOrderService.list(lotteryOrder);
+		return ResponseEntity.ok(lotteryOrders);
+		
+	}
+	
+	/**
+	 * 查询某件商品的用户的参与记录  http://localhost:8080/yayu.web/lotterOrder/list/{lotteryId}/{userId}
+	 * @return
+	 */
+	@RequestMapping(value = "list/{lotteryId}/{userId}", method = RequestMethod.GET )
+	public ResponseEntity<List<LotteryOrder>> list(@PathVariable("lotteryId") int lotteryId,
+			@PathVariable("userId") int userId){
+		LotteryOrder lotteryOrder = new LotteryOrder();
+		lotteryOrder.setLotteryId(lotteryId);
+		lotteryOrder.setUserId(userId);
+		List<LotteryOrder> lotteryOrders = lotteryOrderService.list(lotteryOrder);
+		return ResponseEntity.ok(lotteryOrders);
+		
+	}
+}

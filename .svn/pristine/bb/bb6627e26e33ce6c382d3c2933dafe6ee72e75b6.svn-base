@@ -1,0 +1,104 @@
+package yayu.core.plugin.aop;
+
+import java.lang.reflect.Method;
+import java.util.List;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import ro.fortsoft.pf4j.DefaultPluginManager;
+import ro.fortsoft.pf4j.PluginManager;
+import yayu.core.annotation.Watching;
+
+@Aspect
+@Component
+public class PluginAction {
+	// 本地异常日志记录对象
+	private static final Logger logger = LoggerFactory.getLogger(PluginAction.class);
+
+	// 插件持久层
+	// @Inject
+	// private PluginMapper pluginMapper;
+	// Controller层切点
+	@Pointcut("execution(* yayu.service.DashbordService.findOne(..))")
+	public void pluginAspect() {
+	}
+//
+//	@Before("pluginAspect()")
+//	public void beforePlugin()   {
+//		
+//		logger.debug("before we do someThing ,we do plugin");
+//	}
+//
+	@Around("pluginAspect()")
+	public Object aroundPlugin(ProceedingJoinPoint point)throws Exception {
+		logger.debug("around we do someThing ,we do plugin");
+//		Object[] args = point.getArgs();
+    	Object result = null;
+		final PluginManager pluginManager = new DefaultPluginManager();
+		pluginManager.loadPlugins();
+		pluginManager.startPlugins();
+		Class<?> pluginClass = getMethodPlugin(point);
+		if(pluginClass != null){
+			List<?> pluginClasses = pluginManager.getExtensions(pluginClass);
+			for(Object plugin : pluginClasses){
+				Method[] methods = pluginClass.getMethods();
+				for(Method method : methods){
+					
+					System.out.println(">>> " + method.invoke(plugin));
+				}
+			}
+		}
+		
+		try {
+			result = point.proceed();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pluginManager.stopPlugins();
+		return result;
+	}
+
+	@After("pluginAspect()")
+	public void afterPlugin() {
+		logger.debug("after we do someThing ,we do plugin");
+	}
+
+
+	/**
+	 * 获取注解中表明的需要执行的插件类型
+	 *
+	 * @param joinPoint
+	 *            切点
+	 * @return 方法描述
+	 * @throws Exception
+	 */
+	private Class<?> getMethodPlugin(JoinPoint joinPoint) throws Exception {
+		Class<?> pluginClass = null;
+		String targetName = joinPoint.getTarget().getClass().getName();
+		String methodName = joinPoint.getSignature().getName();
+		Object[] arguments = joinPoint.getArgs();
+		Class<?> targetClass = Class.forName(targetName);
+		Method[] methods = targetClass.getMethods();
+		for (Method method : methods) {
+			if (method.getName().equals(methodName)) {
+				Class<?>[] clazzs = method.getParameterTypes();
+				if (clazzs.length == arguments.length) {
+					if(method.getAnnotation(Watching.class)!=null){
+						pluginClass = method.getAnnotation(Watching.class).value();
+					}
+					break;
+				}
+			}
+		}
+		return pluginClass;
+	}
+}

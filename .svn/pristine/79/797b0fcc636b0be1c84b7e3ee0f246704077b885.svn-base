@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="yayu.mapper.LotteryOrderCodeMapper">
+
+	<insert id="insertBatch" parameterType="yayu.entity.LotteryOrder">
+	INSERT into  yy_lottery_order_code(lottery_id, order_id,`code`) 
+	SELECT lottery_id,  #{orderId},`code` from yy_lottery_code where lottery_id = 
+	#{lotteryId} LIMIT #{salesNum}, #{buyNum};
+	</insert>
+
+</mapper>

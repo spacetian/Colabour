@@ -1,0 +1,4 @@
+<#assign contentBody>
+goods
+</#assign>
+<#include "shared/layout.ftl" />

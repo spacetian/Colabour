@@ -1,0 +1,70 @@
+package yayu.web.dashbord.controller;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import yayu.entity.Lottery;
+import yayu.service.LotteryService;
+
+@Controller("lottery")
+@RequestMapping("lottery")
+public class LotteryController {
+	@Autowired
+	private LotteryService lotteryService;
+	
+	Logger logger = Logger.getLogger(LotteryController.class);
+	/**
+	 * 展示所有的上架商品。可扩展出分类，排序，模糊搜索
+	 * @return
+	 */
+	@RequestMapping(value = "list",method = RequestMethod.GET)
+	public ResponseEntity<List<Lottery>>  queryAllLottery(){
+		List<Lottery> result =  lotteryService.queryAll();
+		return  ResponseEntity.ok(result);
+	}
+	
+	/**
+	 * 上架一个商品
+	 * @param goodId 商品id
+	 * @param unitPrice 单价
+	 * @return
+	 */
+	@RequestMapping(value = "add/{goodId}/{unitPrice}",method = RequestMethod.POST)
+	public ResponseEntity<Integer>  addLottery(@PathVariable("goodId") int goodId,@PathVariable("unitPrice") int unitPrice) {
+		int lotteryId =  lotteryService.addLottery(goodId,unitPrice);
+		return  ResponseEntity.ok(lotteryId);
+	}
+	
+	/**
+	 * 购买
+	 * @param lotteryId 
+	 * @param amount
+	 * @return
+	 */
+	@RequestMapping(value="buy/{lotteryId}/{amount}",method = RequestMethod.GET)
+	public ResponseEntity<String> buy(@PathVariable(value="lotteryId") int lotteryId, @PathVariable(value="amount")  int amount){
+		logger.debug("用logger输出的：" + lotteryId + ":" + amount);
+		String result = lotteryService.buyLottery(lotteryId, amount, 1232); // TODO 从缓存取用户
+		return ResponseEntity.ok(result);
+	}
+	
+	/**
+	 * 开奖
+	 * @param lotteryId 上架id
+	 * @return
+	 */
+	@RequestMapping(value = "runLottery/{lotteryId}",method = RequestMethod.POST)
+	public ResponseEntity<Long>  runLottery(@PathVariable("lotteryId") int lotteryId) {
+		Long luckyCode =  lotteryService.runLottery(lotteryId);
+		return  ResponseEntity.ok(luckyCode);
+	}
+	
+
+}

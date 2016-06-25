@@ -1,0 +1,46 @@
+package yayu.web.controller;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import yayu.core.BaseController;
+import yayu.core.context.ApplicationContextWrapper;
+import yayu.entity.Dashbord;
+import yayu.service.DashbordService;
+
+@Controller
+@RequestMapping("index")
+
+public class IndexController extends BaseController {
+	
+	@Autowired
+	private DashbordService dashbordService;
+	
+	@RequestMapping("index")
+	public ModelAndView index(){
+		
+		System.out.println(new Date());
+		//GetRandomSequence2(100000000);
+		dashbordService.buckInsert();
+		System.out.println(new Date());
+		//System.out.println(Common.getMapPath());
+		String cp=ApplicationContextWrapper.getServletContext().getRealPath("WEB-INF/classes/plugins");
+		Dashbord ddd=dashbordService.findOne(1L);
+		//List<UserRole> userRoles = dashbordService.queryAll();
+		Map<String,String> model=new HashMap<String,String>();
+		model.put("title", "Spring MVC And Freemarker ");  
+		model.put("content", " Hello world ， test my first spring mvc ! "+ddd.getName()+cp);//
+		
+		ModelAndView mv= new ModelAndView();
+		mv.addObject("model",model);
+        return mv;
+	}
+	
+	
+}

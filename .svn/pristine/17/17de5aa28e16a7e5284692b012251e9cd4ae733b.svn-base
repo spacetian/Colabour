@@ -1,0 +1,21 @@
+package yayu.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import yayu.entity.LotteryOrder;
+import yayu.mapper.LotteryOrderMapper;
+import yayu.service.LotteryOrderService;
+
+@Service
+public class LotteryOrderServiceImpl implements LotteryOrderService {
+	
+	@Autowired
+	private LotteryOrderMapper lotteryOrderMapper;
+	public List<LotteryOrder> list(LotteryOrder lotteryOrde) {
+		return lotteryOrderMapper.select(lotteryOrde);
+	}
+
+}

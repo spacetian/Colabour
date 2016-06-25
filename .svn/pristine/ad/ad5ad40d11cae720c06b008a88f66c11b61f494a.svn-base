@@ -1,0 +1,21 @@
+package yayu.core.context;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+public class ApplicationContextLoaderServlet extends HttpServlet {  
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public void init(ServletConfig config) throws ServletException {
+/*		ApplicationContextWrapper.setServletContext(config.getServletContext());
+        ApplicationContextWrapper.setApplicationContext(
+            WebApplicationContextUtils.getWebApplicationContext(
+                config.getServletContext()));*/
+    }
+}

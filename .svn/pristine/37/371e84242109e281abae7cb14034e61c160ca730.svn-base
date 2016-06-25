@@ -1,0 +1,10 @@
+package yayu.mapper;
+
+import yayu.core.data.IMapper;
+import yayu.dto.InsertRandCodeDTO;
+import yayu.entity.LotteryCode;
+
+public interface LotteryCodeMapper extends IMapper<LotteryCode>{
+	public int generateCode(InsertRandCodeDTO insertRandCodeDTO);
+
+}

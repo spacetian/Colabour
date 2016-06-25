@@ -1,0 +1,11 @@
+<#assign contentBody>
+<#list goodses! as temp>
+${temp.id} --- 
+</#list>
+${list}
+
+<script type="text/javascript">
+</script>
+
+</#assign>
+<#include "shared/layout.ftl" />

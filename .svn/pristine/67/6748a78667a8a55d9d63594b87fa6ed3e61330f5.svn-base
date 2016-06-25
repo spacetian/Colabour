@@ -1,0 +1,11 @@
+package yayu.core.util;
+
+public class Common {
+
+	
+	public static String getMapPath(){
+		
+		return Class.class.getClass().getResource("/").getPath();
+		
+	}
+}

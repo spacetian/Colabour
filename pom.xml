@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>yayu</groupId>
+  <artifactId>yayu-root</artifactId>
+  <version>0.0.1</version>
+  <packaging>pom</packaging>
+
+  <name>root</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <spring.version>4.2.6.RELEASE</spring.version>
+  </properties>
+<dependencyManagement>
+  <dependencies>
+   <!--  <dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-core</artifactId>
+		
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-beans</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>${spring.version}</version>
+	</dependency> -->
+	
+	<!-- 	<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.8</version>
+		</dependency> -->
+  </dependencies></dependencyManagement>
+  <modules>
+  	<module>yayu.core</module>
+    <module>yayu.service</module>
+    <module>yayu.entity</module>
+    <module>yayu.web</module>
+    <module>yayu.mapper</module>
+    <module>yayu.plugins</module>
+  <!--   <module>yayu.dashbord</module> -->
+    <module>yayu.web.dashbord</module>
+    <!-- <module>yayu.web.goods</module> -->
+  </modules>
+</project>
