@@ -1,0 +1,514 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0045)http://kstore.qianmi.com/customer/myinfo.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>账户信息-农产品</title>
+
+<meta name="Keywords" content="欢迎来到一元中啦">
+<meta name="description" content="商城系统">
+	<link rel="Shortcut Icon" href="http://img01.ningpai.com/1432879652077.jpg">
+<link href="CSS/pages.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+     <input type="hidden" name="CSRFToken" value="f37f95bda11ddc47c03dbf66c74a4940">
+
+<link rel="stylesheet" href="http://kstore.qianmi.com/index_seven/css/style.css">
+<input type="hidden" id="basePath" value="">
+<div class="section_headerTop">
+    <div class="slot slot_headerTop01">
+        <ul class="siteNav right">
+            <li><span>您好qm_18721718153，欢迎来到一元中啦</span></li>
+            <input type="hidden" id="customer_id" value="2256">
+            <li class="login_info">
+            </li>
+            <li class="loginout_info">
+                <a class="site_loginout" href="http://kstore.qianmi.com/logout.html">退出</a>
+            </li>
+            <li class="nav_item navCenter">
+                <a href="Index.html" target="_blank">会员中心<s></s></a>
+                <div class="navInfo">
+                    <a href="Order_MyOrder.html" target="_blank">我的订单</a>
+                </div>
+            </li>
+            <li class="nav_item"><a href="javascript:;" onclick="addToFavorite('农产品');">加入收藏</a></li>
+            <li class="nav_item"><a href="javascript:;" onclick="shareUrl();">分享给好友</a></li>
+        </ul>
+    </div>
+    <div class="slot slot_headerTop02"></div>
+</div>
+<div class="bh-mask"></div>
+<div id="ctDia" class="bh-dialog dia0">
+    <div class="dia-tit">
+        <h4>加入收藏</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <p style="text-align: center;line-height:100px;">请使用菜单栏或Ctrl+D进行添加！</p>
+    </div>
+    <div class="dia-btn"><a href="javascript:;" onclick="clss(this)">确定</a></div>
+</div>
+
+<div id="ctDia" class="bh-dialog dia101">
+    <div class="dia-tit">
+        <h4>分享好友</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <div class="dia_collect_intro tc pt30" style="text-align: center;padding-top: 30px;">
+            <span id="content" style="font-size:16px"></span>
+        </div>
+        <div class="dia-btn" style="padding-top: 30px;">
+            <a id="copy" data-clipboard-target="content" href="javascript:;">复制</a>
+            <a onclick="clss(this)" href="javascript:;">取消</a>
+            <br>
+            <span style="color: red; font-size:12px">亲！如果您的好友成功注册为会员，会有积分送给您哦！</span>
+        </div><!--/dia_ops-->
+    </div><!--/dia_cont-->
+</div><!--/dialog-->
+
+
+
+<div id="ctDia" class="bh-dialog dia102">
+    <div class="dia-tit">
+        <h4>登录提示</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <p style="text-align: center;line-height:100px;">您未登录！现在确认要登录吗？</p>
+    </div>
+    <div class="dia-btn">
+        <a onclick="login()" href="javascript:;">确定</a>
+        <a href="javascript:;" onclick="clss(this)">取消</a>
+    </div>
+</div><!--/dialog-->
+
+
+
+<div id="ctDia" class="bh-dialog dia103">
+    <div class="dia-tit">
+        <h4>操作提示</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <p style="text-align: center">复制成功！</p>
+    </div>
+    <div class="dia-btn"><a href="javascript:;" onclick="clss()">确定</a></div>
+
+</div><!--/dialog-->
+<div class="bh-mask"></div>
+<script>
+    function dias(n){
+        $(".bh-mask").fadeIn();
+        $(".dia"+n).fadeIn();
+    };
+    function clss(){
+        $(".bh-dialog").fadeOut();
+        $(".bh-mask").fadeOut();
+    }
+    //分享链接给好友 弹出层
+    function shareUrl(){
+        var basePath = $('#basePath').val();
+        var str = window.location.href;
+        var b = str.indexOf('/',str.indexOf('/')+2);
+//		var a = str.indexOf("//")+2;
+        var local = str.substring(0,b);
+        var customerId = $('#customer_id').val(); //当前登录的用户ID
+        if(customerId==null||customerId==""){
+            dias(102);
+        }else{
+            //给会员id加密
+            var b = new Base64();
+            var result = 'customer_id='+customerId;
+            var str = b.encode('"'+result+'"');
+            var url = local+basePath+'/register.html?'+str;
+            $('#content').html(url);
+            dias(101);
+        }
+        //复制成功弹出复制成功窗口
+        $('#copy').zclip({
+            path:'/js/ZeroClipboard.swf',
+            copy:function(){
+                return $("#content").html();
+            },
+            afterCopy:function(){
+                dias(103);
+            }
+        });
+    }
+
+    //推荐该网站给好友- 登录
+    function login(){
+        var basePath = $('#basePath').val();
+        //获取页面登录的 href
+        window.location.href=basePath+'/login.html';
+
+    }
+
+    //对会员ID进行加密
+    function Base64() {
+        _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        this.encode = function (input) {
+            var output = "";
+            var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+            var i = 0;
+            input = _utf8_encode(input);
+            while (i < input.length) {
+                chr1 = input.charCodeAt(i++);
+                chr2 = input.charCodeAt(i++);
+                chr3 = input.charCodeAt(i++);
+                enc1 = chr1 >> 2;
+                enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                enc4 = chr3 & 63;
+                if (isNaN(chr2)) {
+                    enc3 = enc4 = 64;
+                } else if (isNaN(chr3)) {
+                    enc4 = 64;
+                }
+                output = output +
+                _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+                _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+            }
+            return output;
+        }
+
+        // public method for decoding
+        this.decode = function (input) {
+            var output = "";
+            var chr1, chr2, chr3;
+            var enc1, enc2, enc3, enc4;
+            var i = 0;
+            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+            while (i < input.length) {
+                enc1 = _keyStr.indexOf(input.charAt(i++));
+                enc2 = _keyStr.indexOf(input.charAt(i++));
+                enc3 = _keyStr.indexOf(input.charAt(i++));
+                enc4 = _keyStr.indexOf(input.charAt(i++));
+                chr1 = (enc1 << 2) | (enc2 >> 4);
+                chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                chr3 = ((enc3 & 3) << 6) | enc4;
+                output = output + String.fromCharCode(chr1);
+                if (enc3 != 64) {
+                    output = output + String.fromCharCode(chr2);
+                }
+                if (enc4 != 64) {
+                    output = output + String.fromCharCode(chr3);
+                }
+            }
+            output = _utf8_decode(output);
+            return output;
+        }
+
+        // private method for UTF-8 encoding
+        _utf8_encode = function (string) {
+            string = string.replace(/\r\n/g, "\n");
+            var utftext = "";
+            for (var n = 0; n < string.length; n++) {
+                var c = string.charCodeAt(n);
+                if (c < 128) {
+                    utftext += String.fromCharCode(c);
+                } else if ((c > 127) && (c < 2048)) {
+                    utftext += String.fromCharCode((c >> 6) | 192);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                } else {
+                    utftext += String.fromCharCode((c >> 12) | 224);
+                    utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                }
+
+            }
+            return utftext;
+        }
+
+        // private method for UTF-8 decoding
+        _utf8_decode = function (utftext) {
+            var string = "";
+            var i = 0;
+            var c = c1 = c2 = 0;
+            while (i < utftext.length) {
+                c = utftext.charCodeAt(i);
+                if (c < 128) {
+                    string += String.fromCharCode(c);
+                    i++;
+                } else if ((c > 191) && (c < 224)) {
+                    c2 = utftext.charCodeAt(i + 1);
+                    string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                    i += 2;
+                } else {
+                    c2 = utftext.charCodeAt(i + 1);
+                    c3 = utftext.charCodeAt(i + 2);
+                    string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                    i += 3;
+                }
+            }
+            return string;
+        }
+    }
+</script>
+<script src="Scripts/jquery.zclip.min.js"></script>
+<script src="Scripts/jquery.zclip.js"></script>
+    <script src="Scripts/Custom/PersonMenus.js"></script>
+        <div class="n_head">
+
+        </div>
+
+        <input type="hidden" id="currentProvince" value="">
+        <input type="hidden" id="basePath" value="">
+        <script src="Scripts/minShopping.js"></script>
+
+     <div style="background: #f5f5f5;">
+         <div class="container clearfix pt20 pb10">
+            <!--new_member_left-->
+<div class="new_member_left">
+
+</div>
+<!--new_member_left-->             <div class="new_member-right">
+                 <div class="new_order_list">
+                     <div class="n-title">账户信息</div>
+                     <div class="tagMenu order-menu pr">
+                         <ul class="menu clearfix">
+                             <li class="current">基本信息</li>
+                         </ul>
+                         <div class="aco-link">
+                             注：修改邮箱、手机请到<a href="Account_SecurityCenter.html">账户安全</a>
+                         </div>
+                     </div>
+                     <div class="content">
+                         <div class="layout" id="No0">
+                             <form method="post" action="http://kstore.qianmi.com/modifyInfo.html">
+                             <table class="complain-table">
+                                 <tbody><tr>
+                                     <td class="tr">用户名：</td><input type="hidden" id="hi_uid" value="2256">
+                                     <td>
+	                                    	18721718153
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr">会员等级：</td>
+                                     <td>
+                                     普通会员
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr"><span>*</span>昵称：</td>
+                                     <td><input class="text" id="nickName" type="text" name="customerNickname" value="qm_18721718153">
+                                         <img  src="Images/succ-ico.png" style="display: none;">
+                                         <label id="nickName_msg"></label>
+                                         <input class="hidden" id="nickName_" value="qm_18721718153">
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr" valign="top"><span>*</span>性别：</td>
+                                     <td>
+                                         <input type="radio" name="infoGender" value="0" checked="checked"><label>保密</label>
+                                         <input type="radio" name="infoGender" value="1"><label>男</label>
+                                         <input type="radio" name="infoGender" value="2"><label>女</label>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr">真实姓名：</td>
+                                     <td>
+                                         <input class="text" id="realName" type="text" name="infoRealname" value="">
+                                         <img  src="Images/succ-ico.png" style="display: none;">
+                                         <label id="realName_msg"></label>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr">身份证号码：</td>
+                                     <td>
+                                         <input class="text" id="idnum" name="infoCardid" style="width:178px;">
+                                         <img  src="Images/succ-ico.png" style="display: none;">
+                                         <label id="idnum_msg"></label>
+                                         <input class="hidden" id="idnum_" value="">
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr">所在地：</td>
+                                     <td>
+                                         <select class="select" name="infoProvince" id="infoProvince"><option value="1">北京</option><option value="2">天津</option><option value="3">河北</option><option value="4">山西</option><option value="5">内蒙古</option><option value="6">辽宁</option><option value="7">吉林</option><option value="8">黑龙江</option><option value="9">上海</option><option value="10">江苏</option><option value="11">浙江</option><option value="12">安徽</option><option value="13">福建</option><option value="14">江西</option><option value="15">山东</option><option value="16">河南</option><option value="17">湖北</option><option value="18">湖南</option><option value="19">广东</option><option value="20">广西</option><option value="21">海南</option><option value="22">重庆</option><option value="23">四川</option><option value="24">贵州</option><option value="25">云南</option><option value="26">西藏</option><option value="27">陕西</option><option value="28">甘肃</option><option value="29">青海</option><option value="30">宁夏</option><option value="31">新疆</option><option value="32">香港</option><option value="33">澳门</option><option value="34">台湾</option></select>
+                                         <select class="select" name="infoCity" id="infoCity"><option value="1">北京市</option></select>
+                                         <select class="select" name="infoCounty" id="infoCounty"><option value="2">西城区</option><option value="3">崇文区</option><option value="4">宣武区</option><option value="5">朝阳区</option><option value="6">丰台区</option><option value="7">石景山区</option><option value="8">海淀区</option><option value="9">门头沟区</option><option value="10">房山区</option><option value="11">通州区</option><option value="12">顺义区</option><option value="13">昌平区</option><option value="14">大兴区</option><option value="15">怀柔区</option><option value="16">平谷区</option><option value="17">密云县</option><option value="18">延庆县</option></select>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr">详细地址：</td>
+                                     <td>
+                                         <input class="text address" style="width: 178px;" id="address" name="infoAddress" type="text" value="">
+                                         <img  src="Images/succ-ico.png" style="display: none;">
+                                         <label id="address_msg"></label>
+                                     </td>
+                                 </tr>
+                             </tbody></table>
+                             <div class="cho-fill-title">
+                                 选填信息
+                             </div>
+                             <table class="complain-table">
+                                 <tbody><tr>
+                                     <td class="tr">生日：</td>
+                                     <td>
+                                         <select class="select" id="year" name="year" style="width: 65px"> <option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option><option value="2002">2002</option><option value="2001">2001</option><option value="2000">2000</option><option value="1999">1999</option><option value="1998">1998</option><option value="1997">1997</option><option value="1996">1996</option><option value="1995">1995</option><option value="1994">1994</option><option value="1993">1993</option><option value="1992">1992</option><option value="1991">1991</option><option value="1990">1990</option><option value="1989">1989</option><option value="1988">1988</option><option value="1987">1987</option><option value="1986">1986</option><option value="1985">1985</option><option value="1984">1984</option><option value="1983">1983</option><option value="1982">1982</option><option value="1981">1981</option><option value="1980">1980</option><option value="1979">1979</option><option value="1978">1978</option><option value="1977">1977</option><option value="1976">1976</option><option value="1975">1975</option><option value="1974">1974</option><option value="1973">1973</option><option value="1972">1972</option><option value="1971">1971</option><option value="1970">1970</option><option value="1969">1969</option><option value="1968">1968</option><option value="1967">1967</option><option value="1966">1966</option><option value="1965">1965</option><option value="1964">1964</option><option value="1963">1963</option><option value="1962">1962</option><option value="1961">1961</option><option value="1960">1960</option><option value="1959">1959</option><option value="1958">1958</option><option value="1957">1957</option><option value="1956">1956</option><option value="1955">1955</option><option value="1954">1954</option><option value="1953">1953</option><option value="1952">1952</option><option value="1951">1951</option><option value="1950">1950</option><option value="1949">1949</option><option value="1948">1948</option><option value="1947">1947</option><option value="1946">1946</option><option value="1945">1945</option><option value="1944">1944</option><option value="1943">1943</option><option value="1942">1942</option><option value="1941">1941</option><option value="1940">1940</option><option value="1939">1939</option><option value="1938">1938</option><option value="1937">1937</option><option value="1936">1936</option><option value="1935">1935</option><option value="1934">1934</option><option value="1933">1933</option><option value="1932">1932</option><option value="1931">1931</option><option value="1930">1930</option><option value="1929">1929</option><option value="1928">1928</option><option value="1927">1927</option><option value="1926">1926</option><option value="1925">1925</option><option value="1924">1924</option><option value="1923">1923</option><option value="1922">1922</option><option value="1921">1921</option><option value="1920">1920</option><option value="1919">1919</option><option value="1918">1918</option><option value="1917">1917</option><option value="1916">1916</option><option value="1915">1915</option><option value="1914">1914</option><option value="1913">1913</option><option value="1912">1912</option><option value="1911">1911</option><option value="1910">1910</option><option value="1909">1909</option><option value="1908">1908</option><option value="1907">1907</option><option value="1906">1906</option><option value="1905">1905</option><option value="1904">1904</option><option value="1903">1903</option><option value="1902">1902</option><option value="1901">1901</option><option value="1900">1900</option></select> 年
+                                         <select class="select" id="month" name="month" style="width: 50px"> <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>月
+                                         <select class="select" id="day" name="day" style="width: 50px"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select>  日
+                                         <img id="birthday_img" src="">
+                                         <label id="birthday_msg"></label>
+
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr">月收入：</td>
+                                     <td>
+                                         <select class="select" id="infoSalary" name="income">
+                                             <option selected="" value="-1">无收入</option>
+                                             <option value="0">2000元以下</option>
+                                             <option value="1">2000-3999元</option>
+                                             <option value="2">4000-5999元</option>
+                                             <option value="3">6000-7999元</option>
+                                             <option value="4">8000元以上</option>
+                                         </select>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr">婚姻状况：</td>
+                                     <td>
+                                         <input type="radio" name="infoMarital" value="0" checked="checked"><label>保密</label>
+                                         <input type="radio" name="infoMarital" value="1"><label>未婚</label>
+                                         <input type="radio" name="infoMarital" value="2"><label>已婚</label>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td class="tr" valign="top">兴趣爱好：</td>
+                                     <td>
+                                         <textarea cols="80" rows="5" maxlength="120" id="infoInterest" name="infoInterest" class="text_area"></textarea>
+                                         <img  src="Images/succ-ico.png" style="display: none;">
+                                         <label id="infos_msg"></label>
+                                         <br>
+                                         <a onclick="updateUserInfo()" class="complain-submit">提交</a>
+                                     </td>
+                                 </tr>
+
+                             </tbody></table>
+                            </form>
+                         </div>
+                     </div>
+
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     <div class="mask"></div>
+     <div class="member-dialog dia2" style="top: 299.5px; left: 571.5px;">
+         <div class="member-dialog-body">
+             <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+             <div class="tc">
+                 <div class="que-delete clearfix">
+                     <img  src="Images/images_l6.png">
+                     <div class="fl tl">
+                     <p class="f16 red" id="con_00">修改成功！</p>
+                         <div class="m-btn mt20">
+                             <a href="javascript:cls();">确定</a>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     <script src="Scripts/newapp.js"></script>
+     <script src="Scripts/findcode.js"></script>
+     <script src="Scripts/jsOperation.js"></script>
+
+	<link href="CSS/footer.css" rel="stylesheet" />
+    <style>
+        .mt20 {
+            margin-top: 20px;
+        }
+    </style>
+    <div style="background-color: #fff;">
+    <div class="wp">
+
+    </div><!--/wp-->
+    </div>    
+    <input type="hidden" id="Province" value="/">
+	<input type="hidden" id="City" value="/">
+	<input type="hidden" id="County" value="/">
+	<input type="hidden" id="Street" value="/">
+	<input type="hidden" id="birth" value="/">
+	<input type="hidden" id="salary" value="-1">
+
+<script src="Scripts/default.js"></script>
+<script src="Scripts/jcarousellite_1.0.1.js"></script>
+<script src="Scripts/tab-switch.js"></script>
+<script src="Scripts/customer.js"></script>
+<script src="Scripts/scroller.js"></script>
+<script src="Scripts/userInfo.js"></script>
+
+<script src="Scripts/dateclass.js"></script>
+<script src="Scripts/yearclass.js"></script>
+<script src="Scripts/education.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $(".new_member_left div:eq(3) ul li:eq(0)").addClass("cur");
+	$('.item_title').each(function(){
+		$(this).click(function(){
+			$(this).next().toggle('fast',function(){
+				if($(this).is(':visible')){
+					$(this).prev().removeClass('up');
+					$(this).prev().addClass('down');
+				}
+				else{
+					$(this).prev().removeClass('down');
+					$(this).prev().addClass('up');
+				}
+			});
+		});
+	});
+	$('.add_education').click(function(){
+		$('.education_edit').slideDown('fast');
+	});
+	$('.education_cancel').click(function(){
+		$('.education_edit').slideUp('fast');
+		$("#schoolType").val("大学");
+		$("#schoolName").val("");
+		$("#className").val("");
+		$("#comeyear").val("");
+		$("#titleedu").text("");
+	});
+	$('.add_job').click(function(){
+		$('.job_edit').slideDown('fast');
+	});
+	$('.job_cancel').click(function(){
+		$('.job_edit').slideUp('fast');
+		$("#companyName").val("");
+		$("#jobBegin").val("");
+		$("#jobEnd").val("");
+		$("#title").text("");
+	});
+    $(".pro_sort").addClass("pro_sort_close");
+    $(".memeber_left div:eq(2) ul li:eq(0)").addClass("cur");
+	loadProvice();
+	selectLocationOption($("#Province").val(),$("#City").val(),$("#County").val(),$("#Street").val(),'infoProvince','infoCity','infoCounty','infoStreet');
+	selectBirthday($("#birth").val());
+	selectSalary($("#salary").val());
+    
+});
+
+var selYear = window.document.getElementById("year");
+var selMonth = window.document.getElementById("month");
+var selDay = window.document.getElementById("day"); 
+new DateSelector(selYear,selMonth ,selDay);
+var comeYear= window.document.getElementById("comeyear");
+new YearSelector(comeYear);
+var jobBegin= window.document.getElementById("jobBegin");
+new YearSelector(jobBegin);
+var jobEnd= window.document.getElementById("jobEnd");
+new YearSelector(jobEnd);
+
+function win(){
+	var _wd = $(window).width();
+	var _hd = $(window).height();
+	$(".dialog").css("top",(_hd - $(".dialog").height())/2).css("left",(_wd - $(".dialog").width())/2);
+};
+</script>
+
+
+</body></html>

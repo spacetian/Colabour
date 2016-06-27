@@ -1,0 +1,1730 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0044)http://kstore.qianmi.com/myshoppingcart.html -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="Keywords" content="一元中啦商城 -雅娱" />
+    <meta name="description" content="一元中啦-雅娱独立商城系统" />
+    <title>我的购物车-一元中啦商城</title>
+    <link rel="stylesheet" type="text/css" href="CSS/base.min.css" />
+    <link rel="stylesheet" type="text/css" href="CSS/style.css" />
+    <link rel="stylesheet" type="text/css" href="CSS/index.css" />
+
+    <link rel="Shortcut Icon" href="http://img01.ningpai.com/1432879652077.jpg" />
+    <link rel="stylesheet" type="text/css" href="CSS/header.css" />
+    <script type="text/javascript" src="Scripts/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="CSS/cloud-zoom.1.0.2.min.js"></script>
+    <style type="text/css">
+        .area_text {
+            margin-top: 5px;
+        }
+
+        .locate_cont {
+            top: 30px;
+        }
+    </style>
+    <script type="text/javascript">
+
+        function checkOne(obj){
+            for(i=0;i<$(".mjchecked").length;i++){
+                if(!$(".mjchecked")[i].checked){
+                    $(".check_all").attr("checked", false);
+                    break;
+                }else{
+                    $(".check_all").attr("checked", true);
+                }
+            }
+
+            //获取外部的DIV 是否是促销的商品
+            var codexType = $(obj).parents(".marketgroup").attr("attr-codextype");
+            if(codexType!='0'){
+                if(obj.checked){
+
+                    if(codexType=='1'){
+                        var youhui = 0 ;
+                        var xiaoji = 0;
+                        $(obj).parents(".marketgroup").find(".mjchecked").each(function(){
+                            if($(this)[0].checked) {
+                                var man = $(this).parents(".cart_goods").find(".count").find(".marketPrice").val();
+                                var jian = $(this).parents(".cart_goods").find(".count").find(".text").val();
+                                var onesumprice = $(this).parents(".cart_goods").find(".smprice").val();
+                                youhui = accAdd(youhui, accMul(man, jian));
+                                xiaoji = accAdd(onesumprice, xiaoji);
+                            }
+                        })
+                        $(obj).parents(".marketgroup").find(".youhui").val(youhui);
+
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(xiaoji);
+
+                    }
+
+                    else if(codexType=='11'){//抢购
+                        var youhui = 0 ;
+                        var xiaoji = 0;
+                        $(obj).parents(".marketgroup").find(".cart_goods").each(function(){
+                            //金额
+                            var man= $(this).find(".g_count").find(".count").find(".rushPrice").val();
+                            //件数
+                            var jian = $(this).find(".g_count").find(".count").find(".text").val();
+                            var onesumprice =$(this).find(".g_promotion").find(".smprice").val();
+                            youhui = accAdd(youhui,accMul(man,jian));
+                            xiaoji = accAdd(onesumprice,xiaoji);
+                        })
+                        $(obj).parents(".marketgroup").find(".youhui").val(youhui);
+
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(xiaoji);
+                    }
+
+
+                    else if(codexType=='5'){
+                        var mj_sumprice = 0;
+                        var mj_end=0;
+                        //满减
+                        $(obj).parents(".marketgroup").find(".mjchecked").each(function(){
+                            //判断是否选中
+                            if($(this)[0].checked){
+                                mj_sumprice = accAdd($(this).parents(".cart_goods").find(".smprice").val(),mj_sumprice);
+                            }
+                        });
+
+
+                        $(obj).parents(".marketgroup").find(".manjian_reducePrice").each(function(){
+                            var man = $(this).val().split(",")[0];
+                            var jian = $(this).val().split(",")[1];
+                            if(Subtr(mj_sumprice,man)>=0){
+                                mj_end = jian;
+                            }
+
+                        });
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(mj_sumprice);
+                        $(obj).parents(".marketgroup").find(".youhui").val(mj_end);
+
+                    }else if(codexType=='8'){
+                        //满折
+                        var mz_sumprice = 0;
+                        var mz_end=0;
+                        $(obj).parents(".marketgroup").find(".mjchecked").each(function(){
+                            //判断是否选中
+                            if($(this)[0].checked){
+                                mz_sumprice = accAdd($(this).parents(".cart_goods").find(".smprice").val(),mz_sumprice);
+                            }
+                        });
+
+                        $(obj).parents(".marketgroup").find(".manzhe_fullbuyDiscount").each(function(){
+                            var man = $(this).val().split(",")[0];
+                            var zhe = $(this).val().split(",")[1];
+                            if(Subtr(mz_sumprice,man)>=0){
+                                mz_end = accMul(mz_sumprice,Subtr(1,zhe));
+                            }
+
+                        });
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(mz_sumprice);
+                        $(obj).parents(".marketgroup").find(".youhui").val(mz_end);
+
+                    }else if(codexType=='-1'){
+                        //-1代表是套装
+                        var num = $(obj).parents(".cart_item").find(".decrement").next().val();
+                        var xiaoji = 0 ;
+                        $(obj).parents(".marketgroup").find(".cart_item_goods").each(function(){
+                            var isprice = accMul($(this).find(".oneprice").val(),num);
+                            xiaoji = accAdd(xiaoji,isprice);
+                        });
+                        var groupPreferamount = $(obj).parents(".cart_item").find(".groupPreferamount").val();
+                        var youhui = accMul(num,groupPreferamount);
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(xiaoji);
+                        $(obj).parents(".marketgroup").find(".youhui").val(youhui);
+                    }
+                }else{
+                    if(codexType=='1'){
+                        var man= $(obj).parents(".cart_goods").find(".marketPrice").val();
+                        var jian = $(obj).parents(".cart_goods").find(".text").val();
+                        var you= $(obj).parents(".marketgroup").find(".youhui").val();
+                        youhui=Subtr(you,accMul(man,jian));
+                        $(obj).parents(".marketgroup").find(".youhui").val(youhui);
+                        //直降
+                        var thisprice=$(obj).parents(".cart_goods").find(".smprice").val();
+                        //总计+单品小计
+                        var oldxiaoji = $(obj).parents(".marketgroup").find(".xiaoji").val();
+                        var xiaoji = Subtr(oldxiaoji,thisprice);
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(xiaoji);
+
+
+                    }
+
+
+                    else if(codexType=='11'){//抢购
+                        var rushPrice= $(obj).parents(".cart_goods").find(".rushPrice").val();
+                        var jian = $(obj).parents(".cart_goods").find(".text").val();
+                        var you= $(obj).parents(".marketgroup").find(".youhui").val();
+                        youhui=Subtr(you,accMul(rushPrice,jian));
+                        $(obj).parents(".marketgroup").find(".youhui").val(youhui);
+                        //抢购
+                        var thisprice=$(obj).parents(".cart_goods").find(".smprice").val();
+                        //总计+单品小计
+                        var oldxiaoji = $(obj).parents(".marketgroup").find(".xiaoji").val();
+                        var xiaoji = Subtr(oldxiaoji,thisprice);
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(xiaoji);
+
+                    }
+
+                    else if(codexType=='5'){
+                        //满减
+                        var mj_sumprice = 0;
+                        var mj_end=0;
+                        //满减
+                        $(obj).parents(".marketgroup").find(".mjchecked").each(function(){
+                            //判断是否选中
+                            if($(this)[0].checked){
+                                mj_sumprice = accAdd($(this).parents(".cart_goods").find(".smprice").val(),mj_sumprice);
+                            }
+                        });
+
+                        $(obj).parents(".marketgroup").find(".manjian_reducePrice").each(function(){
+                            var man = $(this).val().split(",")[0];
+                            var jian = $(this).val().split(",")[1];
+                            if(Subtr(mj_sumprice,man)>=0){
+                                mj_end = jian;
+                            }
+
+                        });
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(mj_sumprice);
+                        $(obj).parents(".marketgroup").find(".youhui").val(mj_end);
+
+                    }else if(codexType=='8'){
+                        //满折
+                        var mz_sumprice = 0;
+                        var mz_end=0;
+                        $(obj).parents(".marketgroup").find(".mjchecked").each(function(){
+                            //判断是否选中
+                            if($(this)[0].checked){
+                                mz_sumprice = accAdd($(this).parents(".cart_goods").find(".smprice").val(),mz_sumprice);
+                            }
+                        });
+
+                        $(obj).parents(".marketgroup").find(".manzhe_fullbuyDiscount").each(function(){
+                            var man = $(this).val().split(",")[0];
+                            var zhe = $(this).val().split(",")[1];
+                            if(Subtr(mz_sumprice,man)>=0){
+                                mz_end = accMul(mz_sumprice,Subtr(1,zhe));
+                            }
+
+                        });
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(mz_sumprice);
+                        $(obj).parents(".marketgroup").find(".youhui").val(mz_end);
+
+                    }else if(codexType=='-1'){
+                        //-1代表是套装
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(0);
+                        $(obj).parents(".marketgroup").find(".youhui").val(0);
+                    }
+                }
+            }else{
+                $(obj).parents(".marketgroup").find(".mjchecked").each(function(){
+                    //判断是否选中
+                    if($(this)[0].checked){
+                        var oldxiaoji = $(obj).parents(".marketgroup").find(".smprice").val();
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(oldxiaoji);
+                    }else{
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(0);
+                    }
+                });
+            }
+            lastsum();
+        }
+
+        function lastsum(){
+            var zongji = 0;
+            var fanxian = 0;
+            var allcount = 0;
+            $(".xiaoji").each(function(){
+                zongji = accAdd(zongji,$(this).val());
+            });
+
+            $(".youhui").each(function(){
+                fanxian = accAdd(fanxian,$(this).val());
+            });
+            $(".mjchecked").each(function(){
+                if($(this)[0].checked){
+                    allcount = accAddInt($(this).parents(".cart_goods").find(".decrement").next().val(),allcount);
+                }
+            });
+
+            $(".allcount").html(allcount);
+            $(".zongji").html("￥"+zongji);
+            $(".fanxian").html("-￥"+fanxian);
+            $(".payPrice").html("￥"+Subtr(zongji,fanxian));
+        }
+
+    </script>
+</head>
+<body>
+    <link rel="stylesheet" href="http://kstore.qianmi.com/index_seven/css/style.css" />
+    <input type="hidden" id="basePath" value="" />
+    <div class="section_headerTop">
+        <div class="slot slot_headerTop01">
+            <ul class="siteNav right">
+                <li><span>您好，欢迎来到福气商城</span></li>
+                <input type="hidden" id="customer_id" value="" />
+                <li class="login_info">
+                    <a class="site_login" href="LoginU.html">[请登录]</a>
+                    <a class="site_register" href="http://kstore.qianmi.com/register.html">[免费注册]</a>
+                </li>
+                <li class="loginout_info">
+                </li>
+                <li class="nav_item navCenter">
+                    <a href="http://kstore.qianmi.com/customer/index.html" target="_blank">会员中心<s></s></a>
+                    <div class="navInfo">
+                        <a href="http://kstore.qianmi.com/customer/myorder.html" target="_blank">我的订单</a>
+                    </div>
+                </li>
+                <li class="nav_item"><a href="javascript:;" onclick="addToFavorite(&#39;福气商城&#39;);">加入收藏</a></li>
+                <li class="nav_item"><a href="javascript:;" onclick="shareUrl();">分享给好友</a></li>
+            </ul>
+        </div>
+        <div class="slot slot_headerTop02"></div>
+    </div>
+    <div class="bh-mask"></div>
+    <div id="ctDia" class="bh-dialog dia0">
+        <div class="dia-tit">
+            <h4>加入收藏</h4>
+            <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+        </div>
+        <div class="dia-cont">
+            <p style="text-align: center;line-height:100px;">请使用菜单栏或Ctrl+D进行添加！</p>
+        </div>
+        <div class="dia-btn"><a href="javascript:;" onclick="clss(this)">确定</a></div>
+    </div>
+    <div id="ctDia" class="bh-dialog dia101">
+        <div class="dia-tit">
+            <h4>分享好友</h4>
+            <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+        </div>
+        <div class="dia-cont">
+            <div class="dia_collect_intro tc pt30" style="text-align: center;padding-top: 30px;">
+                <span id="content" style="font-size:16px"></span>
+            </div>
+            <div class="dia-btn" style="padding-top: 30px;">
+                <a id="copy" data-clipboard-target="content" href="javascript:;">复制</a>
+                <a onclick="clss(this)" href="javascript:;">取消</a>
+                <br />
+                <span style="color: red; font-size:12px">亲！如果您的好友成功注册为会员，会有积分送给您哦！</span>
+            </div><!--/dia_ops-->
+        </div><!--/dia_cont-->
+    </div><!--/dialog-->
+
+    <div id="ctDia" class="bh-dialog dia102">
+        <div class="dia-tit">
+            <h4>登录提示</h4>
+            <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+        </div>
+        <div class="dia-cont">
+            <p style="text-align: center;line-height:100px;">您未登录！现在确认要登录吗？</p>
+        </div>
+        <div class="dia-btn">
+            <a onclick="login()" href="javascript:;">确定</a>
+            <a href="javascript:;" onclick="clss(this)">取消</a>
+        </div>
+    </div><!--/dialog-->
+
+    <div id="ctDia" class="bh-dialog dia103">
+        <div class="dia-tit">
+            <h4>操作提示</h4>
+            <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+        </div>
+        <div class="dia-cont">
+            <p style="text-align: center">复制成功！</p>
+        </div>
+        <div class="dia-btn"><a href="javascript:;" onclick="clss()">确定</a></div>
+    </div><!--/dialog-->
+    <div class="bh-mask"></div>
+    <script>
+        function dias(n){
+            $(".bh-mask").fadeIn();
+            $(".dia"+n).fadeIn();
+        };
+        function clss(){
+            $(".bh-dialog").fadeOut();
+            $(".bh-mask").fadeOut();
+        }
+        //分享链接给好友 弹出层
+        function shareUrl(){
+            var basePath = $('#basePath').val();
+            var str = window.location.href;
+            var b = str.indexOf('/',str.indexOf('/')+2);
+            //		var a = str.indexOf("//")+2;
+            var local = str.substring(0,b);
+            var customerId = $('#customer_id').val(); //当前登录的用户ID
+            if(customerId==null||customerId==""){
+                dias(102);
+            }else{
+                //给会员id加密
+                var b = new Base64();
+                var result = 'customer_id='+customerId;
+                var str = b.encode('"'+result+'"');
+                var url = local+basePath+'/register.html?'+str;
+                $('#content').html(url);
+                dias(101);
+            }
+            //复制成功弹出复制成功窗口
+            $('#copy').zclip({
+                path:'/js/ZeroClipboard.swf',
+                copy:function(){
+                    return $("#content").html();
+                },
+                afterCopy:function(){
+                    dias(103);
+                }
+            });
+        }
+
+        //推荐该网站给好友- 登录
+        function login(){
+            var basePath = $('#basePath').val();
+            //获取页面登录的 href
+            window.location.href=basePath+'/login.html';
+
+        }
+
+        //对会员ID进行加密
+        function Base64() {
+            _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+            this.encode = function (input) {
+                var output = "";
+                var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = _utf8_encode(input);
+                while (i < input.length) {
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+                    output = output +
+                    _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+                    _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+                }
+                return output;
+            }
+
+            // public method for decoding
+            this.decode = function (input) {
+                var output = "";
+                var chr1, chr2, chr3;
+                var enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+                while (i < input.length) {
+                    enc1 = _keyStr.indexOf(input.charAt(i++));
+                    enc2 = _keyStr.indexOf(input.charAt(i++));
+                    enc3 = _keyStr.indexOf(input.charAt(i++));
+                    enc4 = _keyStr.indexOf(input.charAt(i++));
+                    chr1 = (enc1 << 2) | (enc2 >> 4);
+                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                    chr3 = ((enc3 & 3) << 6) | enc4;
+                    output = output + String.fromCharCode(chr1);
+                    if (enc3 != 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+                    if (enc4 != 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+                }
+                output = _utf8_decode(output);
+                return output;
+            }
+
+            // private method for UTF-8 encoding
+            _utf8_encode = function (string) {
+                string = string.replace(/\r\n/g, "\n");
+                var utftext = "";
+                for (var n = 0; n < string.length; n++) {
+                    var c = string.charCodeAt(n);
+                    if (c < 128) {
+                        utftext += String.fromCharCode(c);
+                    } else if ((c > 127) && (c < 2048)) {
+                        utftext += String.fromCharCode((c >> 6) | 192);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    } else {
+                        utftext += String.fromCharCode((c >> 12) | 224);
+                        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+
+                }
+                return utftext;
+            }
+
+            // private method for UTF-8 decoding
+            _utf8_decode = function (utftext) {
+                var string = "";
+                var i = 0;
+                var c = c1 = c2 = 0;
+                while (i < utftext.length) {
+                    c = utftext.charCodeAt(i);
+                    if (c < 128) {
+                        string += String.fromCharCode(c);
+                        i++;
+                    } else if ((c > 191) && (c < 224)) {
+                        c2 = utftext.charCodeAt(i + 1);
+                        string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                        i += 2;
+                    } else {
+                        c2 = utftext.charCodeAt(i + 1);
+                        c3 = utftext.charCodeAt(i + 2);
+                        string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                        i += 3;
+                    }
+                }
+                return string;
+            }
+        }
+    </script>
+    <script type="text/javascript" src="Scripts/jquery.zclip.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.zclip.js"></script><div class="container">
+
+        <input type="hidden" id="currentProvince" value="" />
+        <input type="hidden" id="basePath" value="" />
+        <div class="logo fl head2" style="margin-top:20px;">
+            <!--
+            <a href="/index.html"><img src="/index_two/images/logo.png" alt="" /></a>
+            -->
+            <a href="http://kstore.qianmi.com/"><img src="Images/yyzllogo.png" alt="" style="width:165px;height:40px;" /></a>
+        </div>
+        <div style="font-family: arial;">
+            <div class="head_s mb20">
+                <div class="fr w700 pt10">
+                    <div class="flow_progress1">
+                        <ul>
+                            <li class="step1">1.查看购物车</li>
+                            <li class="step2">2.填写核对订单信息</li>
+                            <li class="step3">3.提交订单成功</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="cb"></div>
+            </div><!-- /head_s -->
+            <div class="flow_title">
+                <b></b>
+                <span>
+                    建议您立即<a href="LoginU.html">登录</a>，以确保顺利进行购物。
+                </span>
+            </div>
+            <div class="cart_box">
+                <div class="cart_head">
+                    <div class="thead t_check">
+                        <input class="check_all" checked="checked" onclick="oncheckAll(this);" type="checkbox" />
+                        <label>全选</label>
+                    </div>
+                    <div class="thead t_goods">商品</div>
+                    <div class="thead t_price">销售价</div>
+                    <div class="thead t_promotion">小计</div>
+                    <div class="choose_area fl pr">
+                        <div class="area_text ">内蒙古<b></b></div>
+                        <div class="locate_cont">
+                            <ul class="locate_tabs clearfix">
+                                <li class="cur show_province"><a href="javascript:;"><span class="province_text">内蒙古</span><b></b></a></li>
+                                <li class="show_city"><a href="javascript:;"><span class="city_text">呼和浩特市</span><b></b></a></li>
+                                <li class="show_distinct"><a href="javascript:;"><span class="distinct_text">新城区</span><b></b></a></li>
+                            </ul><!--/locate_tabs-->
+                            <div class="locate_wp">
+                                <ul style="display: block;" class="locate_list clearfix province_list show"><li><a class="check_province" onclick="loadCity(1,this);" href="javascript:;">北京</a></li><li><a class="check_province" onclick="loadCity(2,this);" href="javascript:;">天津</a></li><li><a class="check_province" onclick="loadCity(3,this);" href="javascript:;">河北</a></li><li><a class="check_province" onclick="loadCity(4,this);" href="javascript:;">山西</a></li><li><a class="check_province" onclick="loadCity(5,this);" href="javascript:;">内蒙古</a></li><li><a class="check_province" onclick="loadCity(6,this);" href="javascript:;">辽宁</a></li><li><a class="check_province" onclick="loadCity(7,this);" href="javascript:;">吉林</a></li><li><a class="check_province" onclick="loadCity(8,this);" href="javascript:;">黑龙江</a></li><li><a class="check_province" onclick="loadCity(9,this);" href="javascript:;">上海</a></li><li><a class="check_province" onclick="loadCity(10,this);" href="javascript:;">江苏</a></li><li><a class="check_province" onclick="loadCity(11,this);" href="javascript:;">浙江</a></li><li><a class="check_province" onclick="loadCity(12,this);" href="javascript:;">安徽</a></li><li><a class="check_province" onclick="loadCity(13,this);" href="javascript:;">福建</a></li><li><a class="check_province" onclick="loadCity(14,this);" href="javascript:;">江西</a></li><li><a class="check_province" onclick="loadCity(15,this);" href="javascript:;">山东</a></li><li><a class="check_province" onclick="loadCity(16,this);" href="javascript:;">河南</a></li><li><a class="check_province" onclick="loadCity(17,this);" href="javascript:;">湖北</a></li><li><a class="check_province" onclick="loadCity(18,this);" href="javascript:;">湖南</a></li><li><a class="check_province" onclick="loadCity(19,this);" href="javascript:;">广东</a></li><li><a class="check_province" onclick="loadCity(20,this);" href="javascript:;">广西</a></li><li><a class="check_province" onclick="loadCity(21,this);" href="javascript:;">海南</a></li><li><a class="check_province" onclick="loadCity(22,this);" href="javascript:;">重庆</a></li><li><a class="check_province" onclick="loadCity(23,this);" href="javascript:;">四川</a></li><li><a class="check_province" onclick="loadCity(24,this);" href="javascript:;">贵州</a></li><li><a class="check_province" onclick="loadCity(25,this);" href="javascript:;">云南</a></li><li><a class="check_province" onclick="loadCity(26,this);" href="javascript:;">西藏</a></li><li><a class="check_province" onclick="loadCity(27,this);" href="javascript:;">陕西</a></li><li><a class="check_province" onclick="loadCity(28,this);" href="javascript:;">甘肃</a></li><li><a class="check_province" onclick="loadCity(29,this);" href="javascript:;">青海</a></li><li><a class="check_province" onclick="loadCity(30,this);" href="javascript:;">宁夏</a></li><li><a class="check_province" onclick="loadCity(31,this);" href="javascript:;">新疆</a></li><li><a class="check_province" onclick="loadCity(32,this);" href="javascript:;">香港</a></li><li><a class="check_province" onclick="loadCity(33,this);" href="javascript:;">澳门</a></li><li><a class="check_province" onclick="loadCity(34,this);" href="javascript:;">台湾</a></li></ul><!--/locate_list-->
+                                <ul class="locate_list clearfix city_list"><li><a class="check_city" onclick="loadDistinct(25,this);" href="javascript:;">呼和浩特市</a></li><li><a class="check_city" onclick="loadDistinct(26,this);" href="javascript:;">包头市</a></li><li><a class="check_city" onclick="loadDistinct(27,this);" href="javascript:;">乌海市</a></li><li><a class="check_city" onclick="loadDistinct(28,this);" href="javascript:;">赤峰市</a></li><li><a class="check_city" onclick="loadDistinct(29,this);" href="javascript:;">通辽市</a></li><li><a class="check_city" onclick="loadDistinct(30,this);" href="javascript:;">鄂尔多斯市</a></li><li><a class="check_city" onclick="loadDistinct(31,this);" href="javascript:;">呼伦贝尔市</a></li><li><a class="check_city" onclick="loadDistinct(32,this);" href="javascript:;">巴彦淖尔市</a></li><li><a class="check_city" onclick="loadDistinct(33,this);" href="javascript:;">乌兰察布市</a></li><li><a class="check_city" onclick="loadDistinct(34,this);" href="javascript:;">兴安盟</a></li><li><a class="check_city" onclick="loadDistinct(35,this);" href="javascript:;">锡林郭勒盟</a></li><li><a class="check_city" onclick="loadDistinct(36,this);" href="javascript:;">阿拉善盟</a></li></ul><!--/locate_list-->
+                                <ul class="locate_list clearfix distinct_list"><li><a class="check_distinct" onclick="checkDistinct(342,this);" href="javascript:;">回民区</a></li><li><a class="check_distinct" onclick="checkDistinct(343,this);" href="javascript:;">玉泉区</a></li><li><a class="check_distinct" onclick="checkDistinct(344,this);" href="javascript:;">新城区</a></li><li><a class="check_distinct" onclick="checkDistinct(345,this);" href="javascript:;">赛罕区</a></li><li><a class="check_distinct" onclick="checkDistinct(346,this);" href="javascript:;">土默特左旗</a></li><li><a class="check_distinct" onclick="checkDistinct(347,this);" href="javascript:;">托克托县</a></li><li><a class="check_distinct" onclick="checkDistinct(348,this);" href="javascript:;">和林格尔县</a></li><li><a class="check_distinct" onclick="checkDistinct(349,this);" href="javascript:;">清水河县</a></li><li><a class="check_distinct" onclick="checkDistinct(350,this);" href="javascript:;">武川县</a></li></ul><!--/locate_list-->
+                            </div><!--/locate_wp-->
+                            <a class="close_area" href="javascript:;"></a>
+                        </div><!--/locate_cont-->
+                    </div><!--/choose_area-->
+                    <div class="thead t_count">数量</div>
+                    <div class="thead t_action">操作</div>
+                </div><!-- /cart_head -->
+                <form name="subForm" id="subForm" action="/order/newsuborder.html" method="post">
+                    <!--根据商家进行分组-->
+                    <div>
+                        <div class="activity" style="background:none;border-bottom:2px solid #9E9E9E;line-height:30px;">
+                            <div class="fl w500 ml15">
+                                <strong>商城自营</strong>
+                            </div>
+                        </div><!-- /activity -->
+                        <div attr-codextype="5" class="marketgroup" style="display:none;">
+                            <!--直降-->
+                            <!--满减-->
+                            <div class="activity">
+                                <div class="fl w500 ml15" style="height:31px; line-height:31px;overflow:hidden;">
+                                    满10减2
+                                    满 10减2元 &nbsp;
+                                    <input value="10,2" class="manjian_reducePrice" type="hidden" />
+                                </div>
+                                <div class="fl">
+                                    <!--<strong>￥5196.00</strong>-->
+                                </div>
+                            </div><!-- /activity -->
+                            <!--满折-->
+
+
+
+
+                            <input class="xiaoji" value="0" type="hidden" />
+                            <!--判断满减-->
+                            <!--满减-->
+                            <!-- 满 10减2元 &nbsp;-->
+                            <!--满折-->
+                            <input class="youhui" value="0" type="hidden" />
+                            <!--小计累加-->
+                        </div>
+                        <div attr-codextype="10" class="marketgroup" style="display:none;">
+                            <!--直降-->
+                            <!--满减-->
+                            <!--满折-->
+
+                            <input class="xiaoji" value="0" type="hidden" />
+                            <!--判断满减-->
+                            <!--满减-->
+                            <!--满折-->
+                            <input class="youhui" value="0" type="hidden" />
+                            <!--小计累加-->
+                        </div>
+
+                        <!--加载没参加促销的-->
+                        <!--判断是否是套装-->
+                        <div attr-codextype="0" class="marketgroup carts_7827" attr-group="0">
+                            <div style="border-top:1px solid #999999" class="cart_goods" id="cart_goods_7827">
+                                <div class="cart_item">
+                                    <div class="cell g_check">
+                                        <input class="g_ckeck mjchecked" name="box" checked="checked" value="7827" onclick="checkOne(this);" type="checkbox" />
+                                    </div>
+                                    <div class="cell g_goods">
+                                        <div class="img">
+                                            <a href="/item/4463.html" target="_blank" title="/item/4463.html"><img style="width:50px;height:50px;" title="联想（Lenovo） M1801 光学鼠标 USB接口 罗技代工 完美品质" alt="联想（Lenovo） M1801 光学鼠标 USB接口 罗技代工 完美品质" src="http://114.215.114.9:10000/M00/00/16/ctdyCVVuj-mABBKFAABMWC37hHQ895.jpg" /></a>
+                                        </div>
+                                        <div class="name">
+                                            <a href="/item/4463.html" target="_blank" title="/item/4463.html">联想（Lenovo） M1801 光学鼠标 USB接口 罗技代工 完美品质</a>
+                                        </div>
+                                        <div class="cb"></div>
+                                        <div class="gift mt10">
+                                            <!--<p class="light">[赠品] 罗凡尼 非凡透明系列手机保护膜 适用于苹果5C+5S+5</p>
+                                            <p class="light">[赠品] 奇克摩克 TPU硅胶自带防尘塞手机壳/保护壳 适用于苹果iPhone5s 白色</p>-->
+                                        </div>
+                                    </div>
+                                    <div class="cell g_price">
+                                        ￥ 23.92
+
+                                    </div>
+                                    <div class="cell g_promotion">
+                                        ￥  <span class="pv_smprice"> 23.92  </span>
+                                        <input value="23.92" class="oneprice" type="hidden" />
+                                        <input value="23.92" class="smprice" type="hidden" />
+                                    </div>
+                                    <div class="cell g_stock">
+                                        <span class="light">有货</span><input class="noProduct" value="1" type="hidden" />
+                                    </div>
+                                    <div class="cell g_count">
+                                        <div class="count">
+                                            <a href="javascript:void(0);" class="decrement" onclick="mit(this,7827);">-</a>
+                                            <input class="text w30" value="1" attr-maxnum="999" onblur="opblur(this,7827);" type="text" />
+                                            <a href="javascript:void(0);" class="increment" onclick="add(this,7827);">+</a>
+                                        </div>
+                                        <div class="red">
+                                        </div>
+                                    </div>
+                                    <div class="cell g_action">
+                                        <div>
+                                            <a class="g_delete" href="javascript:void(0);" onclick="del(7827,4463)">删除</a>
+                                        </div>
+                                        <div class="">
+                                            <a class="change_promotion" href="javascript:void(0);">修改优惠</a>
+                                            <div style="top: 177.5px; left: 776.5px;" class="dialog promotion_dialog">
+                                                <div class="dialog-outer">
+                                                    <span class="dialog-bg dialog-bg-n">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-ne">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-e">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-se">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-s">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-sw">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-w">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-nw">
+                                                    </span>
+                                                    <div class="dialog-inner">
+                                                        <div class="dialog-toolbar clearfix">
+                                                            <a class="dialog-close" href="javascript:void(0);" title="关闭" onclick="javascript:$('.promotion_dialog').hide();">
+                                                                关闭
+                                                            </a>
+                                                            <h3 class="dialog-title">
+                                                                请选择一项优惠
+                                                            </h3>
+                                                        </div>
+                                                        <div class="dialog-content clearfix">
+                                                            <div class="p10 tc w300">
+                                                                <label>活动优惠：</label>
+                                                                <select class="chooseMarket" name="chooseMarket">
+                                                                    <option value="0">不使用活动优惠</option>
+                                                                    <!--循环促销-->
+                                                                    <option value="1037">满10减2</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="tc p15">
+                                                                <a class="red_btn" href="javascript:void(0);" onclick="changemarketing(this,7827,1034);">确定</a>
+                                                                <a class="light_btn2" href="javascript:void(0);" onclick="javascript:$('.promotion_dialog').hide();">取消</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- /dialog -->
+                                        </div>
+                                    </div>
+                                    <div class="cb"></div>
+                                </div>
+                            </div><!-- /cart_goods -->
+                            <input class="xiaoji" value="23.92" type="hidden" /> 	<input class="youhui" value="0" type="hidden" />
+                        </div>
+
+
+                        <!--判断是否是套装-->
+                        <div attr-codextype="0" class="marketgroup carts_7828.00" attr-group="0">
+                            <div class="cart_goods" id="cart_goods_7828">
+                                <div class="cart_item">
+                                    <div class="cell g_check">
+                                        <input class="g_ckeck mjchecked" name="box" checked="checked" value="7828" onclick="checkOne(this);" type="checkbox" />
+                                    </div>
+                                    <div class="cell g_goods">
+                                        <div class="img">
+                                            <a href="/item/4161.html" target="_blank" title="/item/4161.html"><img style="width:50px;height:50px;" title="真维斯夏装新款 女装时尚蕾丝圆领假两件短袖T恤JW-43-273539 8411 浅黄色" alt="真维斯夏装新款 女装时尚蕾丝圆领假两件短袖T恤JW-43-273539 8411 浅黄色" src="http://img01.ningpai.com/1433208738660.jpg" /></a>
+                                        </div>
+                                        <div class="name">
+                                            <a href="/item/4161.html" target="_blank" title="/item/4161.html">真维斯夏装新款 女装时尚蕾丝圆领假两件短袖T恤JW-43-273539 8411 浅黄色</a>
+                                        </div>
+                                        <div class="cb"></div>
+                                        <div class="gift mt10">
+                                            <!--<p class="light">[赠品] 罗凡尼 非凡透明系列手机保护膜 适用于苹果5C+5S+5</p>
+                                            <p class="light">[赠品] 奇克摩克 TPU硅胶自带防尘塞手机壳/保护壳 适用于苹果iPhone5s 白色</p>-->
+                                        </div>
+                                    </div>
+                                    <div class="cell g_price">
+                                        ￥ 59.00
+
+                                    </div>
+                                    <div class="cell g_promotion">
+                                        ￥  <span class="pv_smprice"> 59.00  </span>
+                                        <input value="59.00" class="oneprice" type="hidden" />
+                                        <input value="59.00" class="smprice" type="hidden" />
+                                    </div>
+                                    <div class="cell g_stock">
+                                        <span class="light">有货</span><input class="noProduct" value="1" type="hidden" />
+                                    </div>
+                                    <div class="cell g_count">
+                                        <div class="count">
+                                            <a href="javascript:void(0);" class="decrement" onclick="mit(this,7828);">-</a>
+                                            <input class="text w30" value="1" attr-maxnum="965" onblur="opblur(this,7828);" type="text" />
+                                            <a href="javascript:void(0);" class="increment" onclick="add(this,7828);">+</a>
+                                        </div>
+                                        <div class="red">
+                                        </div>
+                                    </div>
+                                    <div class="cell g_action">
+                                        <div>
+                                            <a class="g_delete" href="javascript:void(0);" onclick="del(7828,4161)">删除</a>
+                                        </div>
+                                        <div class="">
+                                            <a class="change_promotion" href="javascript:void(0);">修改优惠</a>
+                                            <div style="top: 177.5px; left: 776.5px;" class="dialog promotion_dialog">
+                                                <div class="dialog-outer">
+                                                    <span class="dialog-bg dialog-bg-n">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-ne">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-e">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-se">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-s">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-sw">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-w">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-nw">
+                                                    </span>
+                                                    <div class="dialog-inner">
+                                                        <div class="dialog-toolbar clearfix">
+                                                            <a class="dialog-close" href="javascript:void(0);" title="关闭" onclick="javascript:$('.promotion_dialog').hide();">
+                                                                关闭
+                                                            </a>
+                                                            <h3 class="dialog-title">
+                                                                请选择一项优惠
+                                                            </h3>
+                                                        </div>
+                                                        <div class="dialog-content clearfix">
+                                                            <div class="p10 tc w300">
+                                                                <label>活动优惠：</label>
+                                                                <select class="chooseMarket" name="chooseMarket">
+                                                                    <option value="0">不使用活动优惠</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="tc p15">
+                                                                <a class="red_btn" href="javascript:void(0);" onclick="changemarketing(this,7828,0);">确定</a>
+                                                                <a class="light_btn2" href="javascript:void(0);" onclick="javascript:$('.promotion_dialog').hide();">取消</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- /dialog -->
+                                        </div>
+                                    </div>
+                                    <div class="cb"></div>
+                                </div>
+                            </div><!-- /cart_goods -->
+                            <input class="xiaoji" value="59.00" type="hidden" /> 	<input class="youhui" value="0" type="hidden" />
+                        </div>
+
+
+                        <!--判断是否是套装-->
+                        <div attr-codextype="0" class="marketgroup carts_7829.00" attr-group="0">
+                            <div class="cart_goods" id="cart_goods_7829">
+                                <div class="cart_item">
+                                    <div class="cell g_check">
+                                        <input class="g_ckeck mjchecked" name="box" checked="checked" value="7829" onclick="checkOne(this);" type="checkbox" />
+                                    </div>
+                                    <div class="cell g_goods">
+                                        <div class="img">
+                                            <a href="/item/5293.html" target="_blank" title="/item/5293.html"><img style="width:50px;height:50px;" title="白色" alt="白色" src="http://114.215.114.9:10000/M00/00/A2/ctdyCVXBvymAfIHdAABzv1642sk735.jpg" /></a>
+                                        </div>
+                                        <div class="name">
+                                            <a href="/item/5293.html" target="_blank" title="/item/5293.html">白色</a>
+                                        </div>
+                                        <div class="cb"></div>
+                                        <div class="gift mt10">
+                                            <!--<p class="light">[赠品] 罗凡尼 非凡透明系列手机保护膜 适用于苹果5C+5S+5</p>
+                                            <p class="light">[赠品] 奇克摩克 TPU硅胶自带防尘塞手机壳/保护壳 适用于苹果iPhone5s 白色</p>-->
+                                        </div>
+                                    </div>
+                                    <div class="cell g_price">
+                                        ￥ 22.00
+
+                                    </div>
+                                    <div class="cell g_promotion">
+                                        ￥  <span class="pv_smprice"> 22.00  </span>
+                                        <input value="22.00" class="oneprice" type="hidden" />
+                                        <input value="22.00" class="smprice" type="hidden" />
+                                    </div>
+                                    <div class="cell g_stock">
+                                        <span class="light">有货</span><input class="noProduct" value="1" type="hidden" />
+                                    </div>
+                                    <div class="cell g_count">
+                                        <div class="count">
+                                            <a href="javascript:void(0);" class="decrement" onclick="mit(this,7829);">-</a>
+                                            <input class="text w30" value="1" attr-maxnum="100" onblur="opblur(this,7829);" type="text" />
+                                            <a href="javascript:void(0);" class="increment" onclick="add(this,7829);">+</a>
+                                        </div>
+                                        <div class="red">
+                                        </div>
+                                    </div>
+                                    <div class="cell g_action">
+                                        <div>
+                                            <a class="g_delete" href="javascript:void(0);" onclick="del(7829,5293)">删除</a>
+                                        </div>
+                                        <div class="">
+                                            <a class="change_promotion" href="javascript:void(0);">修改优惠</a>
+                                            <div style="top: 177.5px; left: 776.5px;" class="dialog promotion_dialog">
+                                                <div class="dialog-outer">
+                                                    <span class="dialog-bg dialog-bg-n">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-ne">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-e">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-se">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-s">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-sw">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-w">
+                                                    </span>
+                                                    <span class="dialog-bg dialog-bg-nw">
+                                                    </span>
+                                                    <div class="dialog-inner">
+                                                        <div class="dialog-toolbar clearfix">
+                                                            <a class="dialog-close" href="javascript:void(0);" title="关闭" onclick="javascript:$('.promotion_dialog').hide();">
+                                                                关闭
+                                                            </a>
+                                                            <h3 class="dialog-title">
+                                                                请选择一项优惠
+                                                            </h3>
+                                                        </div>
+                                                        <div class="dialog-content clearfix">
+                                                            <div class="p10 tc w300">
+                                                                <label>活动优惠：</label>
+                                                                <select class="chooseMarket" name="chooseMarket">
+                                                                    <option value="0">不使用活动优惠</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="tc p15">
+                                                                <a class="red_btn" href="javascript:void(0);" onclick="changemarketing(this,7829,0);">确定</a>
+                                                                <a class="light_btn2" href="javascript:void(0);" onclick="javascript:$('.promotion_dialog').hide();">取消</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- /dialog -->
+                                        </div>
+                                    </div>
+                                    <div class="cb"></div>
+                                </div>
+                            </div><!-- /cart_goods -->
+                            <input class="xiaoji" value="22.00" type="hidden" /> 	<input class="youhui" value="0" type="hidden" />
+                        </div>
+
+
+                    </div>
+                </form>
+                <div class="cart_tools p10 lh180">
+                    <div class="fr w200">
+                        <input id="zongji" value="104.92" type="hidden" />
+                        <p><span class="fr zongji">￥104.92</span>总计：</p>
+                        <input id="fanxian" value="0" type="hidden" />
+                        <p><span class="fr fanxian">-￥0.00</span>返现：</p>
+                    </div>
+                    <div class="fr mr10">
+                        <b class="red allcount">3</b>件商品
+                    </div>
+                    <div class="fl">
+                        <!--<a href="javascript:void(0);" class="delete">删除所选商品</a>-->
+                        <!--<a href="javascript:void(0);" class="piece">凑单商品</a>-->
+                    </div>
+                    <div class="cb"></div>
+                </div><!-- /cart_tools -->
+                <div class="cart_total">
+                    <div class="fr f14 fb mr20 w300">
+                        <span class="fr f20 red payPrice">￥104.92</span>
+                        总计（不含运费）：
+                    </div>
+                </div><!-- /cart_total -->
+            </div>
+            <div class="cart_btn">
+                <a class="cart_shop" href="Index.html">继续购物</a>
+                <a class="cart_pay" href="javascript:void(0);" onclick="onpay();">去结算</a>
+            </div><!-- /cart_btn -->
+
+        </div><!-- /container -->
+        <link rel="stylesheet" type="text/css" href="CSS/footer.css" />
+        <style>
+            .mt20 {
+                margin-top: 20px;
+            }
+            .svc_box .svc_01{
+                background-repeat:no-repeat;
+            }
+        </style>
+        <div style="background-color: #fff;">
+            <div class="wp">
+                <div class="service mt20 clearfix" style="padding-left:125px">
+                    <dl class="svc_box svc_01 fl" style="background-image: url(http://114.215.114.9:10000/M00/00/41/ctdyCVV1WV6AFcBJAAAD3kUtfGc673.jpg);width:170px;">
+                        <dt>购物指南</dt>
+                        <dd>
+                            <div><a href="http://kstore.qianmi.com/help/92" target="_blank">购物流程</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/94" target="_blank">账户安全</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/93" target="_blank">联系客服</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/96" target="_blank">会员介绍</a></div>
+
+                        </dd>
+                    </dl>
+                    <dl class="svc_box svc_01 fl" style="background-image: url(http://114.215.114.9:10000/M00/00/41/ctdyCVV1WiSAZ5ZHAAAC2s1p9pQ546.jpg);width:170px;">
+                        <dt>配送方式</dt>
+                        <dd>
+                            <div><a href="http://kstore.qianmi.com/help/97" target="_blank">千米快递</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/102" target="_blank">配送服务查询</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/104" target="_blank">上门自提</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/103" target="_blank">物流费用收费标准</a></div>
+
+                        </dd>
+                    </dl>
+                    <dl class="svc_box svc_01 fl" style="background-image: url(http://114.215.114.9:10000/M00/00/41/ctdyCVV1WbiAN6hLAAACu78yzW0352.jpg);width:170px;">
+                        <dt>支付方式</dt>
+                        <dd>
+                            <div><a href="http://kstore.qianmi.com/help/98" target="_blank">货到付款</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/99" target="_blank">在线支付</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/100" target="_blank">分期付款</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/101" target="_blank">邮局汇款</a></div>
+
+                        </dd>
+                    </dl>
+                    <dl class="svc_box svc_01 fl" style="background-image: url(http://114.215.114.9:10000/M00/00/41/ctdyCVV1WeOAVD4-AAAC2zJDsbo715.jpg);width:170px;">
+                        <dt>售后服务</dt>
+                        <dd>
+                            <div><a href="http://kstore.qianmi.com/help/105" target="_blank">售后政策</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/106" target="_blank">价格保护</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/107" target="_blank">退单说明</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/108" target="_blank">取消订单</a></div>
+
+                        </dd>
+                    </dl>
+                    <dl class="svc_box svc_01 fl" style="background-image: url(http://114.215.114.9:10000/M00/00/41/ctdyCVV1WgCANoc1AAAC2t38x1M813.jpg);width:170px;">
+                        <dt>联系我们</dt>
+                        <dd>
+                            <div><a href="http://kstore.qianmi.com/help/109" target="_blank">商家入驻</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/110" target="_blank">营销中心</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/111" target="_blank">关于我们</a></div>
+                            <div><a href="http://kstore.qianmi.com/help/91" target="_blank">广告服务</a></div>
+
+                        </dd>
+                    </dl>
+                </div><!--/service-->
+                <div class="footer mt20">
+                    <ul class="ft_links tc"></ul><!--/ft_links-->
+
+                    <div style="margin: 15px 0px;" id="bq">
+                        <a style="color:#666666;font-family:tahoma, arial, 宋体;line-height:normal;text-align:center;background-color:#FFFFFF;"> </a><span style="color:#666666;font-family:tahoma, arial, 宋体;line-height:normal;text-align:center;background-color:#FFFFFF;"> </span>
+                        <ul class="ft_links tc" style="color:#666666;font-family:tahoma, arial, 宋体;line-height:normal;text-align:center;margin:0px;padding:0px;list-style:none;background-color:#FFFFFF;">
+                            <a></a>
+                            <li style="margin:0px 5px;padding:0px;display:inline-block;zoom:1;">
+                                <a href="http://www.baidu.com/"></a><a href="http://www.qianmi.com/" target="_blank">关于我们</a>
+                            </li>
+                            |
+                            <li style="margin:0px 5px;padding:0px;display:inline-block;zoom:1;">
+                                <a href="http://www.qianmi.com/" target="_blank">联系我们</a>
+                            </li>
+                            |
+                            <li style="margin:0px 5px;padding:0px;display:inline-block;zoom:1;">
+                                <a href="http://www.qianmi.com/" target="_blank">人才招聘</a>
+                            </li>
+                            |
+                            <li style="margin:0px 5px;padding:0px;display:inline-block;zoom:1;">
+                                <a href="http://www.qianmi.com/" target="_blank">商家入驻</a>
+                            </li>
+                            |
+                            <li style="margin:0px 5px;padding:0px;display:inline-block;zoom:1;">
+                                <a href="http://www.qianmi.com/" target="_blank">广告服务</a>
+                            </li>
+                            |
+                            <li style="margin:0px 5px;padding:0px;display:inline-block;zoom:1;">
+                                <a href="http://www.qianmi.com/" target="_blank">手机千米</a>
+                            </li>
+                            |
+                            <li style="margin:0px 5px;padding:0px;display:inline-block;zoom:1;">
+                                <a href="http://114.215.114.9:7700/toFriendLink.html" target="_blank">友情链接</a>
+                            </li>
+                            |
+                            <li style="margin:0px 5px;padding:0px;display:inline-block;zoom:1;">
+                                <a href="http://www.qianmi.com/" target="_blank">销售联盟</a>
+                            </li>
+                            |
+                            <li style="margin:0px 5px;padding:0px;display:inline-block;zoom:1;">
+                                <a href="http://www.qianmi.com/" target="_blank">English Site</a>
+                            </li>
+                        </ul>
+                        <div class="copyright tc mt15" style="color:#666666;font-family:tahoma, arial, 宋体;line-height:normal;text-align:center;margin:15px 0px 0px;padding:0px;background-color:#FFFFFF;">
+                            <p class="mb20" style="margin-top:0px;margin-bottom:20px;padding:0px;">
+                                南京市公安局朝阳分局备案编号110105014669&nbsp;&nbsp;|&nbsp;&nbsp;京ICP证070359号&nbsp;&nbsp;|&nbsp;&nbsp;互联网药品信息服务资格证编号(京)-非经营性-2011-0034
+                            </p>
+                            <p class="mb20" style="margin-top:0px;margin-bottom:20px;padding:0px;">
+                                Copyright&nbsp;©&nbsp;2004-2014 &nbsp;江苏千米网络科技有限公司&nbsp;版权所有
+                            </p>
+                            <p>
+                                <br />
+                            </p>
+                        </div>
+                        <div class="auth_wp tc" style="color:#666666;font-family:tahoma, arial, 宋体;line-height:normal;text-align:center;margin:0px;padding:0px;background-color:#FFFFFF;">
+                            <a href="http://www.baidu.com/" target="_blank" rel="nofollow" style="margin:0px 5px;padding:0px;color:#666666;text-decoration:none;font-family:Arial, Verdana, 宋体;"><img alt="经营性网站备案中心" src="Images/108_40_zZOKnl.gif" class="err-product" style="margin:0px;padding:0px;vertical-align:middle;background:url(http://misc.360buyimg.com/lib/skin/e/i/error-jd.gif) 50% 50% no-repeat;" height="40" width="108" /></a><a href="https://ss.cnnic.cn/verifyseal.dll?sn=2008070300100000031&ct=df&pa=294005" tabindex="-1" id="urlknet" target="_blank" rel="nofollow" style="margin:0px 5px;padding:0px;color:#666666;text-decoration:none;font-family:Arial, Verdana, 宋体;"> <img alt="可信网站" name="CNNIC_seal" src="Images/rBEHaFCFC5QIAAAAAAASVQX9RAYAACb2wHUV1kAABJt760.gif" class="err-product" style="margin:0px;padding:0px;vertical-align:middle;background:url(http://misc.360buyimg.com/lib/skin/e/i/error-jd.gif) 50% 50% no-repeat;" height="40" border="true" width="108" /></a><a href="http://www.bj.cyberpolice.cn/index.do" target="_blank" rel="nofollow" style="margin:0px 5px;padding:0px;color:#666666;text-decoration:none;font-family:Arial, Verdana, 宋体;"><img alt="朝阳网络警察" src="Images/rBEIDE_nzcIIAAAAAAB30mYXo5QAACrhACj22IAAHfq378.png" class="err-product" style="margin:0px;padding:0px;vertical-align:middle;background:url(http://misc.360buyimg.com/lib/skin/e/i/error-jd.gif) 50% 50% no-repeat;" height="40" width="108" /></a><a href="https://search.szfw.org/cert/l/CX20120111001803001836" target="_blank" rel="nofollow" style="margin:0px 5px;padding:0px;color:#666666;text-decoration:none;font-family:Arial, Verdana, 宋体;"><img src="Images/112_40_WvArIl.png" class="err-product" style="margin:0px;padding:0px;vertical-align:middle;background:url(http://misc.360buyimg.com/lib/skin/e/i/error-jd.gif) 50% 50% no-repeat;" height="40" width="112" /></a>
+                        </div>
+                        <ul style="text-align:center;margin-top:20px;">
+                            <!--站长统计-->
+                            <li>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div><!--/footer-->
+            </div><!--/wp-->
+        </div>
+        <div id="delete_dialog" class="dialog" style="position: fixed; top: 135.5px; left: 536.5px;">
+            <div class="dialog-outer">
+                <span class="dialog-bg dialog-bg-n">
+                </span>
+                <span class="dialog-bg dialog-bg-ne">
+                </span>
+                <span class="dialog-bg dialog-bg-e">
+                </span>
+                <span class="dialog-bg dialog-bg-se">
+                </span>
+                <span class="dialog-bg dialog-bg-s">
+                </span>
+                <span class="dialog-bg dialog-bg-sw">
+                </span>
+                <span class="dialog-bg dialog-bg-w">
+                </span>
+                <span class="dialog-bg dialog-bg-nw">
+                </span>
+                <div class="dialog-inner">
+                    <div class="dialog-toolbar clearfix">
+                        <a class="dialog-close" href="javascript:void(0);" title="关闭" onclick="hideDia()">
+                            关闭
+                        </a>
+                        <h3 class="dialog-title">
+                            删除商品
+                        </h3>
+                    </div>
+                    <div class="dialog-content clearfix">
+                        <div class="p10 tc red w200" id="diaText">
+                            确定从购物车中删除此商品？
+                        </div>
+                        <div class="tc p15">
+                            <form method="post" action="http://kstore.qianmi.com/delshoppingcatgoodsgroup.htm" id="delGroupFil">
+                                <input type="hidden" name="shoppingCartId" id="shoppingCartId" />
+                                <input type="hidden" name="goodsInfoId" id="goodsInfoId" />
+                                <input type="hidden" name="fitId" id="fitId" />
+                            </form>
+                            <a class="red_btn" href="javascript:void(0);" onclick="dodel();">确定</a>
+                            <a class="light_btn2" href="javascript:void(0);" onclick="hideDia()">取消</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog s_dia dia2" style="text-align: center; top: 135.5px; left: 536.5px; background: rgb(242, 242, 242);">
+        <div class="dia_tit clearfix">
+            <h4 class="fl">提示</h4>
+            <a class="dia_close fr" href="javascript:;" onclick="cls()"></a>
+        </div><!--/dia_tit-->
+        <div class="dia_cont">
+            <div class="dia_intro no_tc pt30">
+                <img class="vm mr10" id="f_img" alt="" src="Images/mod_war.png" />
+                <em id="con_00">修改成功！</em>
+            </div>
+            <div class="dia_ops mt50 tc" style="text-align: center;">
+                <a class="go_pay" id="go_pay_00" href="javascript:cls();">确定</a>
+            </div><!--/dia_ops-->
+        </div><!--/dia_cont-->
+    </div><!--/dialog-->
+    <div class="dialog s_dia dia3" style="text-align: center; top: 135.5px; left: 536.5px; background: rgb(242, 242, 242);">
+        <div class="dia_tit clearfix">
+            <h4 class="fl">提示</h4>
+            <a class="dia_close fr" href="javascript:;" onclick="cls()"></a>
+        </div><!--/dia_tit-->
+        <div class="dia_cont">
+            <div class="dia_intro no_tc pt30">
+                <em>购物车内没有商品，是否跳转到首页!</em>
+            </div>
+            <div class="dia_ops mt50 tc" style="text-align: center;">
+                <a class="go_pay" id="go_pay_00" href="javascript:location.href='index.html';">确定</a>
+                <a class="go_shopping" href="javascript:cls();">取消</a>
+            </div><!--/dia_ops-->
+        </div><!--/dia_cont-->
+    </div><!--/dialog-->
+    <div class="dialog s_dia dia6" style="text-align: center; top: 135.5px; left: 536.5px; background: rgb(242, 242, 242);">
+        <div class="dia_tit clearfix">
+            <h4 class="fl">提示</h4>
+            <a class="dia_close fr" href="javascript:;" onclick="cls()"></a>
+        </div><!--/dia_tit-->
+        <div class="dia_cont">
+            <div class="dia_intro no_tc pt30">
+                <em>参与的抢购达到该账号限制的购买数量</em>
+            </div>
+            <div class="dia_ops mt50 tc" style="text-align: center;">
+                <a class="go_pay" id="go_pay_00" href="javascript:cls();">确定</a>
+                <a class="go_shopping" href="javascript:cls();">取消</a>
+            </div><!--/dia_ops-->
+        </div><!--/dia_cont-->
+    </div><!--/dialog-->
+
+    <div class="dialog s_dia dia55" style="text-align: center; top: 135.5px; left: 536.5px; background: rgb(242, 242, 242);">
+        <div class="dia_tit clearfix">
+            <h4 class="fl">提示</h4>
+            <a class="dia_close fr" href="javascript:;" onclick="cls()"></a>
+        </div><!--/dia_tit-->
+        <div class="dia_cont">
+            <div class="dia_intro no_tc pt30">
+                <em>包含无货或下架商品，请重新选择!</em>
+            </div>
+            <div class="dia_ops mt50 tr" style="text-align: center;">
+                <a class="go_pay" id="go_pay_00" href="javascript:cls();">确定</a>
+                <a class="go_shopping" href="javascript:cls();">取消</a>
+            </div><!--/dia_ops-->
+        </div><!--/dia_cont-->
+    </div><!--/dialog-->
+
+    <div class="dialog s_dia dia4" style="text-align: center; top: 135.5px; left: 536.5px; background: rgb(242, 242, 242);">
+        <div class="dia_tit clearfix">
+            <h4 class="fl">提示</h4>
+            <a class="dia_close fr" href="javascript:;" onclick="cls()"></a>
+        </div><!--/dia_tit-->
+        <div class="dia_cont">
+            <div class="dia_intro no_tc pt30" style="text-align: center;">
+                <em>是否一键下单？</em>
+            </div>
+            <div class="dia_ops mt50 tr" style="text-align: center;">
+                <a class="go_pay" id="go_pay_00" href="javascript:;" onclick="goForm()">确定</a>
+                <a class="go_shopping" href="javascript:cls();">取消</a>
+            </div><!--/dia_ops-->
+        </div><!--/dia_cont-->
+    </div><!--/dialog-->
+    <form action="http://kstore.qianmi.com/updateprovince.htm" method="post" class="subDis">
+        <!--存放地址信息-->
+        <input type="hidden" value="17" name="distinctId" class="ch_distinctId" />
+        <input type="hidden" value="北京" name="chProvince" class="ch_province" />
+        <input type="hidden" value="北京市" name="chCity" class="ch_city" />
+        <input type="hidden" value="密云县" name="chDistinct" class="ch_distinct" />
+        <input type="hidden" name="chAddress" class="ch_address" />
+    </form>
+    <!--修改优惠-->
+    <form method="post" action="http://kstore.qianmi.com/changeshoppingcartmarts.htm" class="change_shopping">
+        <input type="hidden" name="checkList" class="check_list" />
+        <input type="hidden" name="allChoose" class="all_list" />
+        <input type="hidden" name="shoppingCartId" class="shopping_cart_id" />
+        <input type="hidden" name="marketingActivityId" class="marketing_activity_id" />
+        <input type="hidden" name="goodsGroupMarketingId" class="goods_group_marketing_id" />
+        <input type="hidden" name="marketingId" class="marketing_id" />
+    </form>
+    <input type="hidden" value="" id="listSize" />
+    <input type="hidden" value="" id="customerId" />
+    <script type="text/javascript" src="Scripts/jcarousellite_1.0.1.js"></script>
+    <script type="text/javascript" src="Scripts/default.js"></script>
+    <script type="text/javascript" src="Scripts/shoppingcart.js"></script>
+    <script type="text/javascript" src="Scripts/jsOperation.js"></script>
+    <script type="text/javascript" src="Scripts/index.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            if($("#listSize").val() != ""){
+                var selectList = new Array();
+                selectList = $("#listSize").val().split(",");
+                for(var i=0;i<selectList.length;i++) {
+                    $(".mjchecked[value=" + selectList[i] + "]").each(function(){
+                        $(this).removeAttr("checked");
+                        $(this).click();
+                        $(this).removeAttr("checked");
+                    })
+                }
+
+            }
+            //不是促销的商品与促销商品之间分界线
+            if($(".marketgroup[attr-group=0]").length>0){
+                $(".marketgroup[attr-group=0]:first").find(".cart_goods").attr("style","border-top:1px solid #999999")
+            }
+            //重新计算价格
+            lastsum();
+            $(".mjchecked").each(function(){
+                if($(this)[0].checked){
+                    //获取外部的DIV 是否是促销的商品
+                    var obj=this;
+                    var codexType = $(obj).parents(".marketgroup").attr("attr-codextype");
+                    if(codexType!='0'){
+                        if(obj.checked){
+                            if(codexType=='11'){//抢购
+                                var youhui = 0 ;
+                                var xiaoji = 0;
+                                $(obj).parents(".marketgroup").find(".cart_goods").each(function(){
+
+                                    //件数
+                                    var jian = $(this).find(".count").find(".text").val();
+
+                                    //当限购的数量大于购物车数量时调用当前blur
+                                    if(parseInt($(this).find(".count").find(".text").attr("attr-maxnum"))<parseInt($(this).find(".count").find(".text").attr("oldgoodsnum")) ){
+                                        $($(this).find(".count").find(".text")).blur();
+                                    }
+
+                                })
+
+                            }
+
+
+                        }
+                    }
+
+                }
+            });
+
+
+
+            $('.g_delete').click(function(){
+                if($('#delete_dialog').is(':hidden')){
+                    $('#delete_dialog').show();
+                }
+                else{
+                    $('#delete_dialog').hide();
+                }
+            });
+
+            $('.change_promotion').click(function(){
+                var p_x = ($(window).width()-1200)/2+1200-350;
+                var p_y = $(this).offset().top;
+                $(this).next().show();
+                $(this).next(".promotion_dialog").css({
+                    left: p_x,
+                    top: p_y + 20 + 'px'
+                });
+            });
+        });
+
+        function mit(obj,cartId){
+            if($(obj).parents(".marketgroup").attr("attr-codextype")!="-1"){
+                //获取 可用的最大库存和最小
+                var minNum = 1;
+
+                var nowNum = $(obj).next().val();
+
+                var setNum = 0;
+                if(nowNum>minNum){
+                    setNum=SubtrInt(nowNum,1);
+                }else{
+                    setNum=nowNum;
+                }
+
+                $(obj).next().val(setNum);
+                var onePrice = $(obj).parents(".cart_goods").find(".oneprice").val();
+                var xiaoji = accMul(onePrice,setNum);
+                $(obj).parents(".cart_goods").find(".smprice").val(xiaoji);
+                $(obj).parents(".cart_goods").find(".pv_smprice").text(xiaoji);
+                changeNum(cartId,setNum);
+                jisuan(obj);
+            }else{
+                //套装
+                var nowNum = $(obj).next().val();
+                var flag = 0;
+                if(nowNum=='1'){
+                    flag ++;
+                }
+
+                if(flag == 0 ){
+                    var zongji = 0 ;
+                    $(obj).next().val(SubtrInt(nowNum,1));
+                    nowNum --;
+                    $(obj).parents(".marketgroup").find(".cart_item_goods").each(function(){
+                        $(this).find(".buyNum").text(nowNum);
+                        var onePrice = $(this).find(".oneprice").val();
+                        var xiaoji = accMul(onePrice,nowNum);
+                        zongji = accAdd(xiaoji,zongji);
+                        $(this).find(".smprice").val(xiaoji);
+                        $(this).find(".pv_smprice").text(xiaoji);
+                    });
+                    if($(obj).parents(".cart_item").find(".mjchecked")[0].checked){
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(zongji);
+                        var oneyh = $(obj).parents(".cart_item").find(".groupPreferamount").val();
+                        $(obj).parents(".marketgroup").find(".youhui").val(accMul(oneyh,nowNum));
+                    }
+                    changeNum(cartId,nowNum);
+                    lastsum();
+                }
+
+            }
+
+        }
+
+
+        function opblur(obj,cartId){
+
+            if($(obj).parents(".marketgroup").attr("attr-codextype")!="-1"){
+                var reg = new RegExp("^[0-9]*$");
+                var nowNum = $(obj).val();
+                var maxNum = $(obj).attr("attr-maxnum");
+                var minNum = 1;
+                var setNum = 0 ;
+                if(nowNum=='0'){
+                    setNum = minNum ;
+                    nowNum =  minNum;
+                }
+                if(reg.test(nowNum)){
+
+                    if(SubtrInt(nowNum,maxNum)>0){
+                        setNum = maxNum ;
+                    }else{
+                        setNum = nowNum;
+                    }
+
+                }else{
+                    setNum = minNum ;
+                }
+
+                $(obj).val(setNum);
+                var onePrice = $(obj).parents(".cart_goods").find(".oneprice").val();
+                var xiaoji = accMul(onePrice,setNum);
+                $(obj).parents(".cart_goods").find(".smprice").val(xiaoji);
+                $(obj).parents(".cart_goods").find(".pv_smprice").text(xiaoji);
+                changeNum(cartId,setNum);
+                jisuan(obj);
+            }else{
+                var flag= 0 ;
+                //套装
+                var reg = new RegExp("^[0-9]*$");
+                var nowNum = $(obj).val();
+                if(!reg.test(nowNum)){
+                    nowNum = 1;
+                    $(obj).val(nowNum);
+                }
+                var maxNum = $(obj).attr("attr-maxnum");
+                if(SubtrInt(maxNum,nowNum)<0){
+                    nowNum = maxNum;
+                }
+                $(obj).val(nowNum);
+                var zongji = 0 ;
+                $(obj).parents(".marketgroup").find(".cart_item_goods").each(function(){
+                    $(this).find(".buyNum").text(nowNum);
+                    var onePrice = $(this).find(".oneprice").val();
+                    var xiaoji = accMul(onePrice,nowNum);
+                    zongji = accAdd(xiaoji,zongji);
+                    $(this).find(".smprice").val(xiaoji);
+                    $(this).find(".pv_smprice").text(xiaoji);
+                });
+
+                if($(obj).parents(".cart_item").find(".mjchecked")[0].checked){
+                    $(obj).parents(".marketgroup").find(".xiaoji").val(zongji);
+                    var oneyh = $(obj).parents(".cart_item").find(".groupPreferamount").val();
+                    $(obj).parents(".marketgroup").find(".youhui").val(accMul(oneyh,nowNum));
+                }
+
+                changeNum(cartId,nowNum);
+                lastsum();
+
+            }
+        }
+
+
+        function add(obj,cartId){
+            //不等于-1 为套装
+            if($(obj).parents(".marketgroup").attr("attr-codextype")!="-1"){
+                //获取 可用的最大库存和最小
+                var maxNum = $(obj).prev().attr("attr-maxnum");
+                var nowNum = $(obj).prev().val();
+                var setNum = 0;
+                if(SubtrInt(maxNum,nowNum)<=0){
+                    setNum=nowNum;
+                }else{
+                    setNum=accAddInt(nowNum,1);
+                }
+
+                $(obj).prev().val(setNum);
+                var onePrice = $(obj).parents(".cart_goods").find(".oneprice").val();
+                var xiaoji = accMul(onePrice,setNum);
+                $(obj).parents(".cart_goods").find(".smprice").val(xiaoji);
+                $(obj).parents(".cart_goods").find(".pv_smprice").text(xiaoji);
+                changeNum(cartId,setNum);
+                jisuan(obj);
+            }else{
+                //套装
+                var nowNum = $(obj).prev().val();
+                var flag = 0;
+                var num = $(obj).prev().attr("attr-maxnum");
+                if(SubtrInt(num,nowNum)<=0){
+                    flag ++ ;
+                }
+
+
+                if(flag == 0 ){
+                    var zongji = 0 ;
+                    $(obj).prev().val(accAddInt(nowNum,1));
+                    nowNum ++;
+                    $(obj).parents(".marketgroup").find(".cart_item_goods").each(function(){
+                        $(this).find(".buyNum").text(nowNum);
+                        var onePrice = $(this).find(".oneprice").val();
+                        var xiaoji = accMul(onePrice,nowNum);
+                        zongji = accAdd(xiaoji,zongji);
+                        $(this).find(".smprice").val(xiaoji);
+                        $(this).find(".pv_smprice").text(xiaoji);
+                    });
+                    if($(obj).parents(".cart_item").find(".mjchecked")[0].checked){
+                        $(obj).parents(".marketgroup").find(".xiaoji").val(zongji);
+                        var oneyh = $(obj).parents(".cart_item").find(".groupPreferamount").val();
+                        $(obj).parents(".marketgroup").find(".youhui").val(accMul(oneyh,nowNum));
+                    }
+                    changeNum(cartId,nowNum);
+                    lastsum();
+                }
+
+            }
+
+
+        }
+
+
+
+        function jisuan(obj){
+            //计算价格 总计和优惠
+            var codexType =  $(obj).parents(".marketgroup").attr("attr-codextype");
+
+            var xiaoji = 0 ;
+            var youhui = 0 ;
+            $(obj).parents(".marketgroup").find(".mjchecked").each(function(){
+
+                if($(this)[0].checked){
+                    //获取小计
+                    var thisprice=$(this).parents(".cart_goods").find(".smprice").val();
+                    //总计+单品小计
+                    xiaoji = accAdd(thisprice,xiaoji);
+
+
+                }
+
+            });
+
+
+            if(codexType=='1'){
+                $(obj).parents(".marketgroup").find(".mjchecked").each(function(){
+                    if($(this)[0].checked){
+                        var num = $(this).parents(".cart_goods").find(".count").find(".text").val();
+                        var zhijiang=$(this).parents(".cart_goods").find(".marketPrice").val();
+                        youhui=accAdd(youhui,accMul(num,zhijiang));
+                    }
+                })
+
+            }
+                //        else if(codexType=='10'){//团购
+                //            $(obj).parents(".marketgroup").find(".cart_goods").each(function(){
+                //                var num= $(this).find(".count").find(".text").val();
+                //                var tuangou=$(this).parent().find(".groupPrice").val();
+                //                youhui=accAdd(youhui,accMul(num,tuangou));
+                //            })
+                //        }
+
+            else if(codexType=='11'){//抢购
+                $(obj).parents(".marketgroup").find(".cart_goods").each(function(){
+                    var num= $(this).find(".count").find(".text").val();
+                    var qianggou=$(this).parent().find(".rushPrice").val();
+                    youhui=accAdd(youhui,accMul(num,qianggou));
+                })
+            }
+
+            else if(codexType=='5'){
+                $(obj).parents(".marketgroup").find(".manjian_reducePrice").each(function(){
+                    var man = $(this).val().split(",")[0];
+                    var jian = $(this).val().split(",")[1];
+                    if(Subtr(xiaoji,man)>=0){
+                        youhui = jian;
+                    }
+
+                });
+
+            }else if(codexType=='8'){
+                $(obj).parents(".marketgroup").find(".manzhe_fullbuyDiscount").each(function(){
+                    var man = $(this).val().split(",")[0];
+                    var zhe = $(this).val().split(",")[1];
+                    if(Subtr(xiaoji,man)>=0){
+                        youhui = accMul(xiaoji,Subtr(1,zhe));
+                    }
+
+                });
+
+            }
+
+            $(obj).parents(".marketgroup").find(".xiaoji").val(xiaoji);
+            $(obj).parents(".marketgroup").find(".youhui").val(youhui);
+
+            lastsum();
+        }
+
+
+        function del(id,infoId){
+            $('#shoppingCartId').val(id);
+            $('#goodsInfoId').val(infoId);
+        }
+
+
+        function dodel(){
+            var id = $('#shoppingCartId').val();
+            var infoId=$("#goodsInfoId").val();
+            var fitId=$("#fitId").val();
+            if(fitId==""){
+
+                $.post("delshoppingcartbyid/"+id+"-"+infoId, function (data)
+                {
+                    if (data==1)
+                    {
+                        $('#shoppingCartId').val('');
+                        $('#delete_dialog').hide();
+                        var tg = $('#cart_goods_'+id).parents(".marketgroup").parent().find(".marketgroup:visible").length;
+                        if(tg==1){
+                            var nums = $('#cart_goods_'+id).parents(".marketgroup").find(".cart_goods").length;
+                            if(nums==1){
+                                $('#cart_goods_'+id).parents(".marketgroup").parent().remove();
+                            }else{
+                                $('#cart_goods_'+id).remove();
+                            }
+                        }else{
+                            var lg = $('#cart_goods_'+id).parents(".marketgroup").find(".cart_goods").length;
+                            if(lg==1){
+                                $('#cart_goods_'+id).parents(".marketgroup").remove();
+                            }else{
+
+                                $('#cart_goods_'+id).remove();
+                                $('#cart_goods_'+id).find(".mjchecked").attr("checked", false);
+                                checkOne($('#cart_goods_'+id).find(".mjchecked"));
+                                $(".carts_"+id).remove();
+                            }
+                        }
+                        $(".mjchecked").each(function(){
+                            if($(this)[0].checked){
+                                checkOne(this);
+                            }
+                        });
+                        lastsum();
+                        if ($("#subForm").find(".marketgroup").length == 0)
+                        {
+                            $("#subForm").html('<p style="text-align:center;padding:20px 0;">购物车为空！！<a href="http://kstore.qianmi.com:80/" style="color:#c00"> 去逛逛</a></p>');
+                        }
+
+                    }else{
+                        //删除失败
+                        $("#con_00").html("删除失败！");
+                        dia(2);
+                    }
+                });
+            }else{
+                var inId="110012"+fitId;
+                $.post("delshoppingcartbyid/"+id+"-"+inId, function (data)
+                {
+                    if (data==1){
+                        $("#delGroupFil").submit();
+                    }
+                });
+
+            }
+        }
+
+
+
+
+
+        function hideDia(){
+            $("#fitId").attr("value","");
+            $('#delete_dialog').hide();
+        }
+
+
+        function changemarketing(obj,id,goodsGroupId){
+            //购物车选中的商品id数组
+            var list = new Array();
+            //购物车所有商品id数组
+            var listTwo = new Array();
+            //购物车未选中商品id数组
+            var listThree = new Array();
+
+            //购物车选中的商品id数组
+            for(var i=0;i<$(".mjchecked:checked").length;i++){
+                list.push($(".mjchecked:checked")[i].value);
+            }
+            //购物车所有商品id数组
+            for(var i=0;i<$(".mjchecked").length;i++){
+                listTwo.push($(".mjchecked")[i].value);
+            }
+            for(var k=0;k<listTwo.length;k++){
+                //listTwo里是否包含list里面数据，没有的话push到listThree中
+                if (arrayFindString(list,listTwo[k])<0){
+                    //购物车未选中的商品id数组
+                    listThree.push(listTwo[k]);
+                }
+            }
+
+            var newMarId = $(obj).parents(".dialog-content").find(".chooseMarket").val();
+            if(newMarId!=''){
+                $(".marketing_activity_id").val(newMarId)
+                $(".goods_group_marketing_id").val(goodsGroupId)
+                $(".shopping_cart_id").val(id);
+                $(".check_list").val(listThree);
+                $("#listSize").val(listThree);
+                $(".change_shopping").submit();
+            }
+
+        }
+
+        function arrayFindString(arr, string) {
+            var str = arr.join(",");
+            return str.indexOf(string);
+        }
+
+        function oncheckAll(obj){
+            if($(obj)[0].checked){
+                $(".mjchecked").each(function(){
+                    if(!$(this)[0].checked){
+                        $(this).attr("checked", true);
+                        checkOne(this);
+                    }
+
+                });
+            }else{
+                $(".mjchecked").each(function(){
+                    if($(this)[0].checked){
+                        $(this).attr("checked", false);
+                        checkOne(this);
+                    }
+                });
+            }
+
+
+            lastsum();
+        }
+
+
+        function changeNum(id,num){
+            $.post("changeshoppingcartbyid/"+id+"-"+num, function (data)
+            {
+                if (data==1)
+                {
+
+                }
+            });
+        }
+
+
+        function onpay(){
+            var $sum = 0 ;
+            var $nopro = 0;
+            var limit=0;
+            $(".mjchecked").each(function(){
+                if($(this)[0].checked){
+                    if($(this).parents(".cart_goods").find(".noProduct").val()=='0'){
+                        $nopro = 1;
+                    }
+                    //获取外部的DIV 是否是促销的商品
+                    var obj=this;
+                    var codexType = $(obj).parents(".marketgroup").attr("attr-codextype");
+                    if(codexType!='0'){
+                        if(obj.checked){
+                            if(codexType=='11'){//抢购
+                                if($(".rushlimit").val()==1 && $(".rushlimit").attr("attr_id")==$(obj).val()){
+                                    limit=1;
+                                }
+
+                            }
+
+
+                        }
+                    }
+                    $sum++;
+                }
+            });
+
+            if($nopro==0){
+                if($sum==0){
+                    dia(3);
+                }else{
+                    if(limit==1){
+                        dia(6);
+                    }else{
+                        $("#subForm").submit();
+                    }
+                }
+            }else{
+                dia(55);
+
+            }
+
+
+        }
+
+    </script>
+    <link href="CSS/Custom/Subject_ProductCart.css" rel="stylesheet" />
+</body>
+</html>

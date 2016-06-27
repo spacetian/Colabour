@@ -1,0 +1,144 @@
+﻿
+        .divhide {
+            display: none;
+        }
+
+        .mallSearch-input input[class="inputSearch"] {
+            outline: medium;
+        }
+
+        .mallSearch-input .btnSearch {
+            outline: medium;
+        }
+        /*搜索提示-liangck-20151127*/
+
+        .section-header .content .search {
+            z-index: 999;
+        }
+
+        .ex_search {
+            background: #fff;
+            border: 1px solid #c33;
+            border-top: none;
+            position: absolute;
+            top: 40px;
+            width: 417px;
+            z-index: 999;
+            box-shadow: 0 4px 8px rgba(140, 140, 140, .5);
+            display: none;
+        }
+
+            .ex_search ul {
+                border-bottom: 1px solid #ddd;
+            }
+
+            .ex_search li {
+                position: relative;
+            }
+
+                .ex_search li a {
+                    display: block;
+                    height: 25px;
+                    line-height: 25px;
+                    padding: 0 10px;
+                    color: #666;
+                }
+
+                .ex_search li:hover {
+                    background: #f2f2f2;
+                }
+
+                .ex_search li a span {
+                    color: #ccc;
+                    float: right;
+                }
+
+                .ex_search li .del_history {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    color: #369;
+                    display: none;
+                }
+
+            .ex_search p {
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+            }
+
+        .cur {
+            background: #f2f2f2;
+        }
+
+
+
+        .mainnav .showlist .menuView ul li h3 {
+            width: 120px;
+        }
+
+        .mainnav .showlist .menuView ul li p {
+            width: 580px;
+        }
+
+        .dropdown-menu li > a {
+            margin-right: 10px;
+        }
+
+        .tz-bar {
+            background: #d3ebff;
+            height: 25px;
+            line-height: 25px;
+            overflow: hidden;
+            padding: 0 5px;
+        }
+
+            .tz-bar .ct_info {
+                float: left;
+            }
+
+            .tz-bar .del {
+                float: right;
+            }
+
+        .tzOrder {
+            background: #f8f8f8;
+        }
+
+        .ct_price {
+            margin-left: 10px;
+            color: #dc0002;
+            font-weight: 700;
+        }
+
+            .ct_price b {
+                font-weight: 500;
+                font-family: arial, tahoma;
+                margin-right: 5px;
+            }
+
+            .ct_price em {
+                font-style: normal;
+            }
+
+           .showlist {
+            z-index: 9997 !important;
+        }
+
+        .mcOrder .mcCost .del {
+            white-space: nowrap;
+        }
+
+        .mcGo a {
+            color: #fff !important;
+            text-decoration: none !important;
+        }
+
+        .section-header {
+            background: none !important;
+        }
+
+        .menuImg .bd-list img {
+            width: 84px;
+            height: 36px;
+        }

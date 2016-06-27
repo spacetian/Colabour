@@ -1,0 +1,622 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0046)http://kstore.qianmi.com/customer/address.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>收货地址-农产品</title>
+
+<meta name="Keywords" content="欢迎来到一元中啦">
+<meta name="description" content="商城系统">
+	<link rel="Shortcut Icon" href="http://img01.ningpai.com/1432879652077.jpg">
+<link href="CSS/pages.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.7.2.min.js"></script>
+</head>
+
+<body>
+    
+    	<input type="hidden" name="basePath" id="basePath" value="">
+<link rel="stylesheet" href="http://kstore.qianmi.com/index_seven/css/style.css">
+<input type="hidden" id="basePath" value="">
+<div class="section_headerTop">
+    <div class="slot slot_headerTop01">
+        <ul class="siteNav right">
+            <li><span>您好qm_18721718153，欢迎来到一元中啦</span></li>
+            <input type="hidden" id="customer_id" value="2256">
+            <li class="login_info">
+            </li>
+            <li class="loginout_info">
+                <a class="site_loginout" href="http://kstore.qianmi.com/logout.html">退出</a>
+            </li>
+            <li class="nav_item navCenter">
+                <a href="Index.html" target="_blank">会员中心<s></s></a>
+                <div class="navInfo">
+                    <a href="Order_MyOrder.html" target="_blank">我的订单</a>
+                </div>
+            </li>
+            <li class="nav_item"><a href="javascript:;" onclick="addToFavorite('农产品');">加入收藏</a></li>
+            <li class="nav_item"><a href="javascript:;" onclick="shareUrl();">分享给好友</a></li>
+        </ul>
+    </div>
+    <div class="slot slot_headerTop02"></div>
+</div>
+<div class="bh-mask"></div>
+<div id="ctDia" class="bh-dialog dia0">
+    <div class="dia-tit">
+        <h4>加入收藏</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <p style="text-align: center;line-height:100px;">请使用菜单栏或Ctrl+D进行添加！</p>
+    </div>
+    <div class="dia-btn"><a href="javascript:;" onclick="clss(this)">确定</a></div>
+</div>
+
+<div id="ctDia" class="bh-dialog dia101">
+    <div class="dia-tit">
+        <h4>分享好友</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <div class="dia_collect_intro tc pt30" style="text-align: center;padding-top: 30px;">
+            <span id="content" style="font-size:16px"></span>
+        </div>
+        <div class="dia-btn" style="padding-top: 30px;">
+            <a id="copy" data-clipboard-target="content" href="javascript:;">复制</a>
+            <a onclick="clss(this)" href="javascript:;">取消</a>
+            <br>
+            <span style="color: red; font-size:12px">亲！如果您的好友成功注册为会员，会有积分送给您哦！</span>
+        </div><!--/dia_ops-->
+    </div><!--/dia_cont-->
+</div><!--/dialog-->
+
+
+
+<div id="ctDia" class="bh-dialog dia102">
+    <div class="dia-tit">
+        <h4>登录提示</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <p style="text-align: center;line-height:100px;">您未登录！现在确认要登录吗？</p>
+    </div>
+    <div class="dia-btn">
+        <a onclick="login()" href="javascript:;">确定</a>
+        <a href="javascript:;" onclick="clss(this)">取消</a>
+    </div>
+</div><!--/dialog-->
+
+
+
+<div id="ctDia" class="bh-dialog dia103">
+    <div class="dia-tit">
+        <h4>操作提示</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <p style="text-align: center">复制成功！</p>
+    </div>
+    <div class="dia-btn"><a href="javascript:;" onclick="clss()">确定</a></div>
+
+</div><!--/dialog-->
+<div class="bh-mask"></div>
+<script>
+    function dias(n){
+        $(".bh-mask").fadeIn();
+        $(".dia"+n).fadeIn();
+    };
+    function clss(){
+        $(".bh-dialog").fadeOut();
+        $(".bh-mask").fadeOut();
+    }
+    //分享链接给好友 弹出层
+    function shareUrl(){
+        var basePath = $('#basePath').val();
+        var str = window.location.href;
+        var b = str.indexOf('/',str.indexOf('/')+2);
+//		var a = str.indexOf("//")+2;
+        var local = str.substring(0,b);
+        var customerId = $('#customer_id').val(); //当前登录的用户ID
+        if(customerId==null||customerId==""){
+            dias(102);
+        }else{
+            //给会员id加密
+            var b = new Base64();
+            var result = 'customer_id='+customerId;
+            var str = b.encode('"'+result+'"');
+            var url = local+basePath+'/register.html?'+str;
+            $('#content').html(url);
+            dias(101);
+        }
+        //复制成功弹出复制成功窗口
+        $('#copy').zclip({
+            path:'/js/ZeroClipboard.swf',
+            copy:function(){
+                return $("#content").html();
+            },
+            afterCopy:function(){
+                dias(103);
+            }
+        });
+    }
+
+    //推荐该网站给好友- 登录
+    function login(){
+        var basePath = $('#basePath').val();
+        //获取页面登录的 href
+        window.location.href=basePath+'/login.html';
+
+    }
+
+    //对会员ID进行加密
+    function Base64() {
+        _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        this.encode = function (input) {
+            var output = "";
+            var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+            var i = 0;
+            input = _utf8_encode(input);
+            while (i < input.length) {
+                chr1 = input.charCodeAt(i++);
+                chr2 = input.charCodeAt(i++);
+                chr3 = input.charCodeAt(i++);
+                enc1 = chr1 >> 2;
+                enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                enc4 = chr3 & 63;
+                if (isNaN(chr2)) {
+                    enc3 = enc4 = 64;
+                } else if (isNaN(chr3)) {
+                    enc4 = 64;
+                }
+                output = output +
+                _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+                _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+            }
+            return output;
+        }
+
+        // public method for decoding
+        this.decode = function (input) {
+            var output = "";
+            var chr1, chr2, chr3;
+            var enc1, enc2, enc3, enc4;
+            var i = 0;
+            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+            while (i < input.length) {
+                enc1 = _keyStr.indexOf(input.charAt(i++));
+                enc2 = _keyStr.indexOf(input.charAt(i++));
+                enc3 = _keyStr.indexOf(input.charAt(i++));
+                enc4 = _keyStr.indexOf(input.charAt(i++));
+                chr1 = (enc1 << 2) | (enc2 >> 4);
+                chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                chr3 = ((enc3 & 3) << 6) | enc4;
+                output = output + String.fromCharCode(chr1);
+                if (enc3 != 64) {
+                    output = output + String.fromCharCode(chr2);
+                }
+                if (enc4 != 64) {
+                    output = output + String.fromCharCode(chr3);
+                }
+            }
+            output = _utf8_decode(output);
+            return output;
+        }
+
+        // private method for UTF-8 encoding
+        _utf8_encode = function (string) {
+            string = string.replace(/\r\n/g, "\n");
+            var utftext = "";
+            for (var n = 0; n < string.length; n++) {
+                var c = string.charCodeAt(n);
+                if (c < 128) {
+                    utftext += String.fromCharCode(c);
+                } else if ((c > 127) && (c < 2048)) {
+                    utftext += String.fromCharCode((c >> 6) | 192);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                } else {
+                    utftext += String.fromCharCode((c >> 12) | 224);
+                    utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                }
+
+            }
+            return utftext;
+        }
+
+        // private method for UTF-8 decoding
+        _utf8_decode = function (utftext) {
+            var string = "";
+            var i = 0;
+            var c = c1 = c2 = 0;
+            while (i < utftext.length) {
+                c = utftext.charCodeAt(i);
+                if (c < 128) {
+                    string += String.fromCharCode(c);
+                    i++;
+                } else if ((c > 191) && (c < 224)) {
+                    c2 = utftext.charCodeAt(i + 1);
+                    string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                    i += 2;
+                } else {
+                    c2 = utftext.charCodeAt(i + 1);
+                    c3 = utftext.charCodeAt(i + 2);
+                    string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                    i += 3;
+                }
+            }
+            return string;
+        }
+    }
+</script>
+<script src="Scripts/jquery.zclip.min.js"></script>
+<script src="Scripts/jquery.zclip.js"></script>
+    <script src="Scripts/Custom/PersonMenus.js"></script>
+
+        <div class="n_head">
+
+        </div>
+
+        <input type="hidden" id="currentProvince" value="">
+        <input type="hidden" id="basePath" value="">
+        <script src="Scripts/minShopping.js"></script>
+
+        <div style="background: #f5f5f5;">
+            <div class="container clearfix pt20 pb10">
+                <!--new_member_left-->
+<div class="new_member_left">
+
+</div>
+<!--new_member_left-->                <div class="new_member-right">
+                    <div class="air-account-address">
+                        <div class="n-title">收货地址</div>
+                        <div class="simple mt20 clearfix">
+                            <div class="fl">
+                                <button onclick="toaddAddress()">新增收货地址</button>
+                                <span class="addressNum-tips ml10">您已创建<span id="addressesNum" class="red">0</span>个收货地址，最多可创建<span class="red">10</span>个</span>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="layout" id="No0">
+                                <div class="air-addressList">
+                                        <div style="margin-top:10px;border:1px #e8e8e8 solid; height:40px; text-align: center; font-size: 18px;line-height:40px;;">
+                                            暂无收货地址！
+                                        </div>
+
+                                </div>
+                                <div class="paging_area">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mask"></div>
+        <div class="dialog member-dialog dia2 big-dialog" style="top: 138px; left: 461.5px;">
+            <div class="member-dialog-body">
+                <div class="title"><a href="javascript:;" onclick="cls()">×</a><span id="diaTitle">添加收货地址</span></div>
+                <div class="add-arr pb10">
+                    <form method="post" id="addressFrom" onsubmit="return updateqqq()">
+                        <input type="hidden" name="CSRFToken" id="CSRFToken" value="f37f95bda11ddc47c03dbf66c74a4940">
+                        <!--隐藏会员编号
+                    -->
+                        <input type="hidden" name="customerId" id="hiden_customerId" value="2256">
+                    <table>
+                        <tbody><tr><!--隐藏地址编号-->
+                            <input type="hidden" name="addressId" id="hiden_addressId">
+                            <td width="95" align="right"><em>*</em>收货人：</td>
+                            <td>
+                                <input class="text" name="addressName" id="addressName" type="text">
+                                <span id="addressName_tips" class="red"></span>
+                                 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right"><em>*</em>所在地：</td>
+                            <td>
+                                <select class="select" name="infoProvince" id="infoProvince"><option value="1">北京</option><option value="2">天津</option><option value="3">河北</option><option value="4">山西</option><option value="5">内蒙古</option><option value="6">辽宁</option><option value="7">吉林</option><option value="8">黑龙江</option><option value="9">上海</option><option value="10">江苏</option><option value="11">浙江</option><option value="12">安徽</option><option value="13">福建</option><option value="14">江西</option><option value="15">山东</option><option value="16">河南</option><option value="17">湖北</option><option value="18">湖南</option><option value="19">广东</option><option value="20">广西</option><option value="21">海南</option><option value="22">重庆</option><option value="23">四川</option><option value="24">贵州</option><option value="25">云南</option><option value="26">西藏</option><option value="27">陕西</option><option value="28">甘肃</option><option value="29">青海</option><option value="30">宁夏</option><option value="31">新疆</option><option value="32">香港</option><option value="33">澳门</option><option value="34">台湾</option></select>
+                                <select class="select" name="infoCity" id="infoCity"><option value="1">北京市</option></select>
+                                <select class="select" name="infoCounty" id="infoCounty"><option value="2">西城区</option><option value="3">崇文区</option><option value="4">宣武区</option><option value="5">朝阳区</option><option value="6">丰台区</option><option value="7">石景山区</option><option value="8">海淀区</option><option value="9">门头沟区</option><option value="10">房山区</option><option value="11">通州区</option><option value="12">顺义区</option><option value="13">昌平区</option><option value="14">大兴区</option><option value="15">怀柔区</option><option value="16">平谷区</option><option value="17">密云县</option><option value="18">延庆县</option></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right"><em>*</em>详细地址：</td>
+                            <td>
+                                <input class="text address" style="width: 210px;" name="addressDetail" id="addressDetail" type="text">
+                                <span id="addressDetail_tips" class="red"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right"><em>*</em>手机号：</td>
+                            <td>
+                            <input class="text" name="addressMoblie" id="addressMoblie" type="text">
+                            <span id="addressMoblie_tips" class="red"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">固定电话：</td>
+                            <td>
+                                <input class="text" name="addressPhone" id="addressPhone" type="text">
+                                <span id="addressPhone_tips"></span>
+                                <span class="light">例如“025-8816157”</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">邮政编码：</td>
+                            <td>
+                                <input class="text" name="addressZip" id="addressZip" type="text">
+                                <span class="light red" id="addressZip_tips"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">地址别名：</td>
+                            <td>
+                                <input class="text" name="addressAlias" id="addressAlias" type="text">
+                                <span class="light" id="addressAlias_tips">例如“自己家”“公司地址”等</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><button id="submitBtn">保存收货地址</button></td>
+                        </tr>
+
+                    </tbody></table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="member-dialog dia1" style="top: 138px; left: 461.5px;">
+            <div class="member-dialog-body">
+                <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+                <div class="tc">
+                    <div class="que-delete clearfix">
+                        <img  src="Images/images_l6.png">
+                        <div class="fl tl">
+                            <p class="f16 red">确定设置为默认吗?</p>
+                            <div class="m-btn mt20">
+                                <a class="info_tip_cancel" href="javascript:;">确定</a>
+                                <a class="info_tip_submit" href="javascript:;" onclick="cls()">取消</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="member-dialog dia4" style="top: 138px; left: 461.5px;">
+            <div class="member-dialog-body">
+                <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+                <div class="tc">
+                    <div class="que-delete clearfix">
+                        <img  src="Images/images_l6.png">
+                        <div class="fl tl">
+                            <p class="f16 red">您确定要删除此收货地址！</p>
+                            <div class="m-btn mt20">
+                                <a id="delUrl" href="javascript:;">确定</a>
+                                <a href="javascript:;" onclick="cls()">取消</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="member-dialog dia3" style="top: 138px; left: 461.5px;">
+            <div class="member-dialog-body">
+                <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+                <div class="tc">
+                    <div class="que-delete clearfix">
+                        <img  src="Images/images_l6.png">
+                        <div class="fl tl">
+                            <p class="f16 red">您最多可创建10个收货地址！</p>
+                            <div class="m-btn mt20">
+                                <a href="javascript:;" onclick="cls()">确定</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+	<link href="CSS/footer.css" rel="stylesheet" />
+    <style>
+        .mt20 {
+            margin-top: 20px;
+        }
+    </style>
+    <div style="background-color: #fff;">
+    <div class="wp">
+
+    </div><!--/wp-->
+    </div><script src="Scripts/default.js"></script>
+<script src="Scripts/jcarousellite_1.0.1.js"></script>
+<script src="Scripts/tab-switch.js"></script> 
+<script src="Scripts/customaddress.js"></script>
+<script src="Scripts/newapp.js"></script>
+        <script src="Scripts/findcode.js"></script>
+        <script src="Scripts/jsOperation.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    var num=0;
+    $("#submitBtn").click(function(){
+        if(num==0){
+            num+=1;
+            $("#addressFrom").submit();
+        }
+    })
+	$('.item_title').each(function(){
+		$(this).click(function(){
+			$(this).next().toggle('fast',function(){
+				if($(this).is(':visible')){
+					$(this).prev().removeClass('up');
+					$(this).prev().addClass('down');
+				}
+				else{
+					$(this).prev().removeClass('down');
+					$(this).prev().addClass('up');
+				}
+			});
+		});
+	});
+	$(".pro_sort").addClass("pro_sort_close");
+    $(".new_member_left div:eq(3) ul li:eq(5)").addClass("cur");
+	//弹窗
+		win();
+		$(window).resize(function(){
+			win();
+		});
+});
+//删除收货地址
+function deladdress(addressId){
+    $("#delUrl").attr("href","/customer/address/delete/"+addressId);
+    dia(4);
+}
+//添加收货地址，文本框清空
+function toaddAddress(){
+
+    var num = $("#addressesNum").text();
+    if (num >= 10) {
+        dia(3);
+        return false;
+    }
+
+
+    $("#diaTitle").html("添加收货地址");
+	$("#hiden_addressId").val("")
+	$("#addressName").val("")
+	$("#addressDetail").val("")
+	$("#addressMoblie").val("")
+	$("#addressPhone").val("")
+	$("#addressAlias").val("")
+    $("#addressZip").val("")
+	$("#addressName_tips").text("").removeClass("tipserror");
+	$("#addressDetail_tips").text("").removeClass("tipserror");
+	$("#addressMoblie_tips").text("").removeClass("tipserror");
+	$("#addressPhone_tips").text("").removeClass("tipserror");
+	$("#addressAlias_tips").text("例如“自己家”“公司地址”等").removeClass("tipserror").addClass("light");
+    dia(2);
+}
+
+//判断是否达到数量上限
+function checkAddressesNum(){
+	var num = $("#addressesNum").text();
+	if(num>=10){
+        cls();
+		dia(3);
+		return false;
+	}else{
+		return true;
+	}
+}
+//验证特殊字符，将调试显示到页面中
+function checkSpecSymb(inputobj,Tipobj){
+	 var regexp=new RegExp("[`~!@#$^&*()={}':;',\\[\\]<>/?~！@#￥……&*（）{}【】‘；：”“'。，、？]");
+	 if (regexp.test( $("#"+inputobj).val() ) ) {
+		 $("#"+inputobj).addClass( "ui-state-error" );
+         updateTips( "输入的内容包含特殊字符!", $("#"+Tipobj));
+         $("#"+inputobj).focus();
+         return false;
+     }
+     else {
+    	 $("#"+Tipobj).text("").removeClass( "ui-state-highlight");
+    	 $("#"+inputobj).removeClass( "ui-state-error" );
+         return true;
+     }
+}
+//特殊字符
+var regexp=new RegExp("[`~!@#$^&*()={}':;',\\[\\]<>/?~！@#￥……&*（）{}【】‘；：”“'。，、？]");
+//
+//var regexpPhone = new RegExp("[\d{3}-\d{8}|\d{4}-\d{7,8}]");
+//var regexpMoblie = new RegExp("[1\d{10}]");
+function checkField(){
+		var flag = true;
+		if($("#addressName").val()==""){
+			$("#addressName_tips").text("请填写收货人").addClass("tipserror");
+			flag = flag && false;
+		}else{
+			if (regexp.test( $("#addressName").val() ) ) {
+				$("#addressName_tips").text("输入的内容包含特殊字符!").addClass("tipserror");
+				flag = flag && false;
+			}else{
+				$("#addressName_tips").text("").removeClass("tipserror");
+				flag = flag && true;
+			}
+		}
+		if($("#addressDetail").val()==""){
+			$("#addressDetail_tips").text("请填写详细地址").addClass("tipserror");
+			flag = flag && false;
+		}else{
+			if (regexp.test( $("#addressDetail").val() ) ) {
+				$("#addressDetail_tips").text("输入的内容包含特殊字符!").addClass("tipserror");
+				flag = flag && false;
+			}else{
+				$("#addressDetail_tips").text("").removeClass("tipserror");
+				flag = flag && true;
+			}
+		}
+		if($("#addressMoblie").val()==""){
+			$("#addressMoblie_tips").text("请填写手机号码").addClass("tipserror");
+			flag = flag && false;
+		}else{
+			if (/^1[3|4|5|7|8][0-9]\d{8}$/.test( $("#addressMoblie").val() ) ) {
+				$("#addressMoblie_tips").text("").removeClass("tipserror");
+				flag = flag && true;
+			}else{
+				$("#addressMoblie_tips").text("手机号码格式不对!").addClass("tipserror");
+				flag = flag && false;
+			}
+		}
+		if($("#addressPhone").val()!=""){
+			if (/^((0[0-9]{2,3}\-)|(\(0[0-9]{2,3}\)))?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/.test( $("#addressPhone").val() ) ) {
+				$("#addressPhone_tips").text("").removeClass("tipserror");
+				flag = flag && true;
+			}else{
+				$("#addressPhone_tips").text("固定电话格式不对!").addClass("tipserror");
+				flag = flag && false;
+			}
+		}
+		if($("#addressZip").val()!=""){
+			if(/^[1-9]\d{5}(?!\d)$/.test($("#addressZip").val())){
+				$("#addressZip_tips").text("").removeClass("tipserror");
+				flag = flag && true;
+			}else{
+				$("#addressZip_tips").text("邮政编码格式不对!").addClass("tipserror");
+				flag = flag && false;
+			}
+		}
+		if($("#addressAlias").val()!=""){
+			if (regexp.test( $("#addressAlias").val() ) ) {
+				$("#addressAlias_tips").text("输入的内容包含特殊字符!").removeClass("light").addClass("tipserror");
+				flag = flag && false;
+			}else{
+				$("#addressAlias_tips").text("例如“自己家”“公司地址”等").removeClass("tipserror").addClass("light");
+				flag = flag && true;
+			}
+		}
+
+		return flag;
+}
+
+//判断是修改还是添加,设置提交的控制器方法
+function updateqqq(){
+	if($("#hiden_addressId").val()!=""){
+		$("#addressFrom").prop("action",$("#basePath").val()+"/customer/address/update");
+		return checkField();
+	}else{
+		$("#addressFrom").prop("action",$("#basePath").val()+"/customer/address/add");
+		if(checkAddressesNum()){
+			checkField();
+            if(checkField()){
+                $("#submitBtn").attr("disabled","disabled");
+            }
+            return checkField();
+        }else{
+			return false;
+		}
+	}
+	
+}
+
+</script>
+
+
+</body></html>

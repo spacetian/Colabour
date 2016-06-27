@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<script id="likes" type="text/html">
+  <ul class="like-pros">
+    {{each likes as value i}}
+    <li>
+      <a class="lk-img" href="{{value.proHref}}" target="_blank">
+        <img class="lazy" alt="" data-original="{{value.proImg}}" />
+      </a>
+      <p class="lk-name">
+        <a href="{{value.proHref}}" target="_blank">{{value.proName}}</a>
+      </p>
+      <p class="lk-price">
+        &yen;<strong>{{value.proPrice}}</strong>
+      </p>
+    </li>
+    {{/each}}
+  </ul>
+</script>

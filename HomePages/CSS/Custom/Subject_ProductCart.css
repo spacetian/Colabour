@@ -1,0 +1,245 @@
+﻿
+.flow_progress1 {
+    width: 99%;
+    height: 30px;
+    background: #F8F8F8;
+    margin: 20px 0;
+}
+
+.flow_progress1 .step1 {
+    background: #FFE6BC url(../../Images/flow_progress_sep1.gif) no-repeat right center;
+    font-weight: bold;
+    color: #FF6600;
+}
+
+.flow_progress1 li {
+    display: block;
+    float: left;
+    width: 33%;
+    height: 30px;
+    text-indent: 2em;
+    line-height: 30px;
+    font-size: 14px;
+    color: #999;
+}
+
+.cart_box{
+    border: 1px solid #DDDDDD;
+    border-top: 2px solid #999999;
+    margin:0;
+    padding:0;
+}
+
+.cart_box .cart_head{
+    height:35px;
+    line-height:35px;
+    background:#F7F7F7;
+    border-bottom:1px solid #DDDDDD;
+}
+
+
+.cart_box .cart_head .t_check {
+    width: 100px;
+    text-align: center;
+}
+.cart_box .cart_head .thead {
+    float: left;
+    height: 35px;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+    vertical-align: middle;
+    border: 0 !important;
+    background: none !important;
+    color: #333;
+}
+
+.cart_box .cart_head .t_goods {
+    width: 420px;
+    text-align: center;
+}
+
+.cart_box .cart_head .t_price {
+    width: 80px;
+    text-align: center;
+    font-weight:bold;
+    font-size:14px;
+    padding:0 0 0 10px;
+}
+
+.cart_box .cart_head .t_promotion {
+    width: 200px;
+    text-align: center;
+}
+
+.cart_box .cart_head .t_count {
+    width: 150px;
+    text-align: center;
+}
+
+.cart_box .cart_head .t_action {
+    width: 130px;
+    text-align: center;
+}
+
+.cart_goods{
+    padding:10px;
+    border-bottom:1px solid #DDDDDD;
+}
+
+.cart_item .g_check {
+    width: 38px;
+    text-align: center;
+    padding-top: 10px;
+}
+.cart_item .cell {
+    float: left;
+    vertical-align: top;
+    line-height: 18px;
+}
+.cart_item .g_goods {
+    width: 450px;
+    padding-left: 10px;
+}
+
+.cart_item .g_goods .img {
+    float: left;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #efefef;
+}
+.img {
+    display: block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.cart_item .g_goods .name {
+    float: left;
+    width: 380px;
+    margin-left: 10px;
+    line-height: 18px;
+}
+
+.flow_title{
+    min-height:40px;
+}
+
+.flow_title span {
+    float: left;
+    margin-left: 10px;
+    line-height: 25px;
+}
+
+.flow_title span a {
+    color: #f60;
+    font-weight: bold;
+}
+
+.activity{
+    height:30px;
+}
+
+.cart_item .g_price {
+    width: 100px;
+    text-align: center;
+}
+
+.cart_item .g_promotion {
+    display: block;
+    width: 200px;
+    height: 52px;
+    text-align: center;
+}
+
+.cart_item .g_stock {
+    width: 80px;
+    text-align: center;
+}
+
+.cart_item .g_count {
+    width: 180px;
+    text-align: center;
+}
+
+.cart_item .g_count .count {
+    width: 90px;
+    height: 30px;
+    margin: 0 auto;
+}
+.g_count .count{
+    height:30px;
+}
+.red{
+    color:#C00;
+}
+
+.cart_item .g_action {
+    width: 100px;
+    text-align: center;
+}
+
+.cb {
+    clear: both;
+}
+
+.cart_total{
+    height:60px;
+}
+
+.check_btn{
+    padding: 10px;
+    background: #DF3434;
+    width: 120px;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+}
+
+.cart_shop{
+    padding: 10px;
+    background: #3BCB6A;
+    width: 220px;
+    font-size: 18px;
+    color: white;
+
+}
+
+a.increment, a.decrement{
+    font-size:22px;
+    padding:5px;
+}
+
+.w30 {
+    width: 30px;
+    margin-top: -8px;
+}
+.w_winner_bg{
+    width:470px;
+}
+
+/*#region 结算 */
+.cart_btn{
+    margin-top:10px;
+    height:25px;
+}
+.cart_btn .cart_pay{
+    color: #FFFFFF;
+    font-size: 18px;
+    padding: 10px;
+    border: 1px solid #D1D1D1;
+    background: red;
+    float:right;
+}
+
+.cart_btn .cart_shop{
+    float:left;
+    width:80px;
+}
+.cart_btn .cart_shop a{
+   color:white;
+}
+
+
+/*#endregion */

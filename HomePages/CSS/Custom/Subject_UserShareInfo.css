@@ -1,0 +1,164 @@
+﻿ul.expmenu {
+    width: 210px;
+    border-left: 1px solid #F0F0F0;
+    border-right: 1px solid #F0F0F0;
+    font-family: 'simsun';
+    font-size: 14px;
+}
+
+ul.expmenu > li ul li {
+    background-color: #fff;
+    padding: 12px;
+    border-bottom: 1px solid #dcdcdc;
+    border-top: 1px solid #fff;
+    color: #727272;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.8);
+    margin-left: 0px;
+    text-align: left;
+    text-indent: 1em;
+}
+ul.expmenu >li ul li a span{
+    padding:15px;
+}
+
+.divLeftMenu {
+    float: left;
+    width: 220px;
+    margin-top:15px;
+}
+
+.divRightContent {
+    width: 978px;
+    float: left;
+    margin-top:15px;
+    min-height:400px;
+}
+
+.divUserInfo {
+    margin-bottom: 10px;
+    padding: 19px;
+    border: #F7EFEF 1px solid;
+
+}
+
+.divUserInfo .userImg{
+
+}
+.divUserInfo .userMsg{
+
+}
+
+
+
+.divUserContent {
+    margin-top: 20px;
+    overflow: hidden;
+    border: 1px solid #EEEEEE;
+    background-color: #f8f8f8;
+}
+
+.divUserContent .divUserTitle{
+    padding: 10px 20px;
+    background: #FFF6F6;
+    border-bottom:1px solid #FFE8E8;
+}
+
+.divUserContent .divUserTile .title{
+
+}
+.divUserContent .divUserTile .title .titleSpan{
+
+}
+
+.divGoods{
+    width: 290px;
+    height: 405px;
+    overflow: hidden;
+    zoom: 1;
+    float: left;
+    margin: 15px;
+    border: 1px solid #ddd;
+    line-height: 1.8;
+    color: #7d7d7d;
+    background: #fff;
+}
+.divGoods .good_pic{
+
+}
+.divGoods .goods_content{
+    padding:0 24px;
+}
+.divGoods .goods_content .goods_title{
+    font-size: 13px;
+    font-family: 'simsun';
+    letter-spacing: 1px;
+    height: 49px;
+    margin: 15px 0 5px;
+    padding-right: 20px;
+    overflow: hidden;
+    font-weight: bold;
+}
+.divGoods .goods_content .goods_price{
+    line-height: 25px;
+    padding:0 20px;
+}
+
+.divGoods .goods_content .goods_info{
+
+}
+
+.goods_info .txt-impt{
+    color:red;
+}
+
+.goods_info .txt-dark{
+    color:darkblue;
+}
+.goods_pager{
+    padding: 20px;
+    background: #FEFDFD;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.goods_pager button{
+    border: none;
+    white-space: nowrap;
+    font-size: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    color: #fff;
+    background: #3399FE;
+    padding: 0 15px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none !important;
+    font-family: "Microsoft Yahei",simhei;
+    outline: none;
+}
+
+.goods_pager .btnPrevious{
+    background: #ccc !important;
+    color: #999 !important;
+    border-color: #b0b0b0 !important;
+    cursor: default;
+}
+
+.goods_pager .btnCurrent{
+    background: #DD344F;
+}
+.goods_pager .btnNext{
+
+}
+
+.goods_pager span{
+    height:35px;
+    line-height:30px;
+    padding:10px;
+}
+
+
+

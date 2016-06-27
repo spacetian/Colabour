@@ -1,0 +1,398 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0040)http://kstore.qianmi.com/mycoupon-1.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>我的优惠券-农产品</title>
+    
+    <meta name="Keywords" content="欢迎来到一元中啦">
+    <meta name="description" content="商城系统">
+    <link rel="Shortcut Icon" href="http://img01.ningpai.com/1432879652077.jpg">
+    <link href="CSS/pages.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.7.2.min.js"></script>
+
+
+
+</head>
+
+<body>
+<link rel="stylesheet" href="http://kstore.qianmi.com/index_seven/css/style.css">
+<input type="hidden" id="basePath" value="">
+<div class="section_headerTop">
+    <div class="slot slot_headerTop01">
+        <ul class="siteNav right">
+            <li><span>您好qm_18721718153，欢迎来到一元中啦</span></li>
+            <input type="hidden" id="customer_id" value="2256">
+            <li class="login_info">
+            </li>
+            <li class="loginout_info">
+                <a class="site_loginout" href="http://kstore.qianmi.com/logout.html">退出</a>
+            </li>
+            <li class="nav_item navCenter">
+                <a href="Index.html" target="_blank">会员中心<s></s></a>
+                <div class="navInfo">
+                    <a href="Order_MyOrder.html" target="_blank">我的订单</a>
+                </div>
+            </li>
+            <li class="nav_item"><a href="javascript:;" onclick="addToFavorite('农产品');">加入收藏</a></li>
+            <li class="nav_item"><a href="javascript:;" onclick="shareUrl();">分享给好友</a></li>
+        </ul>
+    </div>
+    <div class="slot slot_headerTop02"></div>
+</div>
+<div class="bh-mask"></div>
+<div id="ctDia" class="bh-dialog dia0">
+    <div class="dia-tit">
+        <h4>加入收藏</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <p style="text-align: center;line-height:100px;">请使用菜单栏或Ctrl+D进行添加！</p>
+    </div>
+    <div class="dia-btn"><a href="javascript:;" onclick="clss(this)">确定</a></div>
+</div>
+
+<div id="ctDia" class="bh-dialog dia101">
+    <div class="dia-tit">
+        <h4>分享好友</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <div class="dia_collect_intro tc pt30" style="text-align: center;padding-top: 30px;">
+            <span id="content" style="font-size:16px"></span>
+        </div>
+        <div class="dia-btn" style="padding-top: 30px;">
+            <a id="copy" data-clipboard-target="content" href="javascript:;">复制</a>
+            <a onclick="clss(this)" href="javascript:;">取消</a>
+            <br>
+            <span style="color: red; font-size:12px">亲！如果您的好友成功注册为会员，会有积分送给您哦！</span>
+        </div><!--/dia_ops-->
+    </div><!--/dia_cont-->
+</div><!--/dialog-->
+
+
+
+<div id="ctDia" class="bh-dialog dia102">
+    <div class="dia-tit">
+        <h4>登录提示</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <p style="text-align: center;line-height:100px;">您未登录！现在确认要登录吗？</p>
+    </div>
+    <div class="dia-btn">
+        <a onclick="login()" href="javascript:;">确定</a>
+        <a href="javascript:;" onclick="clss(this)">取消</a>
+    </div>
+</div><!--/dialog-->
+
+
+
+<div id="ctDia" class="bh-dialog dia103">
+    <div class="dia-tit">
+        <h4>操作提示</h4>
+        <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+    </div>
+    <div class="dia-cont">
+        <p style="text-align: center">复制成功！</p>
+    </div>
+    <div class="dia-btn"><a href="javascript:;" onclick="clss()">确定</a></div>
+
+</div><!--/dialog-->
+<div class="bh-mask"></div>
+<script>
+    function dias(n){
+        $(".bh-mask").fadeIn();
+        $(".dia"+n).fadeIn();
+    };
+    function clss(){
+        $(".bh-dialog").fadeOut();
+        $(".bh-mask").fadeOut();
+    }
+    //分享链接给好友 弹出层
+    function shareUrl(){
+        var basePath = $('#basePath').val();
+        var str = window.location.href;
+        var b = str.indexOf('/',str.indexOf('/')+2);
+//		var a = str.indexOf("//")+2;
+        var local = str.substring(0,b);
+        var customerId = $('#customer_id').val(); //当前登录的用户ID
+        if(customerId==null||customerId==""){
+            dias(102);
+        }else{
+            //给会员id加密
+            var b = new Base64();
+            var result = 'customer_id='+customerId;
+            var str = b.encode('"'+result+'"');
+            var url = local+basePath+'/register.html?'+str;
+            $('#content').html(url);
+            dias(101);
+        }
+        //复制成功弹出复制成功窗口
+        $('#copy').zclip({
+            path:'/js/ZeroClipboard.swf',
+            copy:function(){
+                return $("#content").html();
+            },
+            afterCopy:function(){
+                dias(103);
+            }
+        });
+    }
+
+    //推荐该网站给好友- 登录
+    function login(){
+        var basePath = $('#basePath').val();
+        //获取页面登录的 href
+        window.location.href=basePath+'/login.html';
+
+    }
+
+    //对会员ID进行加密
+    function Base64() {
+        _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        this.encode = function (input) {
+            var output = "";
+            var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+            var i = 0;
+            input = _utf8_encode(input);
+            while (i < input.length) {
+                chr1 = input.charCodeAt(i++);
+                chr2 = input.charCodeAt(i++);
+                chr3 = input.charCodeAt(i++);
+                enc1 = chr1 >> 2;
+                enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                enc4 = chr3 & 63;
+                if (isNaN(chr2)) {
+                    enc3 = enc4 = 64;
+                } else if (isNaN(chr3)) {
+                    enc4 = 64;
+                }
+                output = output +
+                _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+                _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+            }
+            return output;
+        }
+
+        // public method for decoding
+        this.decode = function (input) {
+            var output = "";
+            var chr1, chr2, chr3;
+            var enc1, enc2, enc3, enc4;
+            var i = 0;
+            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+            while (i < input.length) {
+                enc1 = _keyStr.indexOf(input.charAt(i++));
+                enc2 = _keyStr.indexOf(input.charAt(i++));
+                enc3 = _keyStr.indexOf(input.charAt(i++));
+                enc4 = _keyStr.indexOf(input.charAt(i++));
+                chr1 = (enc1 << 2) | (enc2 >> 4);
+                chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                chr3 = ((enc3 & 3) << 6) | enc4;
+                output = output + String.fromCharCode(chr1);
+                if (enc3 != 64) {
+                    output = output + String.fromCharCode(chr2);
+                }
+                if (enc4 != 64) {
+                    output = output + String.fromCharCode(chr3);
+                }
+            }
+            output = _utf8_decode(output);
+            return output;
+        }
+
+        // private method for UTF-8 encoding
+        _utf8_encode = function (string) {
+            string = string.replace(/\r\n/g, "\n");
+            var utftext = "";
+            for (var n = 0; n < string.length; n++) {
+                var c = string.charCodeAt(n);
+                if (c < 128) {
+                    utftext += String.fromCharCode(c);
+                } else if ((c > 127) && (c < 2048)) {
+                    utftext += String.fromCharCode((c >> 6) | 192);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                } else {
+                    utftext += String.fromCharCode((c >> 12) | 224);
+                    utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                }
+
+            }
+            return utftext;
+        }
+
+        // private method for UTF-8 decoding
+        _utf8_decode = function (utftext) {
+            var string = "";
+            var i = 0;
+            var c = c1 = c2 = 0;
+            while (i < utftext.length) {
+                c = utftext.charCodeAt(i);
+                if (c < 128) {
+                    string += String.fromCharCode(c);
+                    i++;
+                } else if ((c > 191) && (c < 224)) {
+                    c2 = utftext.charCodeAt(i + 1);
+                    string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                    i += 2;
+                } else {
+                    c2 = utftext.charCodeAt(i + 1);
+                    c3 = utftext.charCodeAt(i + 2);
+                    string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                    i += 3;
+                }
+            }
+            return string;
+        }
+    }
+</script>
+<script src="Scripts/jquery.zclip.min.js"></script>
+<script src="Scripts/jquery.zclip.js"></script>
+    <script src="Scripts/Custom/PersonMenus.js"></script>
+
+        <div class="n_head">
+        
+        </div>
+
+        <input type="hidden" id="currentProvince" value="">
+        <input type="hidden" id="basePath" value="">
+        <script src="Scripts/minShopping.js"></script>
+
+
+
+<div style="background: #f5f5f5;">
+    <div class="container clearfix pt20 pb10">
+        <!--new_member_left-->
+<div class="new_member_left">
+
+</div>
+<!--new_member_left-->        <div class="new_member-right">
+            <div class="air-account-discount">
+                <div class="n-title">我的优惠券</div>
+                <div class="tagMenu air-account-menu">
+                    <ul class="menu clearfix">
+                        <li class="current" onclick="javascript:location='/mycoupon-1.html'"><a href="javascript:;">未使用优惠券</a></li>
+                        <li onclick="javascript:location='/mycoupon-2.html'"><a href="javascript:;">已使用优惠券</a>
+                        </li>
+                        <li onclick="javascript:location='/mycoupon-3.html'"><a href="javascript:;">已过期优惠券</a></li>
+                    </ul>
+                </div>
+                <div class="content">
+                    <div class="layout" id="No0">
+                        <div class="air-discountList">
+
+                                <div class="air-discountTic mr20">
+                                    <div class="ticTitle">
+                                        <div class="tl">
+                                            <span class="ticValue">¥</span>
+                                            <span class="ticValue">200</span>
+                                        </div>
+                                    </div>
+                                    <ul>
+                                        <li>农产品自营</li>
+                                        <li>使用条件：不限制</li>
+                                        <li>使用日期：2016-06-13&nbsp;至&nbsp;2016-07-31</li>
+                                    </ul>
+                                </div>
+
+
+                        </div>
+                        <div class="paging_area">
+    <div class="paging_area">
+         <div class="paging">
+				<a class="prev_null" href="javascript:void(0);">&lt;&nbsp;上一页</a>
+		                   <a class="num_cur prev" href="javascript:void(0);">1</a>
+		         <a class="next_null" href="javascript:void(0);">下一页&nbsp;&gt;</a>
+          </div>
+     </div><!--/page-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  <div class="mask"></div>
+<div class="member-dialog dia3" style="top: 299.5px; left: 571.5px;">
+    <div class="member-dialog-body">
+        <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+        <div class="tc">
+            <div class="que-delete clearfix">
+                <img  src="Images/images_l6.png">
+                <div class="fl tl">
+                    <p class="f16 red">确定要删除此优惠券吗？</p>
+                    <div class="m-btn mt20">
+                        <a href="javascript:;" id="delMyCoupon()">确定</a>
+                        <a class="" href="javascript:cls();">取消</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+	<link href="CSS/footer.css" rel="stylesheet" />
+    <style>
+        .mt20 {
+            margin-top: 20px;
+        }
+    </style>
+    <div style="background-color: #fff;">
+    <div class="wp">
+
+    </div><!--/wp-->
+    </div>
+
+<script src="Scripts/default.js"></script>
+<script src="Scripts/jcarousellite_1.0.1.js"></script>
+<script src="Scripts/tab-switch.js"></script>
+<script src="Scripts/newapp.js"></script>
+<script src="Scripts/findcode.js"></script>
+<script src="Scripts/jsOperation.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.item_title').each(function(){
+            $(this).click(function(){
+                $(this).next().toggle('fast',function(){
+                    if($(this).is(':visible')){
+                        $(this).prev().removeClass('up');
+                        $(this).prev().addClass('down');
+                    }
+                    else{
+                        $(this).prev().removeClass('down');
+                        $(this).prev().addClass('up');
+                    }
+                });
+            });
+        });
+        //选择标签
+        var codeStatus = $("#codeStatus").val();
+        if(codeStatus==1){
+            $("#tag1").addClass('current');
+            $("#tag2").removeClass('current');
+            $("#tag3").removeClass('current');
+        }else if(codeStatus==2){
+            $("#tag1").removeClass('current');
+            $("#tag2").addClass('current');
+            $("#tag3").removeClass('current');
+        }else if(codeStatus==3){
+            $("#tag1").removeClass('current');
+            $("#tag2").removeClass('current');
+            $("#tag3").addClass('current');
+        }
+        $(".pro_sort").addClass("pro_sort_close");
+        $(".new_member_left div:eq(3) ul li:eq(4)").addClass("cur");
+    });
+    function showDialog(n){
+        $(".mask").fadeIn();
+        $(".promotion_dialog_"+n).fadeIn();
+    };
+    function cls(){
+        $(".dialog").fadeOut();
+        $(".mask").fadeOut();
+    };
+</script>
+
+
+</body></html>

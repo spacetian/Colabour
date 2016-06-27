@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>首页模板 - 福气商城</title>
+
+    <!-- Bootstrap -->
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
+    <link href="CSS/iconfont.css" rel="stylesheet">
+    <link href="CSS/style.css" rel="stylesheet">
+    <link href="CSS/style_new.css" rel="stylesheet">
+    <link href="CSS/custom/App_HomeTemplate.css" rel="stylesheet" />
+    <link href="CSS/custom/Layout/Layout.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.12.4.js"></script>
+</head>
+<body>
+    <div class="" id="aui_outer" style="display: none; position: absolute;">
+        <script src="Scripts/Layout/aui_outer.js"></script>
+    </div>
+    <link href="CSS/font-awesome.min.css" rel="stylesheet" />
+    <link href="CSS/iconfont.css " rel="stylesheet ">
+
+    <div id="divTopMenus">
+        <script src="Scripts/Layout/TopMenu.js"></script>
+    </div>
+
+    <div id="uLogin">
+        <script src="Scripts/Layout/UserLogin.js"></script> 
+    </div>
+
+
+    <div class="modal fade" id="kdxd" role="dialog">
+        <script src="Scripts/Layout/OpenShopWizard.js"></script>
+    </div>
+    <div class="modal fade" id="appProtocalModal" role="dialog" style="z-index:1700;">
+        <script src="Scripts/Layout/appProtocalModal.js"></script>
+    </div><!-- /.modal -->
+    <script src="Scripts/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.qrcode.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.validate.js"></script>
+    <link href="CSS/default.css" rel="stylesheet">
+    <script type="text/javascript" src="Scripts/artDialog.source.js"></script>
+    <script type="text/javascript" src="Scripts/iframeTools.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.cookie.js"></script>
+
+    <script src="Scripts/custom/App_HomeTemplate.js"></script>
+
+
+    <div class="page_body container-fluid">
+        <div class="row">
+
+            <div id="divLeftMenus" class="col-lg-4 col-md-5 col-sm-6 sidebar">
+                <script src="Scripts/Layout/LeftMenu.js"></script>
+            </div>
+           
+            <script type="text/javascript" src="Scripts/sidebar-roll.js"></script>
+
+
+            <div class="col-lg-20 col-md-19 col-sm-18 main">
+                <div class="sub_menu">
+                    <div class="sub_menu_in">
+                        <dl>
+
+                            <dt>
+                                <img alt="" data-pid="4361" src="Images/1418885621592.jpg" width="18" height="18">
+                                <span>首页配置</span>
+                            </dt>
+                            <dd style="display:block;">
+                                <ul>
+                                    <a class="selected" href="App_HomeTemplate.html">首页模板</a>
+                                </ul>
+                            </dd>
+
+                        </dl>
+
+                    </div>
+                </div>
+                <script type="text/javascript" src="Scripts/sidebar-roll.js"></script>
+                <div class="main_cont" style="height: 713px;">
+
+
+
+                    <ol class="breadcrumb Noprint">
+                        <li>APP设置</li>
+                        <li>首页配置</li>
+                        <li class="active">首页模板</li>
+                    </ol>
+
+                    <div class="common_data" style="padding-left:20px;">
+
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home">
+                                <div class="current_template">
+                                    <h4>当前首页模板</h4>
+                                    <div class="body">
+                                        <div class="pre_img pull-left">
+                                            <img width="180" height="240" alt="" src="Images/app_index.png">
+                                        </div>
+                                        <div class="pre_info pull-left">
+                                            <h5>时尚特惠</h5>
+                                            <p><span class="text-muted">作者：</span>千米</p>
+                                            <p><span class="text-muted">简介：</span>千米</p>
+                                        </div>
+                                        <div class="clr"></div>
+                                        <div class="pre_btns">
+                                            <a href="http://kstore.qianmi.com/boss/setAppHomePage.htm" class="btn btn-primary btn-sm btn-block">编辑</a>
+                                            <!-- <button class="btn btn-primary btn-sm btn-block">编辑</button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clr"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/summernote.min.js"></script>
+    <script src="Scripts/summernote-zh-CN.js"></script>
+    <script src="Scripts/bootstrap-select.min.js"></script>
+    <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="Scripts/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="Scripts/common.js"></script>
+    <script src="Scripts/common_alert.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $('.template_item_mobile').mouseenter(function () {
+                $(this).find('.ctrl p').hide();
+                $(this).find('.ctrl .ctrl_btns').show();
+            });
+            $('.template_item_mobile').mouseleave(function () {
+                $(this).find('.ctrl p').show();
+                $(this).find('.ctrl .ctrl_btns').hide();
+            });
+        });
+
+        function delHomePage(homepageId) {
+            showDeleteOneConfirmAlert('deleteHomePage.htm?CSRFToken=0b5606f8-27b2-4262-a34b-9dddc78d0b23&homePageId=' + homepageId, '确定要删除此模板吗？');
+        }
+
+    </script>
+
+</body>
+</html>

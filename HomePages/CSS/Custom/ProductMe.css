@@ -1,0 +1,239 @@
+﻿/*20160607*/
+.divContent{
+    padding: 5px 0 10px 0;
+
+}
+
+.proLists .proWp .proCon .proItem .proList > li {
+    float: left;
+    width: 250px;
+    height: 480px;
+    padding: 10px 20px;
+    border-right: 1px solid #d2d2d2;
+    border-bottom: 1px solid #d2d2d2;
+    overflow: hidden;
+    margin-left: 2px;
+}
+
+.proLists .proWp .proCon .proItem .proList > li .p-img {
+    display: block;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+}
+
+.proLists .proWp .proCon {
+    float: left;
+    border: 1px solid #d2d2d2;
+    border-left: none;
+    overflow: hidden;
+}
+
+.p-img img{
+    width:250px;
+}
+
+.w_line {
+    background: #eeeeee;
+    height: 6px;
+    margin: 15px 10px 10px;
+}
+
+.w_number {
+    width: 100%;
+    overflow: hidden;
+}
+
+.w_number li {
+    float: left;
+    width: 76px;
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.w_number li.w_amount {
+    color: #333;
+    font-size: 14px;
+}
+
+.w_btn {
+    margin: 12px 0 0 0;
+
+}
+
+.btnBuy{
+    width: 150px;
+    background: #dd2726;
+    display: block;
+    float: left;
+    line-height:40px;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    margin:0 0 0 10px;
+    opacity:0.9;
+}
+
+
+a.btnBuy:hover{
+    background:#c40000;
+    opacity:1.0;
+    color:white;
+
+}
+
+.activeDiv{
+
+}
+.activeDiv a:hover{
+   background-color:red;
+}
+
+.btnCart {
+    background: url('../../Images/cart.png') no-repeat;
+    margin-left: 23px;
+    display: block;
+    width: 45px;
+    height: 45px;
+    float: left;
+    position: relative;
+    top: -3px;
+    opacity:0.95;
+}
+
+.btnCart:hover{
+    opacity:1.0;
+}
+
+.spanRate{
+    width: 1%;
+    background: #dd2726;
+    height: 6px;
+    display: block;
+}
+
+
+.section-01 .recommend .title {
+    background-position: 200px;
+    background: #dd2726;
+    height:292px;
+    padding-top:190px;
+}
+.section-01 .recommend .cont {
+    border: 1px solid rgb(205, 34, 5);
+    width:1131px;
+    height: 480px;
+}
+.section-01 .recommend .cont .j-prev, .section-01 .recommend .cont .j-next {
+    top: 200px;
+}
+
+.section-01 .recommend ul li{
+    width:283px;
+    display:inline;
+}
+
+/*#region 最新揭晓 */
+.w_last_news{
+
+}
+
+.w_last_news>ul li{
+    margin:0 11px 10px 0;
+    float:left;
+    width:294px;
+    height:480px;
+    border:1px solid #ddd;
+    background:#f5f5f5;
+    position:relative;
+}
+
+
+.w_last_news ul li>img{
+    width:48px;
+    height:48px;
+
+}
+#proScroll li>img{
+    width:48px;
+    height:48px;
+    position:absolute;
+}
+
+.ico {
+    display: inline-block;
+    vertical-align: middle;
+    background: url('../../Images/wangyibg.png') no-repeat;
+    _background-image: url('../../Images/wangyibg.png');
+    overflow: hidden;
+    *display: inline;
+    *zoom: 1;
+}
+
+.w-countdown{
+    padding:20px;
+    color: #3b3b3b;
+    line-height: 24px;
+    font-size: 15px;
+}
+
+.ico-countdown-gray{
+    background-position:-60px -100px;
+    width:25px;
+    height:25px;
+    margin:5px 10px;
+}
+
+.w-countdown-nums {
+    margin-bottom: 16px;
+    color: #db3652;
+    font-size: 30px;
+    text-align: center;
+    position: relative;
+    vertical-align: middle;
+}
+
+.w-countdown-nums b {
+    display: inline-block;
+    margin-right: 2px;
+    border-radius: 4px;
+    width: 28px;
+    font-size: 25px;
+    background: #db3652;
+    line-height: 37px;
+    text-align: center;
+    color: #fff;
+}
+
+ .w-goods-title {
+    width: 100%;
+    color: #343434;
+    line-height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    *zoom: 1;
+    text-decoration:none;
+    color:#39f;
+}
+
+ .w-goods-info{
+     padding:10px 20px 10px 20px;
+     background:#fff;
+ }
+
+ .w-countdown-title{
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #808080;
+    font-family: "Microsoft Yahei";
+    letter-spacing:4px;
+    padding-left:20px;
+ }
+ 
+ .w-goods-info a>img{
+     margin-left:-50px;
+ }
+/*#endregion */

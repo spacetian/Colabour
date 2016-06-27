@@ -1,0 +1,729 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0046)http://kstore.qianmi.com/customer/myorder.html -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>个人中心-充值记录</title>
+
+    <meta name="Keywords" content="欢迎来到一元中啦">
+    <meta name="description" content="商城系统">
+    <link rel="Shortcut Icon" href="http://img01.ningpai.com/1432879652077.jpg">
+    <link href="CSS/pages.css" rel="stylesheet" />
+    <link href="CSS/pages.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.7.2.min.js"></script>
+    <style>
+        .cart-top {
+            top: 5px !important;
+        }
+    </style>
+
+</head>
+<body>
+
+    <link rel="stylesheet" href="http://kstore.qianmi.com/index_seven/css/style.css">
+    <input type="hidden" id="basePath" value="">
+    <div class="section_headerTop">
+        <div class="slot slot_headerTop01">
+            <ul class="siteNav right">
+                <li><span>您好qm_18721718153，欢迎来到一元中啦</span></li>
+                <input type="hidden" id="customer_id" value="2256">
+                <li class="login_info">
+                </li>
+                <li class="loginout_info">
+                    <a class="site_loginout" href="http://kstore.qianmi.com/logout.html">退出</a>
+                </li>
+                <li class="nav_item navCenter">
+                    <a href="Index.html" target="_blank">会员中心<s></s></a>
+                    <div class="navInfo">
+                        <a href="./Order_MyOrder_files/Order_MyOrder.html" target="_blank">我的订单</a>
+                    </div>
+                </li>
+                <li class="nav_item"><a href="javascript:;" onclick="addToFavorite('农产品');">加入收藏</a></li>
+                <li class="nav_item"><a href="javascript:;" onclick="shareUrl();">分享给好友</a></li>
+            </ul>
+        </div>
+        <div class="slot slot_headerTop02"></div>
+    </div>
+    <div class="bh-mask"></div>
+    <div id="ctDia" class="bh-dialog dia0">
+        <div class="dia-tit">
+            <h4>加入收藏</h4>
+            <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+        </div>
+        <div class="dia-cont">
+            <p style="text-align: center;line-height:100px;">请使用菜单栏或Ctrl+D进行添加！</p>
+        </div>
+        <div class="dia-btn"><a href="javascript:;" onclick="clss(this)">确定</a></div>
+    </div>
+
+    <div id="ctDia" class="bh-dialog dia101">
+        <div class="dia-tit">
+            <h4>分享好友</h4>
+            <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+        </div>
+        <div class="dia-cont">
+            <div class="dia_collect_intro tc pt30" style="text-align: center;padding-top: 30px;">
+                <span id="content" style="font-size:16px"></span>
+            </div>
+            <div class="dia-btn" style="padding-top: 30px;">
+                <a id="copy" data-clipboard-target="content" href="javascript:;">复制</a>
+                <a onclick="clss(this)" href="javascript:;">取消</a>
+                <br>
+                <span style="color: red; font-size:12px">亲！如果您的好友成功注册为会员，会有积分送给您哦！</span>
+            </div><!--/dia_ops-->
+        </div><!--/dia_cont-->
+    </div><!--/dialog-->
+
+
+
+    <div id="ctDia" class="bh-dialog dia102">
+        <div class="dia-tit">
+            <h4>登录提示</h4>
+            <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+        </div>
+        <div class="dia-cont">
+            <p style="text-align: center;line-height:100px;">您未登录！现在确认要登录吗？</p>
+        </div>
+        <div class="dia-btn">
+            <a onclick="login()" href="javascript:;">确定</a>
+            <a href="javascript:;" onclick="clss(this)">取消</a>
+        </div>
+    </div><!--/dialog-->
+
+
+
+    <div id="ctDia" class="bh-dialog dia103">
+        <div class="dia-tit">
+            <h4>操作提示</h4>
+            <a class="dia-close" href="javascript:;" onclick="clss(this)"></a>
+        </div>
+        <div class="dia-cont">
+            <p style="text-align: center">复制成功！</p>
+        </div>
+        <div class="dia-btn"><a href="javascript:;" onclick="clss()">确定</a></div>
+
+    </div><!--/dialog-->
+    <div class="bh-mask"></div>
+    <script>
+    function dias(n){
+        $(".bh-mask").fadeIn();
+        $(".dia"+n).fadeIn();
+    };
+    function clss(){
+        $(".bh-dialog").fadeOut();
+        $(".bh-mask").fadeOut();
+    }
+    //分享链接给好友 弹出层
+    function shareUrl(){
+        var basePath = $('#basePath').val();
+        var str = window.location.href;
+        var b = str.indexOf('/',str.indexOf('/')+2);
+//		var a = str.indexOf("//")+2;
+        var local = str.substring(0,b);
+        var customerId = $('#customer_id').val(); //当前登录的用户ID
+        if(customerId==null||customerId==""){
+            dias(102);
+        }else{
+            //给会员id加密
+            var b = new Base64();
+            var result = 'customer_id='+customerId;
+            var str = b.encode('"'+result+'"');
+            var url = local+basePath+'/register.html?'+str;
+            $('#content').html(url);
+            dias(101);
+        }
+        //复制成功弹出复制成功窗口
+        $('#copy').zclip({
+            path:'/js/ZeroClipboard.swf',
+            copy:function(){
+                return $("#content").html();
+            },
+            afterCopy:function(){
+                dias(103);
+            }
+        });
+    }
+
+    //推荐该网站给好友- 登录
+    function login(){
+        var basePath = $('#basePath').val();
+        //获取页面登录的 href
+        window.location.href=basePath+'/login.html';
+
+    }
+
+    //对会员ID进行加密
+    function Base64() {
+        _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        this.encode = function (input) {
+            var output = "";
+            var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+            var i = 0;
+            input = _utf8_encode(input);
+            while (i < input.length) {
+                chr1 = input.charCodeAt(i++);
+                chr2 = input.charCodeAt(i++);
+                chr3 = input.charCodeAt(i++);
+                enc1 = chr1 >> 2;
+                enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                enc4 = chr3 & 63;
+                if (isNaN(chr2)) {
+                    enc3 = enc4 = 64;
+                } else if (isNaN(chr3)) {
+                    enc4 = 64;
+                }
+                output = output +
+                _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+                _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+            }
+            return output;
+        }
+
+        // public method for decoding
+        this.decode = function (input) {
+            var output = "";
+            var chr1, chr2, chr3;
+            var enc1, enc2, enc3, enc4;
+            var i = 0;
+            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+            while (i < input.length) {
+                enc1 = _keyStr.indexOf(input.charAt(i++));
+                enc2 = _keyStr.indexOf(input.charAt(i++));
+                enc3 = _keyStr.indexOf(input.charAt(i++));
+                enc4 = _keyStr.indexOf(input.charAt(i++));
+                chr1 = (enc1 << 2) | (enc2 >> 4);
+                chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                chr3 = ((enc3 & 3) << 6) | enc4;
+                output = output + String.fromCharCode(chr1);
+                if (enc3 != 64) {
+                    output = output + String.fromCharCode(chr2);
+                }
+                if (enc4 != 64) {
+                    output = output + String.fromCharCode(chr3);
+                }
+            }
+            output = _utf8_decode(output);
+            return output;
+        }
+
+        // private method for UTF-8 encoding
+        _utf8_encode = function (string) {
+            string = string.replace(/\r\n/g, "\n");
+            var utftext = "";
+            for (var n = 0; n < string.length; n++) {
+                var c = string.charCodeAt(n);
+                if (c < 128) {
+                    utftext += String.fromCharCode(c);
+                } else if ((c > 127) && (c < 2048)) {
+                    utftext += String.fromCharCode((c >> 6) | 192);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                } else {
+                    utftext += String.fromCharCode((c >> 12) | 224);
+                    utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                }
+
+            }
+            return utftext;
+        }
+
+        // private method for UTF-8 decoding
+        _utf8_decode = function (utftext) {
+            var string = "";
+            var i = 0;
+            var c = c1 = c2 = 0;
+            while (i < utftext.length) {
+                c = utftext.charCodeAt(i);
+                if (c < 128) {
+                    string += String.fromCharCode(c);
+                    i++;
+                } else if ((c > 191) && (c < 224)) {
+                    c2 = utftext.charCodeAt(i + 1);
+                    string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                    i += 2;
+                } else {
+                    c2 = utftext.charCodeAt(i + 1);
+                    c3 = utftext.charCodeAt(i + 2);
+                    string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                    i += 3;
+                }
+            }
+            return string;
+        }
+    }
+    </script>
+    <script src="Scripts/jquery.zclip.min.js"></script>
+    <script src="Scripts/jquery.zclip.js"></script>
+    <script src="Scripts/Custom/PersonMenus.js"></script>
+    <div class="n_head">
+
+    </div>
+
+    <input type="hidden" id="currentProvince" value="">
+    <input type="hidden" id="basePath" value="">
+    <script src="Scripts/minShopping.js"></script>
+
+
+
+    <div style="background: #f5f5f5;">
+        <div class="container clearfix pt20 pb10">
+            <div class="new_member_left">
+
+            </div>
+            <!--new_member_left-->        <div class="new_member-right">
+                <div class="new_order_list">
+                    <div class="n-title">我的订单</div>
+                    <div class="tagMenu order-menu">
+                        <ul class="ods_tabs menu clearfix">
+                            <li class="current" data-val="5"><a href="Gift_Record.html">夺宝记录</a></li>
+                            <li data-val="0"><a href="javascript:;">待处理订单</a></li>
+                            <li data-val="3"><a href="javascript:;">已完成订单</a></li>
+                            <li data-val="4"><a href="javascript:;">已取消订单</a></li>
+                            <li data-val="6"><a href="javascript:;">已退货订单</a></li>
+                        </ul>
+                    </div>
+                    <div class="simple mt10 clearfix">
+                        <div class="filter_l fl">
+                            <select class="select s1 ss">
+                                <option value="0">近一个月订单</option>
+                                <option value="1">一个月前订单</option>
+                            </select>
+                            <input type="hidden" id="hi_date" value="0">
+                            <input type="hidden" id="hi_type" value="5">
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="layout" id="No0">
+                            <table class="bought-table mt10">
+                                <thead>
+                                    <tr>
+                                        <th width="420">订单信息</th>
+                                        <th>收货人</th>
+                                        <th>订单状态</th>
+                                        <th>支付金额</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" style="font-size:18px; height:60px;text-align: center;">暂无订单！</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <link href="CSS/footer.css" rel="stylesheet" />
+    <style>
+        .mt20 {
+            margin-top: 20px;
+        }
+    </style>
+    <div style="background-color: #fff;">
+        <div class="wp">
+
+        </div><!--/wp-->
+    </div>
+
+
+    <div class="mask"></div>
+    <div class="member-dialog dia3" style="top: 299.5px; left: 571.5px;">
+        <div class="member-dialog-body">
+            <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+            <div class="tc">
+                <div class="que-delete clearfix">
+                    <img src="Images/images_l6.png">
+                    <div class="fl tl">
+                        <p class="f16 red">确定确认收货吗？</p>
+                        <p>小心钱货两空哦！</p>
+                        <div class="m-btn mt20">
+                            <a id="go_pay_01" href="javascript:;">确定</a>
+                            <a class="" href="javascript:cls();">取消</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="member-dialog promotion_dialog_1" style="top: 299.5px; left: 571.5px;">
+        <div class="member-dialog-body">
+            <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+            <div class="tc">
+                <div class="que-delete clearfix">
+                    <img src="Images/images_l6.png">
+                    <div class="fl tl">
+                        <p class="f16 red">您确定要删除该订单吗？</p>
+                        <p>删除后，您将无法恢复！</p>
+                        <div class="m-btn mt20">
+                            <a href="javascript:;" onclick="clsd()">确定</a>
+                            <a onclick="cls()">取消</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="member-dialog promotion_dialog_2" style="top: 299.5px; left: 571.5px;">
+        <div class="member-dialog-body">
+            <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+            <div class="tc">
+                <div class="que-delete clearfix">
+                    <img src="Images/images_l6.png">
+                    <div class="fl tl">
+                        <p class="f16 red">您确定要删除该订单吗？</p>
+                        <p>删除后，您将无法恢复！</p>
+                        <div class="m-btn mt20">
+                            <a href="javascript:;" onclick="deleteBackOrder()">确定</a>
+                            <a onclick="cls()">取消</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--退货物流-->
+    <div class="member-dialog big-dialog dia15" style="top: 299.5px; left: 571.5px;">
+        <div class="member-dialog-body">
+            <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+            <div class="tc">
+                <div class="que-delete clearfix">
+                    <img src="Images/images_l6.png">
+                    <div class="fl tl">
+                        <div style=" padding-top 10px; padding-left:20px; font-size 12px; font-weight:bold;">亲！请填写物流信息!</div>
+                        <input type="hidden" id="orderNo" name="orderNo" value="">
+                        <table style="height:100px;margin-top:20px; margin-left:10px;" id="backtable">
+                            <tbody>
+                                <tr>
+                                    <td>*物流公司：</td>
+                                    <td><input type="text" maxlength="20" onblur="wuliuname()" style=" border-radius:3px;" name="wlname" id="wlname"></td>
+                                    <td class="yanzhengname">&nbsp;&nbsp;请填写正确的物流公司！</td>
+                                </tr>
+                                <tr></tr>
+                                <tr>
+                                    <td>*物流单号：</td>
+                                    <td>
+                                        <input type="text" maxlength="20" onblur="wuliudanhao()" style=" border-radius:3px;" name="wlno" id="wlno">
+                                    </td>
+                                    <td class="yanzhengno" width="172px">&nbsp;&nbsp;单号必须由数字或字母组成！</td>
+                                </tr>
+                                <tr></tr>
+                                <tr>
+                                    <td colspan="3"><img src="Images/gantanhao_1.gif">注：物流公司信息必须真实有效！</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="m-btn mt20">
+                            <a id="go_pay_01" href="javascript:;" onclick="quedingwl('00');" style="margin-left:80px;">确定</a>
+                            <a href="javascript:cls();" id="go_pay_00" onclick="quxiaowuliu()">取消</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="member-dialog dia2 big-dialog" style="top: 299.5px; left: 571.5px;">
+        <div class="member-dialog-body">
+            <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+            <div class="pl20 mt30 clearfix">
+                <em class="fl">取消订单原因：</em>
+                <div class="fl">
+                    <div class="s-mn_sel mn_sel">请选择取消原因</div>
+                    <div class="s-selCont selCont">
+                        <label><input class="vm mr5" name="res" type="radio" value="现在不想买">现在不想买</label>
+                        <label><input class="vm mr5" name="res" type="radio" value="商品价格较贵">商品价格较贵</label>
+                        <label><input class="vm mr5" name="res" type="radio" value="价格波动">价格波动</label>
+                        <label><input class="vm mr5" name="res" type="radio" value="商品缺货">商品缺货</label>
+                        <label><input class="vm mr5" name="res" type="radio" value="重复下单">重复下单</label>
+                        <label><input class="vm mr5" name="res" type="radio" value="添加或删除商品">添加或删除商品</label>
+                        <label><input class="vm mr5" name="res" type="radio" value="收货人信息有误">收货人信息有误</label>
+                        <label><input class="vm mr5" name="res" type="radio" value="发票信息有误/发票未开">发票信息有误/发票未开</label>
+                        <label><input class="vm mr5" name="res" type="radio" value="送货时间过长">送货时间过长</label>
+                        <label><input class="vm mr5" name="res" id="other_yy" type="radio" value="其他原因">其他原因</label>
+                    </div>
+                    <div class="s-err_tip">请选择取消原因!</div>
+                    <div class="s-input_tip">请输入10个以上字符!</div>
+                    <div class="m-btn mt20 pb10">
+                        <a id="go_pay_00" href="javascript:;" onclick="changeUrl();">确定</a>
+                        <a href="javascript:cls();">取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="member-dialog dia4" style="display: none; top: 299.5px; left: 571.5px;">
+        <div class="member-dialog-body">
+            <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+            <div class="tc">
+                <div class="que-delete clearfix">
+                    <img src="Images/images_l6.png">
+                    <div class="fl tl">
+                        <p class="red againbuytip" style="padding-left: 10px;"></p>
+                        <div class="m-btn mt20 mb10">
+                            <a id="againbuyconfirm" href="javascript:;">确定</a>
+                            <a href="javascript:cls();">取消</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="member-dialog dia20" style="top: 299.5px; left: 571.5px;">
+        <div class="member-dialog-body">
+            <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+            <div class="tc">
+                <div class="que-delete clearfix">
+                    <img src="Images/images_l6.png">
+                    <div class="fl tl">
+                        <p class="f16 red">该商品已超出退货限时。</p>
+                        <div class="m-btn mt20">
+                            <a id="go_pay_01" href="javascript:cls();">确定</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="member-dialog dia21" style="top: 299.5px; left: 571.5px;">
+        <div class="member-dialog-body">
+            <div class="title"><a href="javascript:;" onclick="cls()">×</a>提示</div>
+            <div class="tc">
+                <div class="que-delete clearfix">
+                    <img src="Images/images_l6.png">
+                    <div class="fl tl">
+                        <p class="f16 red">商家已修改订单状态。</p>
+                        <div class="m-btn mt20">
+                            <a id="go_pay_01" href="javascript:cls();">确定</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="Scripts/default.js"></script>
+    <script src="Scripts/jcarousellite_1.0.1.js"></script>
+    <script src="Scripts/tab-switch.js"></script>
+    <script src="Scripts/customer.js"></script>
+    <script src="Scripts/newapp.js"></script>
+    <script src="Scripts/findcode.js"></script>
+    <script src="Scripts/jsOperation.js"></script>
+    <script>
+    $(".againbuy").click(function(){
+        $.post('/customer/againbuy/'+$(this).attr("data-id")+'.html',
+                function(data){
+                    if(data != null && data.length > 0){
+                        var againbuytip = '';
+                        for(var i = 0;i<data.length;i++){
+                            var namestr = data[i].productName;
+                            namestr = namestr.length > 12? namestr.substring(0,12)+'...':namestr;
+                            againbuytip += '商品:'+namestr+'已下架<br>';
+                        }
+                        $(".againbuytip").html(againbuytip);
+                        $("#againbuyconfirm").click(function(){
+                            window.location.href = '/myshoppingcart.html';
+                        })
+                        $(".dia4").fadeIn();
+                    }else{
+                        window.location.href = '/myshoppingcart.html';
+                    }
+                })
+    })
+    $(".s-mn_sel").click(function(){
+        $(this).next(".s-selCont").show();
+        $(".s-sel_txa").hide();
+        $(".err_tip").hide();
+        $(".input_tip").hide();
+        $(document).click(function(event){
+            if(!$(event.target).isChildAndSelfOf(".s-mn_sel, .s-selCont")) {
+                $(".s-selCont").hide();
+                if( $("#other_yy").prop("checked")){
+                    $(".s-sel_txa").show();
+                }
+            };
+        });
+    });
+    $(".s-selCont input").click(function(){
+        $(".s-mn_sel").html($(this).val());
+        $("#rea_hid").val($(this).val());
+        $(".s-selCont").hide();
+        $(".s-sel_txa").hide();
+    });
+    $("#other_yy").click(function(){
+        $(".s-sel_txa").show();
+    });
+    </script>
+    <script type="text/javascript">
+    $(".s2 option[value='"+$("#hi_type").val()+"']").prop("selected","selected");
+    $(".s1 option[value='"+$("#hi_date").val()+"']").prop("selected","selected");
+    $(document).ready(function(){
+
+        //防止多次点击确认收货而获得更多积分奖励
+        $(".mysure").click(function(){
+            var _this=$(this);
+            setTimeout(function(){
+                _this.attr("href","javascript:;");
+            },0);
+        });
+        $('.item_title').each(function(){
+            $(this).click(function(){
+                $(this).next().toggle('fast',function(){
+                    if($(this).is(':visible')){
+                        $(this).prev().removeClass('up');
+                        $(this).prev().addClass('down');
+                    }
+                    else{
+                        $(this).prev().removeClass('down');
+                        $(this).prev().addClass('up');
+                    }
+                });
+            });
+        });
+        $(".guess_goods_list").jCarouselLite({
+            btnNext: ".next",
+            btnPrev: ".prev",
+            visible : 6,
+            auto : 2000,
+            speed : 800
+        });
+        $(".new_member_left div:eq(1) ul li:eq(0)").addClass("cur");
+        $(".pro_sort").addClass("pro_sort_close");
+
+        jQuery.fn.isChildAndSelfOf = function(b){ return (this.closest(b).length > 0); };
+        $(".mn_sel").click(function(){
+            $(this).next(".selCont").show();
+            $(".sel_txa").hide();
+            $(".err_tip").hide();
+            $(".input_tip").hide();
+            $(document).click(function(event){
+                if(!$(event.target).isChildAndSelfOf(".mn_sel, .selCont")) {
+                    $(".selCont").hide();
+                    if( $("#other_yy").prop("checked")){
+                        $(".sel_txa").show();
+                    }
+                };
+            });
+        });
+        $(".selCont input").click(function(){
+            $(".mn_sel").html($(this).val());
+            $("#rea_hid").val($(this).val());
+            $(".selCont").hide();
+            $(".sel_txa").hide();
+        });
+        $("#other_yy").click(function(){
+            $(".sel_txa").show();
+        });
+
+
+    });
+
+    //退货弹窗  取消
+    function quxiaokuan(){
+        $(".dialog").fadeOut();
+        $(".mask").fadeOut();
+        $(".err_yuanyin").addClass("black");
+        $(".err_yuanyin").html("<img src='../images/gantanhao_1.gif'/>收件原因不能超过100个字！");
+
+    }
+
+    var id = '';
+    var backOrderId = '';
+    function showDialogs(orderId) {
+        id = orderId;
+        $(".mask").fadeIn();
+        $(".promotion_dialog_1").fadeIn();
+    }
+
+    //删除退货弹出框
+    function showDialogs_back(backId) {
+        backOrderId = backId;
+        $(".mask").fadeIn();
+        $(".promotion_dialog_2").fadeIn();
+        $("#dialog_tip_back").html("确定要永久删除？");
+    }
+
+    /*删除退货*/
+    function deleteBackOrder(){
+        jQuery.ajax({
+            type: 'post',
+            url: 'deleteBackOrderById.htm?backOrderId='+backOrderId,
+            success:function(data) {
+                clsc();
+                if(data>0)
+                    location.reload();
+            }
+        });
+    }
+
+    function clsd(){
+        jQuery.ajax({
+            type: 'post',
+            url: 'deleteOrderById.htm?orderId='+id,
+            success:function(data) {
+
+                clsc();
+                if(data>0)
+                    location.reload();
+            }
+        });
+    }
+
+    function clsc() {
+        $(".dialog").fadeOut();
+        $(".mask").fadeOut();
+    }
+
+    function ShowUmsMessage(orderId) {
+        $.ajax({
+            url:'queryContainerRelations.htm?orderId='+orderId,
+            success:function(data) {
+                for(var i=0;i<data.length;i++) {
+                    $("#track_"+orderId).attr("src",data[i].expressInfoUrl);
+                }
+            }
+        });
+        $("#track_box_"+orderId).show();
+    }
+
+    function CloseUmsMessage(orderId){
+        $("#track_box_"+orderId).hide();
+    }
+
+    /*验证退货时间*/
+    function timeBackOrder(orderId){
+        jQuery.ajax({
+            type: 'post',
+            url: 'timeBackOrderById.htm?OrderId='+orderId,
+            success:function(data) {
+                if(data>0){
+                    location.href = "/customer/applybackmoney.htm?orderId="+orderId;
+                }else{
+                    dia(20)
+                }
+            }
+        });
+    }
+
+    </script>
+
+</body>
+</html>
