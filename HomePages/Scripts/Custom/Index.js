@@ -222,7 +222,7 @@ $("body").keydown(function (event) {
 // #region show product  list
 /* 获取夺宝上架的所有产品*/
 function ShowProductList() {
-    alert("begin");
+    log("showproductlist begin");
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/yayu-web/good/list/lottery", // ServiceProvider.GetAllLotteryProduct,
@@ -235,34 +235,127 @@ function ShowProductList() {
             log(result);
             if (result != null && result != "") {
                 var categoryRecord = new Array();
-
+                var floor = 0;
                 $.each(result, function (index, item) {
+
                     //1 添加产品类别
-                    if (categoryRecord.length > 0  && categoryRecord.indexOf(item.categoryId) <0 )
+                    if ((categoryRecord.length > 0  && categoryRecord.indexOf(item.categoryId) <0) || categoryRecord.length == 0 )
                     {
+                        floor = floor + 1;
                         categoryRecord[index] = item.categoryId;
-                        sProductAllList = sProductAllList + " <div class='proLists' name='"+ item.categoryId  +"' id='"+ item.categoryName +"'>"
+                        sProductAllList = sProductAllList + " <div class='proLists' name='" + item.categoryName + "' id='" + item.categoryId + "'>" +
+                                                                 "<div class='title'><h2> <span>" + floor + "F</span>" + item.categoryName + "</h2> </div> ";
+
+                     
                         //2 添加产品类别二级
 
+                        // 2.1 添加特别商品
+                        sProductAllList = sProductAllList + "<div class='proWp'>";
+                        sProductAllList = sProductAllList +
+                                          " <div class='proBox'>                                                                                 "+
+                                          "     <a href='http://kstore.qianmi.com/item/4293' target='_blank'>                                    "+
+                                          "         <img src='Images/CgQSa1Yk2OGAejErAAObX3W7qlk203.jpg' style='display: inline; height:540px;'> "+
+                                          "     </a>                                                                                             "+
+                                          "     <div class='pLinks'>                                                                             "+
+                                          "         <ul>                                                                                         "+
+                                          "             <li>                                                                                     "+
+                                          "                 <a href='http://kstore.qianmi.com/list/3887-3886.html' target='_blank'>女装</a>      "+
+                                          "             </li>                                                                                    "+
+                                          "             <li>                                                                                     "+
+                                          "                 <a href='http://kstore.qianmi.com/list/3888-3886.html' target='_blank'>男装</a>      "+
+                                          "             </li>                                                                                    "+
+                                          "             <li>                                                                                     "+
+                                          "                 <a href='http://kstore.qianmi.com/list/3889-3886.html' target='_blank'>内衣</a>      "+
+                                          "             </li>                                                                                    "+
+                                          "             <li>                                                                                     "+
+                                          "                 <a href='http://kstore.qianmi.com/list/3890-3886.html' target='_blank'>服饰配件</a>  "+
+                                          "             </li>                                                                                    "+
+                                          "         </ul>                                                                                        "+
+                                          "     </div>                                                                                           "+
+                                          "     <!--pLinks -->                                                                                   "+
+                                          " </div>                                                                                               ";
                         // 3 添加产品
+                        sProductAllList += "<div class='proCon'>";
+                        sProductAllList += "<div class='proItem' style='display:block;'>";
+                        sProductAllList += "<ul class='proList'>";
 
-                        sProductAllList = sProductAllList + " </div>"; // 添加产品类别
-                    }
-                    else
-                    {
-                        categoryRecord = item.categoryId;
-                    }
 
-                    alert("产品名称", item.goodName);
+                        $.each(result, function (indexT, itemT) {
+                            if (itemT.categoryId == item.categoryId) {
+                                sProductAllList = sProductAllList +
+                                " <li>                                                                                            " +
+                                "     <div class='activeDiv'>                                                                     " +
+                                "         <a class='p-img' href='http://kstore.qianmi.com/item/4354' target='_blank'>             " +
+                                "             <img src='Images/ctdyCVVti8SAc8flAAGTsI_9Gbc262.jpg' style='display: inline;'>      " +
+                                "         </a>                                                                                    " +
+                                "         <p class='p-name'>                                                                      " +
+                                "             <a href='http://kstore.qianmi.com/item/4354' target='_blank'>                       ";
+                                sProductAllList = sProductAllList + itemT.goodName +
+                                "             </a>                                                                                " +
+                                "         </p>                                                                                    " +
+                                "         <p class='p-price'>                                                                     " +
+                                "             ¥                                                                                   ";
+                                sProductAllList = sProductAllList +
+
+
+                                "             <strong>" + itemT.price + "</strong>                                                             " +
+                                "         </p>                                                                                    " +
+                                "         <div class='divContent'>                                                                " +
+                                "             <div class='w_line'>                                                                " +
+                                "                 <span class='spanRate'></span>                                                  " +
+                                "             </div>                                                                              " +
+                                "             <ul class='w_number'>                                                               ";
+
+                                sProductAllList = sProductAllList +
+
+                                "                 <li class='w_amount' data-value='"+ itemT.salesNum +"'>"+ itemT.salesNum +"</li>                                    " +
+                                "                 <li class='w_amount' data-value='"+ itemT.totalNum +"'>" + itemT.totalNum +"</li>                                    " +
+                                "                 <li class='w_amount' data-value='"+ itemT.leftNum +"'>"+ itemT.leftNum +"</li>                                    " +
+                                "                 <li>已夺宝人次</li>                                                             " +
+                                "                 <li>总需人次</li>                                                               " +
+                                "                 <li>剩余人次</li>                                                               " +
+                                "             </ul>                                                                               " +
+                                "             <div class='divBtn'>                                                                " +
+                                "                 <ul>                                                                            " +
+                                "                     <li>                                                                        " +
+                                "                         <a class='btnBuy' href='Subject_ProductDetails.html?lotteryId="+ itemT.lotteryId +"'>立即夺宝</a>       " +
+                                "                     </li>                                                                       " +
+                                "                     <li>                                                                        " +
+                                "                         <a href='javascript:cartoon("+ itemT.lotteryId +",1)' class='btnCart'></a>                " +
+                                "                     </li>                                                                       " +
+                                "                     <li>                                                                        " +
+                                "                         <input type='hidden' value='1.0' class=''>                              " +
+                                "                     </li>                                                                       " +
+                                "                 </ul>                                                                           " +
+                                "             </div>                                                                              " +
+                                "         </div>                                                                                  " +
+                                "     </div>                                                                                      " +
+                                " </li>                                                                                           ";
+                            }
+
+                        })
+
+                        sProductAllList += "</ul>";
+
+                        sProductAllList += "</div>";  // end of proItem
+                        sProductAllList += "</div>"; // end of proCon
+                        sProductAllList += "</div>";  // end of proWp
+                    
+
+
+                        sProductAllList = sProductAllList + "</div>"; // 添加产品类别
+                    }
+             
                 })
             }
+           $(".section-02").append(sProductAllList);
         }
 
     })
 
 
 
-    $(".section-02").append(sProductAllList);
+ 
 }
 
 //#endregion
